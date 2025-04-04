@@ -8,10 +8,10 @@ function App() {
 
 
   return (
-    <>
-      <p className="text-red-500">Hello</p>
-      <Button>Click Me</Button>
-    </>
+    
+      <div className="flex flex-col items-center justify-center h-screen">
+        <p className="text-red-500">Hello</p>
+      </div>
   );
 }
 
