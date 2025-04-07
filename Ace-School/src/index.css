@@ -1,2 +1,6 @@
 
 @import "tailwindcss";
+
+#menu-toggle:checked + #menu {
+    display: block;
+  }
