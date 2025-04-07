@@ -25,7 +25,7 @@ function Navbar() {
           </Link>
         </div>
 
-        <label for="menu-toggle" className="pointer-cursor lg:hidden block">
+        <label htmlFor="menu-toggle" className="pointer-cursor lg:hidden block">
           <svg
             className="fill-current text-gray-50"
             xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@ function Navbar() {
                   return;
 
                 return (
-                  <li>
+                  <li key={element.nav}>
                     <NavLink
                       className="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:text-red-400 hover:border-indigo-400"
                       to={element.nav.toLowerCase()}

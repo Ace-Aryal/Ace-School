@@ -1,4 +1,5 @@
 import React from "react";
+import Autoplay from "embla-carousel-autoplay";
 
 import {
   Carousel,
@@ -20,7 +21,7 @@ function HomePage() {
     {
       image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
       mesage:
-        "​As proud alumni of [School Name], we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
+        "​As proud alumni of SBSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
     },
     {
       image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
@@ -30,29 +31,34 @@ function HomePage() {
     {
       image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
       mesage:
-        "​As proud alumni of [School Name], we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
+        "​As proud alumni of BSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
     },
   ];
   return (
-    <main className="flex flex-col mx-4 pt-28 ">
-      <div className="w-full  flex flex-col items-center  ">
+    <main className="flex flex-col mx-4 sm:pt-0  md:pt-28 ">
+      <div className="  flex flex-col items-center  ">
         <Carousel
+          plugins={[
+            Autoplay({
+              delay: 4000,
+            }),
+          ]}
           opts={{
             align: "start",
             loop: true,
           }}
-          className="max-w-[90vw] "
+          className=" lg:max-w-[70vw] sm:w-screen "
         >
           <CarouselContent>
             {schoolImageArray.map((image) => (
-              <CarouselItem className="outline-0">
+              <CarouselItem key={image} className="outline-0">
                 <div className=" flex justify-center ">
                   <Card className="p-0 ">
-                    <CardContent className="flex h-[60vh]   min-w-[70vw]    items-center justify-center p-0 m-0 ">
+                    <CardContent className="flex h-[60vh]  items-center justify-center p-0 m-0 ">
                       <img
                         src={image}
                         alt=""
-                        className="h-[60vh] rounded-xl min-w-[70vw] object-cover"
+                        className="h-[60vh] rounded-xl aspect-video object-cover"
                       />
                     </CardContent>
                   </Card>
@@ -60,16 +66,16 @@ function HomePage() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="hidden lg:flex" />
+          <CarouselNext className="hidden lg:flex" />
         </Carousel>
       </div>
       <h1 className="text-5xl py-4 text-indigo-500 font-bold text-center">
         Creating Curious Minds.
       </h1>
-      <div id="intro" className="flex w-full justify-center mt-8">
+      <div id="intro" className="flex w-full justify-center my-16">
         <div className="flex flex-col mx-2 sm:w-full lg:w-[50vw] md:w-[70vw]">
-          <h2 className="text-3xl text-red-500 font-semibold text-justify">
+          <h2 className="text-3xl text-red-500 font-semibold ">
             Birendra Secondary School <span className="text-yellow-400">|</span>
           </h2>
           <p className="text-justify">
@@ -85,11 +91,16 @@ function HomePage() {
           </p>
         </div>
       </div>
-      <h2 className="text-3xl text-blue-500 font-semibold text-center mt-20 mb-5">
+      <h2 className="text-3xl text-blue-500 font-semibold text-center mt-16 mb-5">
         Meet Our Alumimi <span className="text-yellow-500 text-5xl">"</span>
       </h2>
       <div className="w-full  flex flex-col items-center  ">
         <Carousel
+          plugins={[
+            Autoplay({
+              delay: 4000,
+            }),
+          ]}
           opts={{
             align: "start",
             loop: true,
@@ -98,10 +109,10 @@ function HomePage() {
         >
           <CarouselContent>
             {aluminiIArray.map((alumini) => (
-              <CarouselItem className="outline-0">
+              <CarouselItem key={alumini.mesage} className="outline-0">
                 <div className=" flex justify-center ">
                   <Card className="p-0 ">
-                    <CardContent className="flex flex-col  sm:w-[40vw]  min-w-[40vw]    items-center justify-center px-8 py-4 m-0 ">
+                    <CardContent className="flex flex-col lg:w-[40vw] sm:w-[80vw]  min-w-[40vw]    items-center justify-center px-8 py-4 m-0 ">
                       <img
                         src={alumini.image}
                         alt=""
