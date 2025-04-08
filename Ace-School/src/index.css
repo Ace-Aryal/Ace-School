@@ -4,3 +4,14 @@
 #menu-toggle:checked + #menu {
     display: block;
   }
+
+  *{
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+  .monteserrat{
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }

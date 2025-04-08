@@ -3,17 +3,17 @@ import { Button } from "../Atoms/button";
 import { NavLink, Link } from "react-router";
 
 function Navbar() {
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   const navElememts = [
+    { nav: "Home", requireAuthentication: false },
     { nav: "Services ", requireAuthentication: false },
     { nav: "About", requireAuthentication: false },
-    { nav: "Home", requireAuthentication: false },
     { nav: "Notice", requireAuthentication: true },
     { nav: "Contact", requireAuthentication: false },
     { nav: "Gallary", requireAuthentication: false },
   ];
   return (
-    <header className="antialiased bg-[#175676] fixed top-0 z-10 w-screen">
+    <header className="antialiased bg-[#175676] shadow-lg fixed top-0 z-10 w-screen ">
       <nav className="lg:px-16 px-6  flex flex-wrap items-center lg:py-0 py-2">
         <div className="flex-1 flex justify-between items-center">
           <Link to="/">
@@ -52,8 +52,14 @@ function Navbar() {
                 return (
                   <li key={element.nav}>
                     <NavLink
-                      className="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:text-red-400 hover:border-indigo-400"
-                      to={element.nav.toLowerCase()}
+                      className={({ isActive }) =>
+                        `  lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:text-yellow-300  hover:border-indigo-400 ${
+                          isActive ? "text-indigo-300" : ""
+                        }`
+                      }
+                      to={
+                        element.nav !== "Home" ? element.nav.toLowerCase() : "/"
+                      }
                     >
                       {element.nav}
                     </NavLink>

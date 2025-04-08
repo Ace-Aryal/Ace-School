@@ -19,23 +19,31 @@ function HomePage() {
   ];
   const aluminiIArray = [
     {
+      name: "Dipesh Aryal",
+      batch: "SEE 2079 Graduate",
       image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
       mesage:
         "​As proud alumni of SBSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
     },
     {
+      name: "Dipesh Aryal",
+      batch: "SEE 2079 Graduate",
+
       image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
       mesage:
         "​As proud alumni of [School Name], we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
     },
     {
+      name: "Dipesh Aryal",
+      batch: "SEE 2079 Graduate",
+
       image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
       mesage:
         "​As proud alumni of BSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
     },
   ];
   return (
-    <main className="flex flex-col mx-4 sm:pt-0  md:pt-28 ">
+    <main className="flex flex-col mx-4 sm:pt-0 justify-center items-center md:pt-28 ">
       <div className="  flex flex-col items-center  ">
         <Carousel
           plugins={[
@@ -71,7 +79,7 @@ function HomePage() {
         </Carousel>
       </div>
       <h1 className="text-5xl py-4 text-indigo-500 font-bold text-center">
-        Creating Curious Minds.
+        Creating Curious Minds <span className="text-yellow-400">.</span>
       </h1>
       <div id="intro" className="flex w-full justify-center my-16">
         <div className="flex flex-col mx-2 sm:w-full lg:w-[50vw] md:w-[70vw]">
@@ -107,17 +115,23 @@ function HomePage() {
           }}
           className="max-w-[90vw] "
         >
-          <CarouselContent>
+          <CarouselContent className="">
             {aluminiIArray.map((alumini) => (
               <CarouselItem key={alumini.mesage} className="outline-0">
                 <div className=" flex justify-center ">
-                  <Card className="p-0 ">
+                  <Card className="p-0 bg-blue-100">
                     <CardContent className="flex flex-col lg:w-[40vw] sm:w-[80vw]  min-w-[40vw]    items-center justify-center px-8 py-4 m-0 ">
                       <img
                         src={alumini.image}
-                        alt=""
+                        alt="alumimi-image"
                         className="h-[150px] m-5 rounded-full  object-cover"
                       />
+                      <h3 className="font-semibold text-center text-xl">
+                        {alumini.name}
+                      </h3>
+                      <h3 className="text-gray-700 font-semibold mb-1.5 text-center text-md">
+                        {alumini.batch}
+                      </h3>
                       <q className="text-justify">{alumini.mesage}</q>
                     </CardContent>
                   </Card>
@@ -127,6 +141,35 @@ function HomePage() {
           </CarouselContent>
         </Carousel>
       </div>
+      <section
+        id="message-from-principal"
+        className="flex  flex-col justify-center w-full sm:w-[90vw] mt-24 "
+      >
+        <h2 className="font-bold text-blue-500 monteserrat text-3xl mb-10 text-center">
+          Executives Messages <span className="text-yellow-400">|</span>
+        </h2>
+        <div className="flex justify-center flex-wrap sm:flex-nowrap  gap-6">
+          <img
+            src="https://aryaldipesh.com.np/assets/aboutPhoto.png"
+            alt="principal-photo"
+            className="w-full aspect-square rounded-lg sm:w-[40%] md:w-[30%]"
+          />
+          <div id="message-principal" className="flex flex-col sm:gap-2">
+            <h3 className="text-3xl text-red-500 font-semibold text-center my:3 sm:mt-16 sm:mb-5">
+              Message From Principal{" "}
+              <span className="text-yellow-500 text-5xl">"</span>
+            </h3>
+            <p className="text-justify">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
+              natus nesciunt quo dicta ab nihil esse, est numquam atque
+              asperiores, totam saepe earum repudiandae nulla deserunt. Saepe,
+              quia odit illum a tenetur rerum odio consequatur, porro harum
+              alias sapiente. Molestiae, maxime aliquid impedit temporibus
+              deleniti ducimus. Sint perspiciatis nesciunt molestiae.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
