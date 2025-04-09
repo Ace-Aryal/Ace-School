@@ -6,7 +6,7 @@ function Navbar() {
   const isAuthenticated = true;
   const navElememts = [
     { nav: "Home", requireAuthentication: false },
-    { nav: "Services ", requireAuthentication: false },
+    { nav: "Services", requireAuthentication: false },
     { nav: "About", requireAuthentication: false },
     { nav: "Notice", requireAuthentication: true },
     { nav: "Contact", requireAuthentication: false },
