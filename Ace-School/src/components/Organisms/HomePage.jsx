@@ -20,7 +20,7 @@ function HomePage() {
   const aluminiIArray = [
     {
       name: "Dipesh Aryal",
-      batch: "SEE 2079 Graduate",
+      batch: "SEE 2079 Graduate (3.8 GPA)",
       image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
       mesage:
         "​As proud alumni of SBSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",

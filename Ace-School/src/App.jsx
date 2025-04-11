@@ -12,6 +12,7 @@ import AttendancePage from "./pages/AttendancePage";
 import BillingPage from "./pages/BillingPage";
 import NoticePage from "./pages/NoticePage";
 import TimetablePage from "./pages/TimetablePage";
+import WelcomePage from "./pages/WelcomePage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
 
@@ -30,6 +31,7 @@ function App() {
 
         {isAuthenticated && (
           <>
+            <Route index element={<WelcomePage/>} />
             <Route path="attendance" element={<AttendancePage />} />
             <Route path="billing" element={<BillingPage />} />
             <Route path="notice" element={<NoticePage />} />
