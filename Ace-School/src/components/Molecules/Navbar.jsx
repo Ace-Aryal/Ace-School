@@ -1,17 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../Atoms/button";
-import { NavLink, Link } from "react-router";
-
+import { NavLink, Link, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import authService from "@/appwrite/auth/auth";
+import { clearUser } from "@/features/authSlice";
 function Navbar() {
-  const isAuthenticated = true;
+  const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
+  const [isloading, setIsLoading] = useState(false);
+  console.log(isAuthenticated);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const navElememts = [
     { nav: "Home", requireAuthentication: false },
     { nav: "Services", requireAuthentication: false },
     { nav: "About", requireAuthentication: false },
-    { nav: "Notice", requireAuthentication: true },
     { nav: "Contact", requireAuthentication: false },
     { nav: "Gallary", requireAuthentication: false },
+    { nav: "Notice", requireAuthentication: true },
+    { nav: "Billing", requireAuthentication: true },
+    { nav: "Timetable", requireAuthentication: true },
+    { nav: "Attendance", requireAuthentication: true },
   ];
+
+  async function handleLogout() {
+    const response = await authService.logout();
+    if (!response) {
+      alert("Error Logging Out");
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(false);
+    dispatch(clearUser());
+    navigate("/");
+  }
   return (
     <header className="antialiased bg-[#175676] shadow-lg fixed top-0 z-10 w-screen ">
       <nav className="lg:px-16 px-6  flex flex-wrap items-center lg:py-0 py-2">
@@ -46,8 +67,8 @@ function Navbar() {
           <nav>
             <ul className="lg:flex items-center justify-between text-base text-gray-50 pt-4 lg:pt-0">
               {navElememts.map((element) => {
-                if (element.requireAuthentication && isAuthenticated === false)
-                  return;
+                if (element.requireAuthentication && !isAuthenticated) return;
+                if (!element.requireAuthentication && isAuthenticated) return;
 
                 return (
                   <li key={element.nav}>
@@ -67,14 +88,28 @@ function Navbar() {
                 );
               })}
 
-              <NavLink to="/login">
-                <Button
-                  className="text-blue-300 hover:text-white cursor-pointer"
-                  variant="outline"
-                >
-                  Login
-                </Button>
-              </NavLink>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  if (!isAuthenticated) {
+                    navigate("/login");
+                    return;
+                  }
+                  setIsLoading(true);
+                  handleLogout();
+                }}
+                className={`${
+                  isAuthenticated ? "text-red-500" : "text-blue-300"
+                }  hover:text-white cursor-pointer `}
+                variant="destructive"
+              >
+                {isloading
+                  ? "logging out"
+                  : isAuthenticated
+                  ? "Logout →"
+                  : "Login →"}
+              </Button>
             </ul>
           </nav>
         </div>
