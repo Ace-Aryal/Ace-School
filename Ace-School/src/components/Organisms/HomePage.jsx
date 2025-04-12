@@ -43,42 +43,48 @@ function HomePage() {
     },
   ];
   return (
-    <main className="flex flex-col mx-4 sm:pt-0 justify-center items-center md:pt-28 ">
-      <div className="  flex flex-col items-center  ">
-        <Carousel
-          plugins={[
-            Autoplay({
-              delay: 4000,
-            }),
-          ]}
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className=" lg:max-w-[70vw] sm:w-screen "
-        >
-          <CarouselContent>
-            {schoolImageArray.map((image) => (
-              <CarouselItem key={image} className="outline-0">
-                <div className=" flex justify-center ">
-                  <Card className="p-0 ">
-                    <CardContent className="flex h-[60vh]  items-center justify-center p-0 m-0 ">
-                      <img
-                        src={image}
-                        alt=""
-                        className="h-[60vh] rounded-xl aspect-video object-cover"
-                      />
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden lg:flex" />
-          <CarouselNext className="hidden lg:flex" />
-        </Carousel>
-      </div>
-      <h1 className="text-5xl py-4 text-indigo-500 font-bold text-center">
+    <main className="flex px-4 m-0 flex-col  justify-center items-center max-w-[100vw]  mt-10 pt-4 ">
+      <Carousel
+        plugins={[
+          Autoplay({
+            delay: 4000,
+          }),
+        ]}
+        opts={{
+          loop: true,
+        }}
+        className="w-[99vw] p-0 m-0 relative"
+      >
+        <CarouselContent className="p-0 m-0">
+          {schoolImageArray.map((image) => (
+            <CarouselItem className="p-0 m-0" key={image}>
+              <div className="p-0 ">
+                <Card className="p-0">
+                  <CardContent className="flex max-h-[90vh]  items-center justify-center p-0 m-0 border-0">
+                    <img
+                      src={image}
+                      alt="school image "
+                      className="w-screen aspect-video  p-0 m-0  object-cover"
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious
+          className="absolute hidden sm:flex left-20 text-white"
+          variant="secoondary"
+          size="icon"
+        />
+        <CarouselNext
+          className="hidden sm:flex  absolute right-20 text-white  "
+          variant="icon"
+          size=""
+        />
+      </Carousel>
+
+      <h1 className=" text-5xl py-4 text-indigo-500 font-bold text-center">
         Creating Curious Minds <span className="text-yellow-400">.</span>
       </h1>
       <div id="intro" className="flex w-full justify-center my-16">

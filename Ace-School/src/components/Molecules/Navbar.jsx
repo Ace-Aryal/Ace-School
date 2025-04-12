@@ -34,7 +34,7 @@ function Navbar() {
     navigate("/");
   }
   return (
-    <header className="antialiased bg-[#175676] shadow-lg fixed top-0 z-10 w-screen ">
+    <header className="antialiased bg-[#175676] shadow-lg fixed top-0 z-1 w-screen ">
       <nav className="lg:px-16 px-6  flex flex-wrap items-center lg:py-0 py-2">
         <div className="flex-1 flex justify-between items-center">
           <Link to="/">
@@ -100,9 +100,9 @@ function Navbar() {
                   handleLogout();
                 }}
                 className={`${
-                  isAuthenticated ? "text-red-500" : "text-blue-300"
-                }  hover:text-white cursor-pointer `}
-                variant="destructive"
+                  isAuthenticated ? "text-red-500" : "text-yellow-400"
+                }  hover:text-orange-400 cursor-pointer `}
+                variant="outline"
               >
                 {isloading
                   ? "logging out"

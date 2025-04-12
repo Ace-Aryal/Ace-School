@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
-import { Button } from "./components/Atoms/button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Applayout from "./components/Templates/Applayout";
 import HomePage from "./components/Organisms/HomePage";
 import AboutPage from "./components/Organisms/AboutPage";
@@ -13,16 +12,45 @@ import BillingPage from "./pages/BillingPage";
 import NoticePage from "./pages/NoticePage";
 import TimetablePage from "./pages/TimetablePage";
 import WelcomePage from "./pages/WelcomePage";
+import authService from "./appwrite/auth/auth";
+import { setUser } from "./features/authSlice";
+import ErrorPage from "./pages/ErrorPage";
+import GallaryPage from "./components/Organisms/GallaryPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
+  async function getCurrentUserData() {
+    const currentuser = await authService.getCurrentUser();
+    if (currentuser) {
+      dispatch(
+        setUser({
+          isLoggedIn: true,
+          username: currentuser.name,
+          email: currentuser.email,
+          role: currentuser.prefs.role,
+          phone: currentuser.phone,
+          createdAt: currentuser.$createdAt,
+        })
+      );
+    }
+    console.log("user", user);
+  }
+  useEffect(() => {
+    getCurrentUserData();
+  }, [isAuthenticated]);
   return (
     <Routes>
+      <Route path="*" element={<ErrorPage />} />
       <Route path="/" element={<Applayout />}>
         {!isAuthenticated && (
           <>
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
+            <Route path="gallary" element={<GallaryPage />}>
+              {/* <Route path="/:id" element={}/> */}
+            </Route>
             <Route path="services" element={<ServicesPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="login" element={<LoginPage />} />
@@ -31,7 +59,7 @@ function App() {
 
         {isAuthenticated && (
           <>
-            <Route index element={<WelcomePage/>} />
+            <Route index element={<WelcomePage />} />
             <Route path="attendance" element={<AttendancePage />} />
             <Route path="billing" element={<BillingPage />} />
             <Route path="notice" element={<NoticePage />} />

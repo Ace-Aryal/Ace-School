@@ -17,9 +17,8 @@ function LoginPage(props) {
   const [error, setError] = useState("");
   const login = async (data) => {
     setLogging(true);
-    await authService.logout();
+
     const userSession = await authService.login({ ...data });
-    console.log(userSession);
 
     if (userSession.current) {
       console.log("here");

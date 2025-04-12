@@ -37,6 +37,14 @@ class AuthService {
     recoverAccount = async ({ phoneNumber }) => {
 
     }
+    getCurrentUser = async () => {
+        try {
+            return await this.account.get()
+        } catch (error) {
+            console.error(error)
+            return false
+        }
+    }
 
 }
 

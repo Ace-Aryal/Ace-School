@@ -67,51 +67,7 @@ function Footer() {
             </ul>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 md:grid-cols-3">
-            <div className="text-center sm:text-left">
-              <p className="text-lg font-medium text-white">About Us</p>
-
-              <nav className="mt-8">
-                <ul className="space-y-4 text-sm">
-                  <li>
-                    <Link
-                      className="text-white transition hover:text-white/75"
-                      to="/"
-                    >
-                      School History
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      className="text-white transition hover:text-white/75"
-                      to="/"
-                    >
-                      Our Mission
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      className="text-white transition hover:text-white/75"
-                      to="/"
-                    >
-                      Our Faculty
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      className="text-white transition hover:text-white/75"
-                      to="/"
-                    >
-                      Careers
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 md:grid-cols-4">
             <div className="text-center sm:text-left">
               <p className="text-lg font-medium text-white">Our Services</p>
 
@@ -238,6 +194,17 @@ function Footer() {
                   </address>
                 </li>
               </ul>
+            </div>
+            <div id="map" className="col-span-2">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2995.2202616767563!2d85.10096073220302!3d27.888766353730503!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ead77ecc13f79d%3A0x27adae75fb2290b0!2z4KS24KWN4KSw4KWAIOCkrOCkv-CksOClh-CkqOCljeCkpuCljeCksCDgpK7gpL7gpKfgpY3gpK_gpK7gpL_gpJUg4KSs4KS_4KSm4KWN4KSv4KS-4KSy4KSv!5e0!3m2!1sne!2snp!4v1744451599682!5m2!1sne!2snp"
+                width="380"
+                height="280"
+                className=" border-4 border-gray-900"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </div>
