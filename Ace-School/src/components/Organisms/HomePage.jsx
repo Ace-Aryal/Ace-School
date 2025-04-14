@@ -9,13 +9,14 @@ import {
   CarouselPrevious,
 } from "../Atoms/carousel";
 import { Card, CardContent } from "../Atoms/card";
+import Message from "../Molecules/message";
 function HomePage() {
   const schoolImageArray = [
-    "https://scontent.fjkr2-1.fna.fbcdn.net/v/t39.30808-6/473677336_904788301817991_928053691669148200_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=mXGeHH4yUDcQ7kNvwErjJ9X&_nc_oc=AdksI0Y1ftXtusEwYPKieADaGnxFJKV_rAwoHKlU88CODnWlpei-5bFMusbW3tg_UoA&_nc_zt=23&_nc_ht=scontent.fjkr2-1.fna&_nc_gid=cW2ZVTvmxyAIyMwzF1CN3A&oh=00_AfFNEmrDamn8kFab0cNVSc83JBQb_64CPxKRcxphX-Tofg&oe=67F95868",
-    "https://scontent.fjkr2-1.fna.fbcdn.net/v/t39.30808-6/475689866_916354930661328_7499539758261830160_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=kLP4-lk6k1kQ7kNvwE9rtBV&_nc_oc=AdlGIJEYUfWjFFZLItD6UncqyppMSwB-MhVsMuWaCt_yZmsMkc31pA5A_NuB8NBOmxc&_nc_zt=23&_nc_ht=scontent.fjkr2-1.fna&_nc_gid=zOv-QNpoSiZO5AHQeC2vcA&oh=00_AfEGZDlMUdubt0DnLIMeX1soRaRrtTnkQemXk0rbczM70Q&oe=67F984CB",
-    "https://scontent.fjkr2-1.fna.fbcdn.net/v/t39.30808-6/474744474_911117601185061_5035206282103477126_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=FnrZ32gVuYIQ7kNvwH4pvWg&_nc_oc=Adkylly7avXLJeYopWuAhpeJ9gNOFs6G78iOFF8jc7IQDaJeK-5LEivF247T0_PMjr8&_nc_zt=23&_nc_ht=scontent.fjkr2-1.fna&_nc_gid=up5_zqRhHuMVk0lB0aD6cQ&oh=00_AfFlxTCb9tzURWd-EuIEifAlZdqIcjtwyxBTFFSmwYjRbA&oe=67F96C0E",
-    "https://scontent.fjkr2-1.fna.fbcdn.net/v/t39.30808-6/477965893_923580743272080_2609524583935671673_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=_yL81FqAIY4Q7kNvwGPAl8D&_nc_oc=Adn9bm6Am6or66HebOStsttUpDlSB50euwmKL6b6l91zQeZCkRqwEFZzCEF3uXYxAK4&_nc_zt=23&_nc_ht=scontent.fjkr2-1.fna&_nc_gid=63MiYx18b03DVtF38cW7ag&oh=00_AfGIrLyzZANlWdw4UZtNOtO0rF2SZw3eD4UF5ggfQSs5zQ&oe=67F98957",
-    "https://scontent.fjkr2-1.fna.fbcdn.net/v/t39.30808-6/473252588_903029021993919_1403166689557480623_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=qO-Hav7vo-MQ7kNvwGzEZpz&_nc_oc=Adlx3MNqAzDucKj4f3Hft8meaBAiLfkSkz_ORdFr4WIYA6zPIT2Zq3H5rkju0cPD8O0&_nc_zt=23&_nc_ht=scontent.fjkr2-1.fna&_nc_gid=7ZruvGfVAcRw1Stw5Ba8-A&oh=00_AfEhBayYw_Q7utghByPkzB-sm7HinQ0k7crcNqJ-jd5WYA&oe=67F97ABD",
+    "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fb47dd0016548b2e1d/view?project=67f8cd5000374c4a813c&mode=admin",
+    "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fb4860001c527c12b8/view?project=67f8cd5000374c4a813c&mode=admin",
+    "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fb47000023591c1394/view?project=67f8cd5000374c4a813c&mode=admin",
+    "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fb49650006e8f0c87e/view?project=67f8cd5000374c4a813c&mode=admin",
+    "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fcb22500190e15cf40/view?project=67f8cd5000374c4a813c&mode=admin",
   ];
   const aluminiIArray = [
     {
@@ -43,7 +44,7 @@ function HomePage() {
     },
   ];
   return (
-    <main className="flex px-4 m-0 flex-col  justify-center items-center max-w-[100vw]  mt-10 pt-4 ">
+    <main className="flex px-4 m-0 flex-col  justify-center items-center max-w-[100vw] mb-20  mt-10 pt-4 ">
       <Carousel
         plugins={[
           Autoplay({
@@ -154,30 +155,18 @@ function HomePage() {
         <h2 className="font-bold text-blue-500 monteserrat text-3xl mb-10 text-center">
           Executives Messages <span className="text-yellow-400">|</span>
         </h2>
-        <div className="flex justify-center flex-wrap sm:flex-nowrap  gap-6">
-          <img
-            src="https://aryaldipesh.com.np/assets/aboutPhoto.png"
-            alt="principal-photo"
-            className="w-full aspect-square rounded-lg sm:w-[40%] md:w-[30%]"
-          />
-          <div id="message-principal" className="flex flex-col sm:gap-2">
-            <h3 className="text-3xl text-red-500 font-semibold text-center my:3 sm:mt-16 sm:mb-5">
-              Message From Principal{" "}
-              <span className="text-yellow-500 text-5xl">"</span>
-            </h3>
-            <p className="text-justify">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-              natus nesciunt quo dicta ab nihil esse, est numquam atque
-              asperiores, totam saepe earum repudiandae nulla deserunt. Saepe,
-              quia odit illum a tenetur rerum odio consequatur, porro harum
-              alias sapiente. Molestiae, maxime aliquid impedit temporibus
-              deleniti ducimus. Sint perspiciatis nesciunt molestiae.
-            </p>
-          </div>
-        </div>
+        <Message
+          imageURL="https://aryaldipesh.com.np/assets/aboutPhoto.png"
+          role="Principal"
+          message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
+        />
+        <Message
+          imageURL="https://aryaldipesh.com.np/assets/aboutPhoto.png"
+          role="Chairman"
+          message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
+        />
       </section>
     </main>
   );
 }
-
 export default HomePage;

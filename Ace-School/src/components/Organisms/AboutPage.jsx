@@ -2,7 +2,7 @@ import React from "react";
 import { PiTargetBold } from "react-icons/pi";
 function AboutPage() {
   return (
-    <section className="flex w-full justify-center">
+    <section className="flex w-full justify-center mb-20">
       <main className="w-full sm:w-[80%] md:w-[60%] gap-2 sm:gap-y-14 grid grid-cols-1 sm:grid-cols-2 mt-14 pt-20 mx-2  ">
         <div className="">
           <h2 className="text-3xl font-bold text-blue-500">

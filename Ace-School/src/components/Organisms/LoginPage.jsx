@@ -33,8 +33,8 @@ function LoginPage(props) {
   };
 
   return (
-    <section>
-      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
+    <section className="mb-20">
+      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0 ">
         <Link
           href="#"
           class="flex items-center mb-6 text-2xl font-semibold text-gray-900"

@@ -7,7 +7,7 @@ import { SlChemistry } from "react-icons/sl";
 
 function ServicesPage() {
   return (
-    <main className="mt-14 sm:pt-12 pt-6  w-screen">
+    <main className="mt-14 sm:pt-12 pt-6  mb-20 w-screen">
       <h1 className="text-5xl  text-center text-indigo-600 font-bold">
         Our Services.
       </h1>

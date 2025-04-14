@@ -16,6 +16,7 @@ import authService from "./appwrite/auth/auth";
 import { setUser } from "./features/authSlice";
 import ErrorPage from "./pages/ErrorPage";
 import GallaryPage from "./components/Organisms/GallaryPage";
+import GallaryItem from "./components/Organisms/GallaryItem";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -48,9 +49,9 @@ function App() {
           <>
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
-            <Route path="gallary" element={<GallaryPage />}>
-              {/* <Route path="/:id" element={}/> */}
-            </Route>
+            <Route path="gallary" element={<GallaryPage />} />
+            <Route path="gallary/:id" element={<GallaryItem />} />
+
             <Route path="services" element={<ServicesPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="login" element={<LoginPage />} />
