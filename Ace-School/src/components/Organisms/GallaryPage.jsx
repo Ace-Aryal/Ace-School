@@ -49,7 +49,7 @@ const GallaryPage = () => {
   console.log(data);
 
   return (
-    <main id="container" className="mt-14 mx-2 sm:mx-4 mb-10">
+    <main id="container" className=" mx-2 sm:mx-4 mb-10">
       <h1 className="text-3xl text-center font-bold pt-4 text-indigo-500">
         Image Gallary
       </h1>

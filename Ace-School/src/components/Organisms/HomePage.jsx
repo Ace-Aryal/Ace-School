@@ -44,7 +44,7 @@ function HomePage() {
     },
   ];
   return (
-    <main className="flex px-4 m-0 flex-col  justify-center items-center max-w-[100vw] mb-20  mt-10 pt-4 ">
+    <main className="flex  m-0 flex-col  justify-center items-center max-w-[100vw] mb-20   ">
       <Carousel
         plugins={[
           Autoplay({

@@ -17,6 +17,7 @@ import { setUser } from "./features/authSlice";
 import ErrorPage from "./pages/ErrorPage";
 import GallaryPage from "./components/Organisms/GallaryPage";
 import GallaryItem from "./components/Organisms/GallaryItem";
+import DashBoardPage from "./pages/DashBoardPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -60,7 +61,8 @@ function App() {
 
         {isAuthenticated && (
           <>
-            <Route index element={<WelcomePage />} />
+            <Route index element={<DashBoardPage />} />
+
             <Route path="attendance" element={<AttendancePage />} />
             <Route path="billing" element={<BillingPage />} />
             <Route path="notice" element={<NoticePage />} />
