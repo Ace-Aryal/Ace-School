@@ -75,33 +75,19 @@ const DashboardPage = () => {
               classNames={item.classNames}
               statNumber={item.statNumber}
               statHeading={item.statHeading}
-              icon={<Bell size={64} color="#6e6f71" />}
+              icon={<Bell size={50} color="#6e6f71" />}
             >
               <Link to="/" key={item.statHeading} />
             </StatElement>
           ))}
         </div>
         <div id="calender w-full flex justify-center ">
-          <div>
-            <script type="text/javascript">
-              var nc_width = 'responsive'; var nc_height = 650; var nc_api_id =
-              "721148p140";{" "}
-            </script>
-            <script
-              type="text/javascript"
-              src="https://www.ashesh.com.np/nepali-calendar/js/ncf.js?v=5"
-            ></script>
-            <div id="ncwidgetlink">
-              Powered by ©{" "}
-              <a
-                href="https://www.ashesh.com.np/nepali-calendar/"
-                id="nclink"
-                title="Nepali calendar"
-                target="_blank"
-              >
-                nepali calendar
-              </a>
-            </div>
+          <div className="">
+            <iframe
+              className=" w-full aspect-square"
+              src="https://ace-aryal.github.io/Learning_Web/03_Javascript/Calender/Calender.html"
+              frameborder="0"
+            ></iframe>
           </div>
         </div>
       </section>
