@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 function Footer() {
   return (
-    <footer className="bg-[#175676] ">
+    <footer className="bg-indigo-900 ">
       <div className="max-w-screen-xl px-4 pt-8 pb-6 mx-auto sm:px-6 lg:px-8 lg:pt-16">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>

@@ -11,7 +11,7 @@ function LoginPage(props) {
     watch,
     formState: { errors },
   } = useForm();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logging, setLogging] = useState(false);
   const [error, setError] = useState("");
@@ -24,7 +24,7 @@ function LoginPage(props) {
       console.log("here");
 
       dispatch(setLoggedIn());
-      Navigate("/");
+      navigate("/");
     }
     if (!userSession) {
       setError("Error Logging In");

@@ -26,80 +26,87 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link } from "react-router";
+import { NavLink } from "react-router";
+
 import { useSelector } from "react-redux";
 
 // Menu items.
 const items = [
   {
     title: "Dashboard",
-    url: "#",
+    url: "/",
     icon: LayoutDashboard,
     readers: ["all"],
     writers: ["none"],
   },
   {
     title: "Fee Biling",
-    url: "#",
+    url: "/billling",
     icon: Coins,
     readers: ["accountant"],
     writers: ["accountant"],
   },
   {
-    title: "Attendence",
-    url: "#",
+    title: "Attendance",
+    url: "/attendance",
     icon: ChartColumn,
     readers: ["accountant", "teacher", "admin", "principal"],
     writers: ["accountant", "teacher", "admin", "principal"],
   },
   {
     title: "Notices",
-    url: "#",
+    url: "/notice",
     icon: Bell,
     readers: ["all"],
     writers: ["admin"],
   },
   {
     title: "Inbox",
-    url: "#",
+    url: "/inbox",
     icon: Inbox,
     readers: ["admin"],
     writers: ["none"],
   },
   {
     title: "Calendar",
-    url: "#",
+    url: "/calender",
     icon: Calendar,
     readers: ["all"],
     writers: ["none"],
   },
   {
     title: "View Students",
-    url: "#",
+    url: "/students",
     icon: GraduationCap,
     readers: ["accountant", "admin"],
     writers: ["none"],
   },
   {
     title: "View Teachers",
-    url: "#",
+    url: "/teachers",
     icon: Users,
     readers: ["accountant", "admin"],
     writers: ["none"],
   },
   {
     title: "Class Schedule",
-    url: "#",
+    url: "/timetable",
     icon: Clock,
     readers: ["accountant", "teacher", "admin", "principal"],
     writers: ["accountant", "admin", "principal"], // in every written place specify who wrote it in UI
   },
   {
     title: "Library",
-    url: "#",
+    url: "/library",
     icon: Library,
     readers: ["all"],
     writers: ["accountant", "admin", "principal"],
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings,
+    readers: ["all"],
   },
 ];
 
@@ -122,7 +129,7 @@ export default function AppSidebar() {
       variant="sidebar"
       collapsible="offcanvas"
     >
-      <SidebarContent className="bg-indigo-100">
+      <SidebarContent className="bg-indigo-200">
         <SidebarGroup>
           <SidebarGroupLabel className="text-md flex gap-1 font-semibold ">
             <User size={64} />
@@ -139,11 +146,16 @@ export default function AppSidebar() {
                 )
                 .map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <Link to={item.url}>
-                        <item.icon />
+                    <SidebarMenuButton>
+                      <NavLink
+                        to={item.url}
+                        className={({ isActive }) =>
+                          `${isActive ? `text-blue-700` : ""} flex gap-1`
+                        }
+                      >
+                        <item.icon size={18} />
                         <span>{item.title}</span>
-                      </Link>
+                      </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

@@ -18,6 +18,8 @@ import ErrorPage from "./pages/ErrorPage";
 import GallaryPage from "./components/Organisms/GallaryPage";
 import GallaryItem from "./components/Organisms/GallaryItem";
 import DashBoardPage from "./pages/DashBoardPage";
+import InboxPage from "./pages/InboxPage";
+import Calenderpage from "./pages/Calenderpage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -67,6 +69,8 @@ function App() {
             <Route path="billing" element={<BillingPage />} />
             <Route path="notice" element={<NoticePage />} />
             <Route path="timetable" element={<TimetablePage />} />
+            <Route path="inbox" element={<InboxPage />} />
+            <Route path="calender" element={<Calenderpage />} />
           </>
         )}
       </Route>

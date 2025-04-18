@@ -25,7 +25,7 @@ function Applayout() {
         }`}
       >
         {isAuthenticated && (
-          <SidebarTrigger className="p-1 mx-2 hidden lg:inline" />
+          <SidebarTrigger className="p-1 mx-2 hidden lg:inline fixed px-1 z-10" />
         )}
         <Outlet />
       </main>
