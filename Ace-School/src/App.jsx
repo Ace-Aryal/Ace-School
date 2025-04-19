@@ -11,7 +11,6 @@ import AttendancePage from "./pages/AttendancePage";
 import BillingPage from "./pages/BillingPage";
 import NoticePage from "./pages/NoticePage";
 import TimetablePage from "./pages/TimetablePage";
-import WelcomePage from "./pages/WelcomePage";
 import authService from "./appwrite/auth/auth";
 import { setUser } from "./features/authSlice";
 import ErrorPage from "./pages/ErrorPage";
@@ -20,6 +19,7 @@ import GallaryItem from "./components/Organisms/GallaryItem";
 import DashBoardPage from "./pages/DashBoardPage";
 import InboxPage from "./pages/InboxPage";
 import Calenderpage from "./pages/Calenderpage";
+import ChangePasswordPage from "./pages/ChangePasswordPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -71,6 +71,7 @@ function App() {
             <Route path="timetable" element={<TimetablePage />} />
             <Route path="inbox" element={<InboxPage />} />
             <Route path="calender" element={<Calenderpage />} />
+            <Route path="change-password" element={<ChangePasswordPage />} />
           </>
         )}
       </Route>

@@ -104,7 +104,7 @@ const items = [
   },
   {
     title: "Settings",
-    url: "/settings",
+    url: "/change-password",
     icon: Settings,
     readers: ["all"],
   },

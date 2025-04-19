@@ -31,9 +31,21 @@ class AuthService {
             return false
         }
     }
-    changePassword = async ({ oldPassword, newPassowrd }) => {
+    changePassword = async (currentPassword, newPassword) => {
+        try {
+            const response = await this.account.updatePassword(newPassword, currentPassword);
 
-    }
+
+            if (response) {
+
+                return true
+            }
+
+        } catch (error) {
+            console.error("Error updating password:", error);
+            return error.message
+        }
+    };
     recoverAccount = async ({ phoneNumber }) => {
 
     }
