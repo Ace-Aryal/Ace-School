@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import authService from "@/appwrite/auth/auth";
 import { setLoggedIn } from "@/features/authSlice";
+import { toast } from "sonner";
 function LoginPage(props) {
   const {
     register,
@@ -28,6 +29,11 @@ function LoginPage(props) {
     }
     if (!userSession) {
       setError("Error Logging In");
+      toast.custom(() => (
+        <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
+          ❌ Error Logging in
+        </div>
+      ));
     }
     setLogging(false);
   };
@@ -95,7 +101,7 @@ function LoginPage(props) {
                   required=""
                 />
               </div>
-              <p className="text-center text-red-500">{error && error}</p>
+
               <div class="flex items-center justify-between">
                 <div class="flex items-start">
                   <div class="flex items-center h-5">
