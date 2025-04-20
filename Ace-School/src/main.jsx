@@ -21,6 +21,6 @@ createRoot(document.getElementById("root")).render(
         </Provider>
       </BrowserRouter>
     </ErrorBoundary>
-    <Toaster />
+    <Toaster position="top-right" />
   </StrictMode>
 );

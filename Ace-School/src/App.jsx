@@ -20,6 +20,8 @@ import DashBoardPage from "./pages/DashBoardPage";
 import InboxPage from "./pages/InboxPage";
 import Calenderpage from "./pages/Calenderpage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
+import RecoverInitiationPage from "./components/Organisms/RecoverInitiationPage";
+import RecoveryPage from "./components/Organisms/Recoverypage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -58,6 +60,11 @@ function App() {
             <Route path="services" element={<ServicesPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="recover-account" element={<RecoveryPage />} />
+            <Route
+              path="/recover-password-initiation"
+              element={<RecoverInitiationPage />}
+            />
           </>
         )}
 

@@ -3,8 +3,9 @@ import { LockOpen } from "lucide-react";
 import { useForm } from "react-hook-form";
 import authService from "@/appwrite/auth/auth";
 import { toast } from "sonner";
+import { useSearchParams } from "react-router";
 
-const ChangePasswordPage = () => {
+const RecoveryPage = () => {
   const {
     handleSubmit,
     watch,
@@ -12,12 +13,19 @@ const ChangePasswordPage = () => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
+  const [searchParams] = useSearchParams();
+  const userID = searchParams.get("userId");
+  const secretID = searchParams.get("secret");
   const handlePasswordChange = async (formData) => {
-    const { oldPassword, newPassword } = formData;
-    const success = await authService.changePassword(oldPassword, newPassword);
+    const { newPassword: password } = formData;
+    const success = await authService.recoverAccount({
+      userID,
+      secretID,
+      password,
+    });
     reset();
 
-    if (success === true) {
+    if (success) {
       // Success toast
       toast.custom(() => (
         <div className="px-4 py-2 rounded bg-green-600 text-white text-sm flex items-center gap-2 shadow">
@@ -30,12 +38,12 @@ const ChangePasswordPage = () => {
     // Error toast
     toast.custom(() => (
       <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
-        ❌ Error changing password {success}.
+        ❌ Error changing password , pease try again
       </div>
     ));
   };
   return (
-    <div class="min-h-screen bg-gray-100 text-gray-900 w-full flex justify-center p-2 sm:p-16 sm:px-20">
+    <div class="min-h-screen bg-gray-100 text-gray-900 w-full flex justify-center sm:p-16 sm:px-20">
       <div class="max-w-screen-xl  bg-white shadow -lg flex justify-center flex-1">
         <div class=" ">
           <div class="mt-12 flex flex-col items-center">
@@ -49,20 +57,6 @@ const ChangePasswordPage = () => {
               onSubmit={handleSubmit(handlePasswordChange)}
               class="mx-auto max-w-xs"
             >
-              <input
-                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                type="password"
-                placeholder="Old Password"
-                title="old password"
-                {...register("oldPassword", {
-                  required: "Old password is required",
-                })}
-              />
-              {errors.oldPassword && (
-                <p className="text-red-500 text-sm">
-                  {errors.oldPassword.message}
-                </p>
-              )}
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                 type="password"
@@ -121,4 +115,4 @@ const ChangePasswordPage = () => {
   );
 };
 
-export default ChangePasswordPage;
+export default RecoveryPage;

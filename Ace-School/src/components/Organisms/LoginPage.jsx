@@ -114,7 +114,7 @@ function LoginPage(props) {
                   </div>
                 </div>
                 <Link
-                  href="#"
+                  to="/recover-password-initiation"
                   class="text-sm font-medium text-indigo-600 hover:underline text-indigo-500"
                 >
                   Forgot password?

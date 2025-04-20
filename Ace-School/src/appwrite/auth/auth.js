@@ -46,7 +46,35 @@ class AuthService {
             return error.message
         }
     };
-    recoverAccount = async ({ phoneNumber }) => {
+    initiateAccountRecovery = async (email) => {
+        try {
+
+            await this.account.createRecovery(email, 'http://localhost:5173/recover-account')
+            console.log("here");
+
+            return true
+        } catch (error) {
+            console.error(error)
+            return false
+        }
+
+    }
+    recoverAccount = async ({ secretID, userID, password }) => {
+        try {
+            const promise = await this.account.updateRecovery(
+                userID,
+                secretID,
+                password
+            );
+            if (promise) {
+                return true
+            }
+            return false
+        } catch (error) {
+            console.error(error);
+
+            return false
+        }
 
     }
     getCurrentUser = async () => {
