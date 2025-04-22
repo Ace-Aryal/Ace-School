@@ -76,14 +76,14 @@ const items = [
   },
   {
     title: "View Students",
-    url: "/students",
+    url: "/view-students",
     icon: GraduationCap,
     readers: ["accountant", "admin"],
     writers: ["none"],
   },
   {
     title: "View Teachers",
-    url: "/teachers",
+    url: "/view-teachers",
     icon: Users,
     readers: ["accountant", "admin"],
     writers: ["none"],

@@ -22,6 +22,8 @@ import Calenderpage from "./pages/Calenderpage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
 import RecoverInitiationPage from "./components/Organisms/RecoverInitiationPage";
 import RecoveryPage from "./components/Organisms/Recoverypage";
+import ViewStudents from "./pages/ViewStudents";
+import ViewTeachers from "./pages/ViewTeachers";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -79,6 +81,8 @@ function App() {
             <Route path="inbox" element={<InboxPage />} />
             <Route path="calender" element={<Calenderpage />} />
             <Route path="change-password" element={<ChangePasswordPage />} />
+            <Route path="view-students" element={<ViewStudents />} />
+            <Route path="view-teachers" element={<ViewTeachers />} />
           </>
         )}
       </Route>
