@@ -19,9 +19,19 @@ import {
   User,
   Presentation,
 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router";
+import databaseService from "@/appwrite/Database/database";
 const DashboardPage = () => {
   const { role, username } = useSelector((state) => state.auth.user);
+  const queryClient = useQueryClient();
+const {fetchMessages} = databaseService
+  useEffect(() => {
+    queryClient.prefetchInfiniteQuery(
+      ['inboxMessages'],
+      fetchMessages
+    );
+  }, []);
   const statItems = [
     {
       statNumber: 20000,
@@ -100,6 +110,7 @@ const DashboardPage = () => {
         <div className="grid grid-cols-2 my-4 mb-16  items-stretch md:grid-cols-3 w-full gap-2 ">
           {statItems.map((item) => (
             <StatElement
+              key={item.statHeading}
               classNames={item.classNames}
               statNumber={item.statNumber}
               statHeading={item.statHeading}

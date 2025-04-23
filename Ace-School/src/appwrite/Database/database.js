@@ -1,5 +1,7 @@
 import { Client, Databases, ID } from 'appwrite';
 import config from '..';
+import { Query } from "appwrite";
+
 class DatabaseService {
     client = new Client()
     database;
@@ -9,8 +11,7 @@ class DatabaseService {
         this.database = new Databases(this.client)
     }
     createMessage = async ({ message, phone, fullName }) => {
-        console.log("message", message, phone, fullName);
-        console.log(config.emailCollectionID);
+
 
 
         try {
@@ -30,6 +31,27 @@ class DatabaseService {
             return error
             console.error(error);
 
+        }
+    }
+
+    fetchMessages = async (lastId) => {
+        const queries = [
+            Query.limit(20),
+            Query.orderDesc("$createdAt"),
+        ]
+        if (lastId) {
+            queries.push(Query.cursorAfter(lastId))
+        }
+        try {
+            const response = await this.database.listDocuments(
+                config.appwriteDatabaseID,
+                config.emailCollectionID,
+                queries
+            );
+            console.log("res", response);
+
+        } catch (error) {
+            console.error(error)
         }
     }
 

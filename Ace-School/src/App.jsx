@@ -32,12 +32,14 @@ function App() {
   async function getCurrentUserData() {
     const currentuser = await authService.getCurrentUser();
     if (currentuser) {
+      console.log("curr user", currentuser);
+
       dispatch(
         setUser({
           isLoggedIn: true,
           username: currentuser.name,
           email: currentuser.email,
-          role: currentuser.prefs.role,
+          role: currentuser.labels[0],
           phone: currentuser.phone,
           createdAt: currentuser.$createdAt,
         })
