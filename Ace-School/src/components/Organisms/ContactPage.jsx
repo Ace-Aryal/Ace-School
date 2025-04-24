@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { RiContactsLine } from "react-icons/ri";
 import { IoCallOutline } from "react-icons/io5";
 import { MdOutlineEmail } from "react-icons/md";
@@ -13,8 +13,9 @@ function ContactPage() {
     reset,
     formState: { errors },
   } = useForm();
-
+  const [submitting, setSubmitting] = useState(false);
   const sendMessage = async (data) => {
+    setSubmitting(true);
     const response = await databaseService.createMessage(data);
     if (response === true) {
       toast.custom(() => (
@@ -23,8 +24,10 @@ function ContactPage() {
         </div>
       ));
       reset();
+      setSubmitting(false);
       return;
     }
+    setSubmitting(false);
     toast.custom(() => (
       <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
         ❌ Error {response}
@@ -93,7 +96,7 @@ function ContactPage() {
             id="message"
             className=" border-1  focus:ring-blue-500 focus:border-blue-500   rounded-3xl py-2.5 pl-2 pr-2 text-left w-fit bg-orange-400 text-white self-center hover:bg-blue-50 hover:text-black"
           >
-            Send Message
+            {submitting ? "Sending..." : "Send Message"}
           </button>
         </form>
         <div className="flex text-[0.9rem] justify-center  mt-6 sm:mt-0">

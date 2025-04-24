@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Sidebar } from "../ui/sidebar";
-import { useSelector } from "react-redux";
 import StatElement from "../Molecules/StatElement";
 import {
   Calendar,
@@ -22,15 +21,21 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router";
 import databaseService from "@/appwrite/Database/database";
+import { setMessages } from "@/features/inboxSlice";
+import { useSelector, useDispatch } from "react-redux";
 const DashboardPage = () => {
+  const dispatch = useDispatch();
   const { role, username } = useSelector((state) => state.auth.user);
-  const queryClient = useQueryClient();
-const {fetchMessages} = databaseService
+  const inboxNumber = useSelector((state) => state.inbox.noOfInboxes);
+  const fetchMessages = async () => {
+    const result = await databaseService.fetchMessages({ pageParam: null });
+    if (!result) return;
+    dispatch(setMessages(result));
+    // expecting array of objects
+  };
+
   useEffect(() => {
-    queryClient.prefetchInfiniteQuery(
-      ['inboxMessages'],
-      fetchMessages
-    );
+    fetchMessages();
   }, []);
   const statItems = [
     {
@@ -55,7 +60,7 @@ const {fetchMessages} = databaseService
       icon: <GraduationCap size={50} color="#6e6f71" />,
     },
     {
-      statNumber: 2,
+      statNumber: inboxNumber,
       statHeading: "Inbox",
       classNames: "bg-gray-400",
       icon: <Inbox size={50} color="#6e6f71" />,
@@ -97,6 +102,7 @@ const {fetchMessages} = databaseService
       icon: <Users size={50} color="#6e6f71" />,
     },
   ];
+
   return (
     <main
       id="container"

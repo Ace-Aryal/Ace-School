@@ -23,3 +23,13 @@
     color: #E6E6FA;
     
   }
+  .scrollarea-scrollbar {
+    background-color: #e5e7eb; /* light gray */
+    width: 6px;
+    border-radius: 4px;
+  }
+  
+  .scrollarea-thumb {
+    background-color: #9ca3af; /* darker gray */
+    border-radius: 4px;
+  }

@@ -8,7 +8,7 @@ import { SidebarTrigger } from "../ui/sidebar";
 function Navbar() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const [isloading, setIsLoading] = useState(false);
-  console.log(isAuthenticated);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const navElememts = [
