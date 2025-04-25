@@ -29,8 +29,9 @@ class DatabaseService {
             );
             return true
         } catch (error) {
-            return error
+
             console.error(error);
+            return false
 
         }
     }

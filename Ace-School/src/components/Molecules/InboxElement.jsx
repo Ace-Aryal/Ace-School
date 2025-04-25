@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Button } from "../Atoms/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Trash2 } from "lucide-react";
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "../Templates/toast";
 import { useQueryClient } from "@tanstack/react-query";
 const InboxElement = ({ message }) => {
   const [deleting, setDeleting] = useState(false);
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const handleItemClick = async (seenStatus, messageID) => {
+    navigate(`/inbox/${message.$id}`);
     if (seenStatus === true) {
       return;
     }
@@ -38,15 +40,15 @@ const InboxElement = ({ message }) => {
         message.seen ? "bg-[#E0E0E0]" : "bg-[#FAFAFA]"
       } grid grid-cols-5 text-center  items-center `}
     >
-      <Link
+      <div
         onClick={() => {
           handleItemClick(message.seen, message.$id);
         }}
-        className="col-span-4 grid grid-cols-4"
+        className="col-span-4 grid grid-cols-4 cursor-pointer"
       >
         <p className=" col-span-2">{message.fullName}</p>{" "}
         <p className=" col-span-2">{message.date}</p>{" "}
-      </Link>
+      </div>
 
       <Button
         onClick={() => handleItemDelete(message.$id)}

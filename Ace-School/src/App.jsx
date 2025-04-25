@@ -24,6 +24,7 @@ import RecoverInitiationPage from "./components/Organisms/RecoverInitiationPage"
 import RecoveryPage from "./components/Organisms/Recoverypage";
 import ViewStudents from "./pages/ViewStudents";
 import ViewTeachers from "./pages/ViewTeachers";
+import InboxViewPage from "./components/Organisms/InboxViewPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -81,6 +82,7 @@ function App() {
             <Route path="notice" element={<NoticePage />} />
             <Route path="timetable" element={<TimetablePage />} />
             <Route path="inbox" element={<InboxPage />} />
+            <Route path="inbox/:id" element={<InboxViewPage />} />
             <Route path="calender" element={<Calenderpage />} />
             <Route path="change-password" element={<ChangePasswordPage />} />
             <Route path="view-students" element={<ViewStudents />} />

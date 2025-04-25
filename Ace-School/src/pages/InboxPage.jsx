@@ -8,7 +8,10 @@ import { useInView } from "react-intersection-observer";
 import LoadingPage from "@/components/Organisms/LoadingPage";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import InboxElement from "@/components/Molecules/InboxElement";
+import { useDispatch, useSelector } from "react-redux";
+import { setMessages } from "@/features/inboxSlice";
 const InboxPage = () => {
+  const dispatch = useDispatch();
   const { fetchMessages } = databaseService;
   const { ref, inView } = useInView({
     threshold: 0,
@@ -21,9 +24,11 @@ const InboxPage = () => {
     isLoading,
     isFetchingNextPage,
     error,
+    isSuccess,
   } = useInfiniteQuery({
     queryKey: ["inboxMessages"],
     queryFn: fetchMessages,
+
     getNextPageParam: (lastPage, allPages) => {
       // Return the cursor or pageParam for next fetch
 
@@ -50,7 +55,9 @@ const InboxPage = () => {
   if (error) {
     return <div>Error Fetching</div>;
   }
-  const messages = data.pages.flat(1);
+
+  const messages = data?.pages?.flat(1);
+  dispatch(setMessages(messages));
 
   return (
     <div className="w-full flex flex-col items-center">
