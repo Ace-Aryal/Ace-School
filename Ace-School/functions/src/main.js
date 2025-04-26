@@ -15,7 +15,7 @@ export default async ({ req, res, log }) => {
     );
 
     const now = new Date();
-    const cutoff = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000); // 1 day ago
+    const cutoff = new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000); // 1 day ago
 
     for (const doc of response.documents) {
       const createdAt = new Date(doc.$createdAt);
