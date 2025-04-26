@@ -3,7 +3,7 @@ import React from "react";
 const StatElement = ({ color, icon, statNumber, statHeading, classNames }) => {
   return (
     <div
-      className={`p-4 flex rounded items-center justify-between ${classNames}  `}
+      className={`p-4 flex rounded items-center justify-between w-full ${classNames}  `}
     >
       <div className="flex flex-col text-white ">
         <h3 className="text-3xl md:text-4xl font-semibold">{statNumber}</h3>

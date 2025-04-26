@@ -137,7 +137,7 @@ const DashboardPage = () => {
         <div className="grid grid-cols-2 my-4 mb-16  items-stretch md:grid-cols-3 w-full gap-2 ">
           {statItems.map((item) => (
             <Link
-              className={`${item.classNames} flex items-center justify-center`}
+              className={`${item.classNames} flex items-center justify-center sm:justify-between`}
               to={item.readers.includes(role) ? item.link : "/"}
               key={item.statHeading}
             >
