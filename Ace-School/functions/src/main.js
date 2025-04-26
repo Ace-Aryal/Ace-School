@@ -1,6 +1,6 @@
-const { Client, Databases, Query } = require("node-appwrite");
+import { Client, Databases } from "node-appwrite";
 
-module.exports = async ({ req, res, log }) => {
+export default async ({ req, res, log }) => {
   const client = new Client()
     .setEndpoint(process.env.APPWRITE_ENDPOINT)
     .setProject(process.env.APPWRITE_PROJECT_ID)
@@ -9,23 +9,28 @@ module.exports = async ({ req, res, log }) => {
   const databases = new Databases(client);
 
   try {
-    const mails = await databases.listDocuments(
+    const response = await databases.listDocuments(
       process.env.DATABASE_ID,
       process.env.COLLECTION_ID
     );
 
-    for (const mail of mails.documents) {
+    for (const doc of response.documents) {
       await databases.deleteDocument(
         process.env.DATABASE_ID,
         process.env.COLLECTION_ID,
-        mail.$id
+        doc.$id
       );
-      log(`Deleted: ${mail.$id}`);
+      log(`Deleted document: ${doc.$id}`);
     }
 
-    res.send("All mails deleted.");
-  } catch (err) {
-    log("Error: " + err.message);
-    res.send("Failed: " + err.message);
+    log("All mails deleted successfully.");
+    return res.send("All mails deleted successfully."); // ✅ good
+
+  } catch (error) {
+    log("Error deleting mails: " + error.message);
+    return res.send("Error deleting mails."); // ✅ also good
   }
+
+  // 🔁 If you somehow exit the try/catch without hitting return
+  return res.empty("empty"); // ✅ fallback to avoid warning
 };
