@@ -14,17 +14,26 @@ export default async ({ req, res, log }) => {
       process.env.COLLECTION_ID
     );
 
+    const now = new Date();
+    const cutoff = new Date(now.getTime() - 3 * 60 * 1000); // 1 day ago
+
     for (const doc of response.documents) {
-      await databases.deleteDocument(
-        process.env.DATABASE_ID,
-        process.env.COLLECTION_ID,
-        doc.$id
-      );
-      log(`Deleted document: ${doc.$id}`);
+      const createdAt = new Date(doc.$createdAt);
+
+      if (createdAt < cutoff) {
+        await databases.deleteDocument(
+          process.env.DATABASE_ID,
+          process.env.COLLECTION_ID,
+          doc.$id
+        );
+        log(`Deleted old document: ${doc.$id}`);
+      }
     }
 
-    log("All mails deleted successfully.");
-    return res.send("All mails deleted successfully."); // ✅ good
+    log("Old mails deleted.");
+    return res.send("Old mails deleted.");
+
+
 
   } catch (error) {
     log("Error deleting mails: " + error.message);
