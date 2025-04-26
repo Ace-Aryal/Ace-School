@@ -26,6 +26,10 @@ import { useSelector, useDispatch } from "react-redux";
 const DashboardPage = () => {
   const dispatch = useDispatch();
   const { role, username } = useSelector((state) => state.auth.user);
+
+  if (role === "student" || role == "teacher") {
+    return <h1>Hello {role}s</h1>;
+  }
   const inboxNumber = useSelector((state) => state.inbox.noOfInboxes);
   const fetchMessages = async () => {
     const result = await databaseService.fetchMessages({ pageParam: null });
@@ -43,6 +47,7 @@ const DashboardPage = () => {
       statHeading: "Fees Collected",
       classNames: "bg-blue-500",
       readers: ["accountant", "admin"],
+      link: "/billing",
       icon: <Coins size={50} color="#6e6f71" />,
     },
     {
@@ -50,12 +55,16 @@ const DashboardPage = () => {
       statHeading: "Teachers",
       classNames: "bg-red-500",
       readers: ["accountant", "admin"],
+      link: "/view-teachers",
+
       icon: <Users size={50} color="#6e6f71" />,
     },
     {
       statNumber: 300,
       statHeading: "Students",
       classNames: "bg-cyan-500",
+      link: "/view-students",
+
       readers: ["accountant", "admin"],
       icon: <GraduationCap size={50} color="#6e6f71" />,
     },
@@ -63,12 +72,16 @@ const DashboardPage = () => {
       statNumber: inboxNumber,
       statHeading: "Inbox",
       classNames: "bg-gray-400",
+      link: "/inbox",
+
       icon: <Inbox size={50} color="#6e6f71" />,
       readers: ["accountant", "admin"],
     },
     {
       statNumber: 3,
       statHeading: "Notices",
+      link: "/notice",
+
       classNames: "bg-yellow-500",
       icon: <Bell size={50} color="#6e6f71" />,
       readers: ["accountant", "admin"],
@@ -77,12 +90,16 @@ const DashboardPage = () => {
       statNumber: 200,
       statHeading: "Atendence Today",
       classNames: "bg-indigo-500",
+      link: "/attendance",
+
       readers: ["accountant", "admin"],
       icon: <ChartColumn size={50} color="#6e6f71" />,
     },
     {
       statNumber: 10,
       statHeading: "Subjects",
+      link: "/subjects",
+
       classNames: "bg-lime-500",
       readers: ["admin"],
       icon: <Library size={50} color="#6e6f71" />,
@@ -90,6 +107,8 @@ const DashboardPage = () => {
     {
       statNumber: 13,
       statHeading: "Classes",
+      link: "/classes",
+
       classNames: "bg-pink-500",
       readers: ["admin"],
       icon: <Presentation size={50} color="#6e6f71" />,
@@ -98,6 +117,8 @@ const DashboardPage = () => {
       statNumber: 20,
       statHeading: "Staffs",
       classNames: "bg-orange-500",
+      link: "/staffs",
+
       readers: ["admin"],
       icon: <Users size={50} color="#6e6f71" />,
     },
@@ -115,15 +136,18 @@ const DashboardPage = () => {
         <h3 className="text-xl">Dashboard</h3>
         <div className="grid grid-cols-2 my-4 mb-16  items-stretch md:grid-cols-3 w-full gap-2 ">
           {statItems.map((item) => (
-            <StatElement
+            <Link
+              to={item.readers.includes(role) ? item.link : "/"}
               key={item.statHeading}
-              classNames={item.classNames}
-              statNumber={item.statNumber}
-              statHeading={item.statHeading}
-              icon={item.icon}
             >
-              <Link to="/" key={item.statHeading} />
-            </StatElement>
+              <StatElement
+                key={item.statHeading}
+                classNames={item.classNames}
+                statNumber={item.statNumber}
+                statHeading={item.statHeading}
+                icon={item.icon}
+              />
+            </Link>
           ))}
         </div>
         <div className="calender w-full flex justify-center ">
