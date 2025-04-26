@@ -137,12 +137,13 @@ const DashboardPage = () => {
         <div className="grid grid-cols-2 my-4 mb-16  items-stretch md:grid-cols-3 w-full gap-2 ">
           {statItems.map((item) => (
             <Link
+              className={`${item.classNames} flex items-center justify-center`}
               to={item.readers.includes(role) ? item.link : "/"}
               key={item.statHeading}
             >
               <StatElement
+                className="h-[100%]"
                 key={item.statHeading}
-                classNames={item.classNames}
                 statNumber={item.statNumber}
                 statHeading={item.statHeading}
                 icon={item.icon}
