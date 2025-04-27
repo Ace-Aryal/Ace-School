@@ -1,7 +1,7 @@
 import { Client, Databases, ID } from 'appwrite';
 import config from '..';
 import { Query } from "appwrite";
-const { appwriteDatabaseID, appwritreProjectID, emailCollectionID, appwritreURL, appwritreLibraryCollectionID, appwritreScheduleCollectionID, appwritreStdentCollectionID, appwritrefFeeCollectionID } = config
+const { appwriteDatabaseID, appwritreProjectID, noticeCollectionID, emailCollectionID, appwritreURL, appwritreLibraryCollectionID, appwritreScheduleCollectionID, appwritreStdentCollectionID, appwritrefFeeCollectionID } = config
 class DatabaseService {
     client = new Client()
     database;
@@ -90,6 +90,30 @@ class DatabaseService {
             return false
         }
     }
+
+    createNotice = async ({ author, subject, message }) => {
+        try {
+            const response = await this.database.createDocument(
+                appwriteDatabaseID,
+                noticeCollectionID,
+                ID.unique(),
+                {
+                    author,
+                    subject,
+                    message,
+                    seen: false
+                }
+            );
+            return true
+        } catch (error) {
+
+            console.error(error);
+            return false
+
+        }
+    }
+
+
 
 
 

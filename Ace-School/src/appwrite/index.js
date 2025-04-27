@@ -8,8 +8,8 @@ const config = {
     appwritrefFeeCollectionID: String(import.meta.env.VITE_FEE_COLLECTION_ID),
     appwritreScheduleCollectionID: String(import.meta.env.VITE_SCHEDULE_COLLECTION_ID),
     appwriteBucketID: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
-    emailCollectionID: String(import.meta.env.VITE_EMAIL_COLLECTION_ID)
-
+    emailCollectionID: String(import.meta.env.VITE_EMAIL_COLLECTION_ID),
+    noticeCollectionID: String(import.meta.env.VITE_NOTICE_COLLECTION_ID),
 
 }
 export default config
