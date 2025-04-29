@@ -56,7 +56,12 @@ import { useSelector } from "react-redux";
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "./toast";
 export default function RTE(props) {
-  const { handleSubmit, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { errors },
+  } = useForm();
   const [submitting, setSubmitting] = useState(false);
   const author = useSelector((state) => state.auth.user.username);
   const onSubmit = async (data) => {
@@ -80,6 +85,21 @@ export default function RTE(props) {
       className="flex flex-col items-center z-0"
       onSubmit={handleSubmit(onSubmit)}
     >
+      <input
+        {...register("subject", {
+          required: true,
+          validate: (value) =>
+            value.trim().length >= 5 || "Heading must be at least 5 characters",
+        })}
+        type="text"
+        name="subject"
+        id="subject"
+        className="mt-5 text-lg bg-white mb-0 p-1 rounded shadow w-full"
+        placeholder="Enter subject of notice"
+      />
+      {errors.subject && (
+        <p className="text-sm text-red-400">{errors.subject.message}</p>
+      )}
       <Controller
         name="content"
         control={control}
@@ -88,6 +108,10 @@ export default function RTE(props) {
           <Editor
             value={value}
             onEditorChange={onChange}
+            rules={{
+              validate: (value) =>
+                value.trim().length >= 5 || "Enter Meaningful Notice",
+            }}
             init={{
               height: "80dvh",
               max_height: "200dvh",
@@ -116,6 +140,9 @@ export default function RTE(props) {
           />
         )}
       />
+      {errors.content && (
+        <p className="text-sm text-red-400">{errors.content.message}</p>
+      )}
       <button
         type="submit"
         className="mt-4 bg-indigo-500 hover:bg-indigo-400 text-white p-2 rounded"

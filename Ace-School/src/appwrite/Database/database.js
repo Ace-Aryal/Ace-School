@@ -113,6 +113,31 @@ class DatabaseService {
         }
     }
 
+    fetchNotices = async ({ pageParam = undefined }) => {
+        console.log("last id", pageParam);
+
+        const queries = [
+            Query.limit(20),
+            Query.orderDesc("$createdAt"),
+        ]
+        if (pageParam) {
+            queries.push(Query.cursorAfter(pageParam))
+        }
+        try {
+            const response = await this.database.listDocuments(
+                appwriteDatabaseID,
+                noticeCollectionID,
+                queries
+            );
+            console.log("res", response.documents);
+            return response.documents
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
 
 
 
