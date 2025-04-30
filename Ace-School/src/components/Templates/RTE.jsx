@@ -65,11 +65,13 @@ export default function RTE(props) {
   const [submitting, setSubmitting] = useState(false);
   const author = useSelector((state) => state.auth.user.username);
   const onSubmit = async (data) => {
+    console.log("data", data);
+
     setSubmitting(true);
     const response = await databaseService.createNotice({
       author,
-      message: JSON.stringify(data),
-      subject: "Test",
+      message: JSON.stringify(data.content),
+      subject: data.subject,
     });
     if (response) {
       showSuccessToast("Notice Published Sucessfully!");

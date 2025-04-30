@@ -36,15 +36,25 @@ class DatabaseService {
         }
     }
 
-    fetchMessages = async ({ pageParam = undefined }) => {
-        console.log("last id", pageParam);
 
-        const queries = [
+
+    fetchMessages = async ({ pageParam = undefined, dashboardFetch = false }) => {
+        console.log(dashboardFetch);
+
+        let queries = [
             Query.limit(20),
             Query.orderDesc("$createdAt"),
         ]
         if (pageParam) {
             queries.push(Query.cursorAfter(pageParam))
+        }
+        if (dashboardFetch) {
+
+
+            queries = [
+                Query.orderDesc("$createdAt"),
+                Query.equal("seen", false),
+            ]
         }
         try {
             const response = await this.database.listDocuments(
@@ -113,7 +123,7 @@ class DatabaseService {
         }
     }
 
-    fetchNotices = async ({ pageParam = undefined }) => {
+    fetchNotices = async ({ pageParam = undefined, dashboardFetch = false }) => {
         console.log("last id", pageParam);
 
         const queries = [
@@ -123,6 +133,15 @@ class DatabaseService {
         if (pageParam) {
             queries.push(Query.cursorAfter(pageParam))
         }
+        if (dashboardFetch) {
+
+
+            queries = [
+                Query.orderDesc("$createdAt"),
+                Query.equal("seen", false),
+            ]
+        }
+
         try {
             const response = await this.database.listDocuments(
                 appwriteDatabaseID,
@@ -134,6 +153,20 @@ class DatabaseService {
 
         } catch (error) {
             console.error(error)
+        }
+    }
+    updateNotice = async ({ adjustObject, documentID }) => {
+        try {
+            const result = await this.database.updateDocument(
+                appwriteDatabaseID, // databaseId
+                noticeCollectionID, // collectionId
+                documentID, // documentId
+                adjustObject, // data (optional)
+
+            );
+            return true
+        } catch (error) {
+
         }
     }
 

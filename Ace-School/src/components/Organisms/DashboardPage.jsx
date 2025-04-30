@@ -31,15 +31,18 @@ const DashboardPage = () => {
     return <h1>Hello {role}s</h1>;
   }
   const inboxNumber = useSelector((state) => state.inbox.noOfInboxes);
-  const fetchMessages = async () => {
-    const result = await databaseService.fetchMessages({ pageParam: null });
+  const fetchDashboardData = async () => {
+    const result = await databaseService.fetchMessages({
+      pageParam: null,
+      dashboardFetch: true,
+    });
     if (!result) return;
     dispatch(setMessages(result));
     // expecting array of objects
   };
 
   useEffect(() => {
-    fetchMessages();
+    fetchDashboardData();
   }, []);
   const statItems = [
     {
@@ -69,7 +72,7 @@ const DashboardPage = () => {
       icon: <GraduationCap size={50} color="#6e6f71" />,
     },
     {
-      statNumber: inboxNumber,
+      statNumber: inboxNumber > 9 ? "9+" : inboxNumber,
       statHeading: "Inbox",
       classNames: "bg-gray-400",
       link: "/inbox",

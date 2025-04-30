@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import Logo from "../Atoms/logo";
 function Footer() {
   return (
     <footer className="bg-indigo-900 ">
@@ -7,15 +8,11 @@ function Footer() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
             <div className="flex justify-center text-teal-300 sm:justify-start">
-              <img
-                src="https://lubhupathshala.edu.np/images/front-images/logo.png"
-                className="h-13"
-                alt="School Logo "
-              />
+              <Logo />
             </div>
 
             <p className="max-w-md mx-auto mt-6 leading-relaxed text-center text-gray-400 sm:max-w-xs sm:mx-0 sm:text-left">
-              Working to make world a better place with education
+              Working to make world a better place through quality education
             </p>
 
             <ul className="flex justify-center gap-6 mt-8 md:gap-8 sm:justify-start">

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import authService from "@/appwrite/auth/auth";
 import { clearUser } from "@/features/authSlice";
 import { SidebarTrigger } from "../ui/sidebar";
+import Logo from "../Atoms/logo";
 function Navbar() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const [isloading, setIsLoading] = useState(false);
@@ -40,11 +41,7 @@ function Navbar() {
       <nav className="lg:px-16 px-6  flex flex-wrap items-center justify-between lg:py-0 py-2">
         <div className="flex-1 flex items-center">
           <Link to="/">
-            <img
-              src="https://lubhupathshala.edu.np/images/front-images/logo.png"
-              className="h-8 sm:h-13"
-              alt="School Logo "
-            />
+            <Logo />
           </Link>
         </div>
 
@@ -84,7 +81,7 @@ function Navbar() {
                   <li key={element.nav}>
                     <NavLink
                       className={({ isActive }) =>
-                        `  lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:text-red-400  hover:border-indigo-400 ${
+                        `  lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:text-red-400  md:hover:border-indigo-400 ${
                           isActive ? "text-cyan-300" : ""
                         }`
                       }

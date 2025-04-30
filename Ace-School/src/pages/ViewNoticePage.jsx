@@ -1,16 +1,20 @@
 import { Button } from "@/components/Atoms/button";
 import NoticeListElement from "@/components/Organisms/NoticeListElement";
 import { Pin } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import databaseService from "@/appwrite/Database/database";
 import LoadingPage from "@/components/Organisms/LoadingPage";
 import { useInView } from "react-intersection-observer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+
+import { setNotices } from "@/features/noticeSlice";
 const ViewNoticePage = () => {
   const { fetchNotices } = databaseService;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const notices = useSelector((state) => state.notice.notices);
   const { ref, inView } = useInView({
     threshold: 0,
   });
@@ -37,11 +41,18 @@ const ViewNoticePage = () => {
     },
   });
 
-  // useEffect(() => {
-  //   if (inView && hasNextPage) {
-  //     fetchNextPage();
-  //   }
-  // }, [inView, hasNextPage, fetchNextPage]);
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    if (data) {
+      const dataArray = data?.pages?.flat(1);
+      dispatch(setNotices(dataArray));
+    }
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -53,7 +64,7 @@ const ViewNoticePage = () => {
   if (error) {
     return <div>Error Fetching</div>;
   }
-  const dataArray = data.pages.flat(1);
+  console.log(notices);
 
   return (
     <div className="w-full mx-2 my-2 min-h-[100dvh] flex  flex-col items-center ">
@@ -70,22 +81,27 @@ const ViewNoticePage = () => {
           Publish New Notice <Pin />
         </Button>
       )}
-      <div className="my-4 w-full sm:w-[90%] text-sm sm:text-[1rem] ">
-        <div className="grid grid-cols-9 my-1 space-y-1 max-h-[70vh] overflow-y-scroll rounded overflow-x-scroll">
-          <div className="grid grid-cols-9 space-x-2 bg-orange-500  text-white p-2 text-[1rem] sm:text-lg col-span-8 text-center">
-            <div className="col-span-2 min-w-30">Published</div>
+      <div className="my-4 w-[95vw] sm:w-[90%] text-sm sm:text-[1rem] overflow-x-scroll ">
+        <div className="grid grid-cols-10 sm:grid-cols-9 my-1  bg-orange-500  space-x-0 px-1 max-h-[70vh]  rounded w-full  ">
+          <div className="grid grid-cols-9   space-x-0 bg-orange-500  text-white p-2 text-[1rem] sm:text-lg col-span-8 text-center">
+            <div className="col-span-2 sm:min-w-30">Published</div>
 
-            <div className="col-span-3 min-w-40">Author</div>
-            <div className="col-span-4 min-w-50">Subject</div>
+            <div className="col-span-3 sm:min-w-40">Author</div>
+            <div className="col-span-4 sm:min-w-50">Subject</div>
           </div>
-          <div className="col-span-1  bg-orange-500 min-w-20 text-white grid grid-cols-1 justify-center items-center ">
+          <div className="col-span-2 sm:min-w-20 sm:col-span-1   text-white grid grid-cols-1 justify-center items-center ">
             <span className=" w-full text-center ">Actions</span>
           </div>
-          {dataArray.map((notice) => {
+        </div>
+        <div className="grid grid-cols-9 my-1 space-y-2 max-h-[70vh] overflow-y-scroll rounded ">
+          {notices.map((notice) => {
             return (
               <NoticeListElement key={notice.$id} role={role} data={notice} />
             );
           })}
+          <div ref={ref} className="w-full text-center">
+            {!hasNextPage ? "End of results" : "Scroll to load more"}
+          </div>
         </div>{" "}
       </div>
     </div>
