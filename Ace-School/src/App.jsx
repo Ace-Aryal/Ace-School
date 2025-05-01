@@ -27,6 +27,7 @@ import ViewTeachers from "./pages/ViewTeachers";
 import InboxViewPage from "./components/Organisms/InboxViewPage";
 import ViewNoticePage from "./pages/ViewNoticePage";
 import NoticeElement from "./components/Organisms/NoticeElementPage";
+import UpdateNoticePage from "./components/Organisms/UpdateNotice";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -84,6 +85,7 @@ function App() {
             <Route path="notice" element={<ViewNoticePage />} />
             <Route path="notice/:id" element={<NoticeElement />} />
             <Route path="notice/publish" element={<NoticePage />} />
+            <Route path="notice/update" element={<UpdateNoticePage />} />
             <Route path="timetable" element={<TimetablePage />} />
             <Route path="inbox" element={<InboxPage />} />
             <Route path="inbox/:id" element={<InboxViewPage />} />

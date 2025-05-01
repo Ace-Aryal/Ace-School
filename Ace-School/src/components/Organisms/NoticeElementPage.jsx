@@ -3,13 +3,16 @@ import { PiStarOfDavid } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import parse from "html-react-parser";
+import ErrorPage from "@/pages/ErrorPage";
 const NoticeElement = () => {
   const { id } = useParams();
   console.log("id", id);
   const notice = useSelector((state) =>
     state.notice?.notices?.find((notice) => notice.$id === id)
   );
-
+  if (!notice) {
+    return <ErrorPage />;
+  }
   const { subject, message, author, $createdAt, $updatedAt, role } = notice;
 
   return (
@@ -39,10 +42,8 @@ const NoticeElement = () => {
       </div>
 
       {/* Author */}
-      <div className="text-right mt-8 text-gray-700 font-medium">
-        - {author}
-      </div>
-      <div className="text-right text-gray-700 ">{role}</div>
+      <div className="text-left mt-8 text-gray-700 font-medium"> {author}</div>
+      <div className="text-left text-gray-700 "> {role}</div>
     </div>
   );
 };

@@ -9,7 +9,7 @@ import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-import { setNotices } from "@/features/noticeSlice";
+import { clearEditingNotice, setNotices } from "@/features/noticeSlice";
 import NoticeElement from "@/components/Organisms/NoticeElementPage";
 const ViewNoticePage = () => {
   const { fetchNotices } = databaseService;
@@ -20,27 +20,22 @@ const ViewNoticePage = () => {
     threshold: 0,
   });
   const role = useSelector((state) => state.auth.user.role);
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isFetchingNextPage,
-    error,
-    isSuccess,
-  } = useInfiniteQuery({
-    queryKey: ["notices", NoticeElement],
-    queryFn: fetchNotices,
+  const { data, fetchNextPage, hasNextPage, isLoading, error } =
+    useInfiniteQuery({
+      queryKey: ["notices", NoticeElement],
+      queryFn: fetchNotices,
+      staleTime: 10 * 60 * 1000,
+      refetchOnWindowFocus: true,
 
-    getNextPageParam: (lastPage, allPages) => {
-      // Return the cursor or pageParam for next fetch
+      getNextPageParam: (lastPage, allPages) => {
+        // Return the cursor or pageParam for next fetch
 
-      if (lastPage.length === 20) {
-        return lastPage[19].$id;
-      }
-      return undefined;
-    },
-  });
+        if (lastPage?.length === 20) {
+          return lastPage[19].$id;
+        }
+        return undefined;
+      },
+    });
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -75,6 +70,7 @@ const ViewNoticePage = () => {
       {role === "admin" && (
         <Button
           onClick={() => {
+            dispatch(clearEditingNotice());
             navigate("/notice/publish");
           }}
           className="w-fit self-end hover:bg-orange-600 text-gray-50 bg-red-500 cursor-pointer my-3"

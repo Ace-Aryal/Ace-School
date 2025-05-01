@@ -1,3 +1,4 @@
+import ErrorPage from "@/pages/ErrorPage";
 import React from "react";
 
 class ErrorBoundary extends React.Component {
@@ -18,12 +19,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return (
-        <div className="p-6 text-center text-red-600">
-          <h1 className="text-2xl font-bold">Something went wrong.</h1>
-          <p className="mt-4">{this.state.error?.message}</p>
-        </div>
-      );
+      return <ErrorPage />;
     }
 
     return this.props.children;

@@ -51,44 +51,91 @@ import "tinymce/skins/content/default/content";
 import "tinymce/skins/ui/oxide/content";
 import { Controller } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "./toast";
+import { clearEditingNotice } from "@/features/noticeSlice";
+import { useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
+
 export default function RTE(props) {
+  const queryClient = useQueryClient();
+  const { isEditing, editingNotice } = useSelector((state) => state.notice);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     handleSubmit,
     control,
     register,
     formState: { errors },
     reset,
+    setValue,
   } = useForm();
   const [submitting, setSubmitting] = useState(false);
   const { username: author, role } = useSelector((state) => state.auth.user);
-  const onSubmit = async (data) => {
+  const handleCreate = async (data) => {
     console.log("data", data);
 
-    setSubmitting(true);
     const response = await databaseService.createNotice({
       author,
       message: data.content,
       subject: data.subject,
       role,
     });
+
+    setSubmitting(true);
+
     if (response) {
       showSuccessToast("Notice Published Sucessfully!");
       setSubmitting(false);
       reset();
+      queryClient.invalidateQueries(["notices"]);
       return;
     }
     showErrorToast("Error Publishing Notice");
     setSubmitting(false);
   };
+  const handleUpdate = async (data) => {
+    console.log("data", data);
+
+    const response = await databaseService.updateNotice({
+      adjustObject: {
+        author,
+        message: data.content,
+        subject: data.subject,
+        role,
+      },
+      documentID: editingNotice.$id,
+    });
+
+    setSubmitting(true);
+
+    if (response) {
+      showSuccessToast("Notice Updated Sucessfully!");
+      setSubmitting(false);
+      navigate("/notice");
+      queryClient.invalidateQueries(["notices"]);
+      dispatch(clearEditingNotice());
+      return;
+    }
+    showErrorToast("Error updating Notice");
+    setSubmitting(false);
+  };
+  useEffect(() => {
+    if (isEditing) {
+      setValue("subject", editingNotice.subject);
+      setValue("content", editingNotice.message);
+    }
+  }, []);
+
   return (
     <form
       {...props}
       className="flex flex-col items-center z-0"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={
+        isEditing ? handleSubmit(handleUpdate) : handleSubmit(handleCreate)
+      }
     >
       <input
         {...register("subject", {

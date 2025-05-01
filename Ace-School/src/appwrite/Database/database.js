@@ -161,6 +161,8 @@ class DatabaseService {
     }
     updateNotice = async ({ adjustObject, documentID }) => {
         try {
+            console.log(documentID);
+
             const result = await this.database.updateDocument(
                 appwriteDatabaseID, // databaseId
                 noticeCollectionID, // collectionId
@@ -170,7 +172,24 @@ class DatabaseService {
             );
             return true
         } catch (error) {
+            console.error(error)
+        }
+    }
+    deleteNotice = async (documentID) => {
+        try {
+            const response = await this.database.deleteDocument(
+                appwriteDatabaseID,     // Your database ID
+                noticeCollectionID,   // Your collection ID
+                documentID   // The ID of the document to delete
+            );
+            if (response) {
 
+                return true
+            }
+            return false
+        } catch (error) {
+            console.error(error)
+            return false
         }
     }
 

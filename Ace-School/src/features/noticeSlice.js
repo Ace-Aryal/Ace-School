@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     noOfNotices: 0,
     notices: [],
+    isEditing: false,
+    editingNotice: {},
 };
 
 const noticeSlice = createSlice({
@@ -15,9 +17,17 @@ const noticeSlice = createSlice({
 
 
         },
+        setEditingNotice(state, action) {
+            state.isEditing = true
+            state.editingNotice = action.payload
+        },
+        clearEditingNotice(state, action) {
+            state.isEditing = false,
+                state.editingNotice = {}
+        }
 
     },
 });
 
-export const { setNotices } = noticeSlice.actions;
+export const { setNotices, setEditingNotice, clearEditingNotice } = noticeSlice.actions;
 export default noticeSlice.reducer;
