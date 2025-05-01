@@ -102,7 +102,7 @@ class DatabaseService {
         }
     }
 
-    createNotice = async ({ author, subject, message }) => {
+    createNotice = async ({ author, subject, message, role }) => {
         try {
             const response = await this.database.createDocument(
                 appwriteDatabaseID,
@@ -112,7 +112,8 @@ class DatabaseService {
                     author,
                     subject,
                     message,
-                    seen: false
+                    seen: false,
+                    role
                 }
             );
             return true

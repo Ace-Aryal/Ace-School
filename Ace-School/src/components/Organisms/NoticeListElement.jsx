@@ -10,20 +10,6 @@ const NoticeListElement = ({ data: notice, role }) => {
   const navigate = useNavigate();
   const handleItemClick = async (seenStatus, noticeID) => {
     navigate(`/notice/${noticeID}`);
-    try {
-      if (seenStatus === true) {
-        return;
-      }
-      p;
-      await databaseService.updateNotice({
-        adjustObject: { seen: true },
-        documentID: noticeID,
-      });
-    } catch (e) {
-      console.error(error);
-    }
-
-    queryClient.invalidateQueries(["notices"]);
   };
   return (
     <>

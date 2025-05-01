@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import { setNotices } from "@/features/noticeSlice";
+import NoticeElement from "@/components/Organisms/NoticeElementPage";
 const ViewNoticePage = () => {
   const { fetchNotices } = databaseService;
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const ViewNoticePage = () => {
     error,
     isSuccess,
   } = useInfiniteQuery({
-    queryKey: ["notices"],
+    queryKey: ["notices", NoticeElement],
     queryFn: fetchNotices,
 
     getNextPageParam: (lastPage, allPages) => {
@@ -52,7 +53,7 @@ const ViewNoticePage = () => {
       const dataArray = data?.pages?.flat(1);
       dispatch(setNotices(dataArray));
     }
-  }, [data]);
+  }, [data, NoticeElement]);
 
   if (isLoading) {
     return (

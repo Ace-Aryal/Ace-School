@@ -26,7 +26,7 @@ import ViewStudents from "./pages/ViewStudents";
 import ViewTeachers from "./pages/ViewTeachers";
 import InboxViewPage from "./components/Organisms/InboxViewPage";
 import ViewNoticePage from "./pages/ViewNoticePage";
-import NoticeViewPage from "./components/Organisms/NoticeElementPage";
+import NoticeElement from "./components/Organisms/NoticeElementPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -82,7 +82,7 @@ function App() {
             <Route path="attendance" element={<AttendancePage />} />
             <Route path="billing" element={<BillingPage />} />
             <Route path="notice" element={<ViewNoticePage />} />
-            <Route path="notice/:id" element={<NoticeViewPage />} />
+            <Route path="notice/:id" element={<NoticeElement />} />
             <Route path="notice/publish" element={<NoticePage />} />
             <Route path="timetable" element={<TimetablePage />} />
             <Route path="inbox" element={<InboxPage />} />

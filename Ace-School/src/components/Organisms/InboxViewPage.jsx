@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 const InboxViewPage = () => {
   const { id } = useParams();
   const inbox = useSelector((state) =>
-    state?.inbox?.inbox.find((message) => message.$id === id)
+    state?.inbox?.inbox.find((message) => message?.$id === id)
   );
   console.log(inbox);
 

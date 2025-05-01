@@ -61,21 +61,24 @@ export default function RTE(props) {
     control,
     register,
     formState: { errors },
+    reset,
   } = useForm();
   const [submitting, setSubmitting] = useState(false);
-  const author = useSelector((state) => state.auth.user.username);
+  const { username: author, role } = useSelector((state) => state.auth.user);
   const onSubmit = async (data) => {
     console.log("data", data);
 
     setSubmitting(true);
     const response = await databaseService.createNotice({
       author,
-      message: JSON.stringify(data.content),
+      message: data.content,
       subject: data.subject,
+      role,
     });
     if (response) {
       showSuccessToast("Notice Published Sucessfully!");
       setSubmitting(false);
+      reset();
       return;
     }
     showErrorToast("Error Publishing Notice");
