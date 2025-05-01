@@ -8,22 +8,40 @@ export default async ({ req, res, log }) => {
 
   const databases = new Databases(client);
 
+  const inboxCleaner = databases.listDocuments(
+    process.env.DATABASE_ID,
+    process.env.INBOX_COLLECTION_ID
+  );
+  const noticeCleaner = databases.listDocuments(
+    process.env.DATABASE_ID,
+    process.env.NOTICE_COLLECTION_ID
+  );
   try {
-    const response = await databases.listDocuments(
-      process.env.DATABASE_ID,
-      process.env.COLLECTION_ID
-    );
 
+    const [inboxResponse, noticeResponse] = await Promise.all([inboxCleaner, noticeCleaner])
     const now = new Date();
-    const cutoff = new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000); // 1 day ago
+    const cutoff = new Date(now.getTime() - 60 * 1000); // 15 day ago
 
-    for (const doc of response.documents) {
+    for (const doc of inboxResponse.documents) {
       const createdAt = new Date(doc.$createdAt);
 
       if (createdAt < cutoff) {
         await databases.deleteDocument(
           process.env.DATABASE_ID,
-          process.env.COLLECTION_ID,
+          process.env.INBOX_COLLECTION_ID,
+          doc.$id
+        );
+        log(`Deleted old document: ${doc.$id}`);
+      }
+    }
+
+    for (const doc of noticeResponse.documents) {
+      const createdAt = new Date(doc.$createdAt);
+
+      if (createdAt < cutoff) {
+        await databases.deleteDocument(
+          process.env.DATABASE_ID,
+          process.env.NOTICE_COLLECTION_ID,
           doc.$id
         );
         log(`Deleted old document: ${doc.$id}`);

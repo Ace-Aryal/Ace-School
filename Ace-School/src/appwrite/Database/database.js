@@ -52,6 +52,7 @@ class DatabaseService {
 
 
             queries = [
+                Query.limit(10),
                 Query.orderDesc("$createdAt"),
                 Query.equal("seen", false),
             ]
@@ -126,7 +127,7 @@ class DatabaseService {
     fetchNotices = async ({ pageParam = undefined, dashboardFetch = false }) => {
         console.log("last id", pageParam);
 
-        const queries = [
+        let queries = [
             Query.limit(20),
             Query.orderDesc("$createdAt"),
         ]
@@ -137,10 +138,12 @@ class DatabaseService {
 
 
             queries = [
+                Query.limit(10),
                 Query.orderDesc("$createdAt"),
-                Query.equal("seen", false),
+
             ]
         }
+
 
         try {
             const response = await this.database.listDocuments(

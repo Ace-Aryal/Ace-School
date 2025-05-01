@@ -99,8 +99,10 @@ const ViewNoticePage = () => {
               <NoticeListElement key={notice.$id} role={role} data={notice} />
             );
           })}
-          <div ref={ref} className="w-full text-center">
-            {!hasNextPage ? "End of results" : "Scroll to load more"}
+          <div ref={ref} className="w-full col-span-9 text-center">
+            {!hasNextPage
+              ? `End of results. Showed ${notices.length}/${notices.length}  entries`
+              : "Scroll to load more"}
           </div>
         </div>{" "}
       </div>

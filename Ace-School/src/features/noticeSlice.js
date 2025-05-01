@@ -10,13 +10,9 @@ const noticeSlice = createSlice({
     initialState,
     reducers: {
         setNotices(state, action) {
-            state.noOfNotices = 0
+            state.noOfNotices = action.payload.length
             state.notices = action.payload;
-            action?.payload.forEach(element => {
-                if (element?.seen === false) {
-                    state.noOfNotices++
-                }
-            });
+
 
         },
 

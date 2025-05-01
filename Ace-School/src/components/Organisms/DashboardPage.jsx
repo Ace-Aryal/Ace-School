@@ -23,6 +23,7 @@ import { Link } from "react-router";
 import databaseService from "@/appwrite/Database/database";
 import { setMessages } from "@/features/inboxSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { setNotices } from "@/features/noticeSlice";
 const DashboardPage = () => {
   const dispatch = useDispatch();
   const { role, username } = useSelector((state) => state.auth.user);
@@ -30,15 +31,31 @@ const DashboardPage = () => {
   if (role === "student" || role == "teacher") {
     return <h1>Hello {role}s</h1>;
   }
-  const inboxNumber = useSelector((state) => state.inbox.noOfInboxes);
+  const inboxCount = useSelector((state) => state.inbox.noOfInboxes);
+  const noticeCount = useSelector((state) => state.notice.noOfNotices);
   const fetchDashboardData = async () => {
-    const result = await databaseService.fetchMessages({
+    const fetchMessages = databaseService.fetchMessages({
       pageParam: null,
       dashboardFetch: true,
     });
-    if (!result) return;
-    dispatch(setMessages(result));
-    // expecting array of objects
+    const fetchNotices = databaseService.fetchNotices({
+      pageParam: null,
+      dashboardFetch: true,
+    });
+    // if (!result) return;
+    // dispatch(setMessages(result));
+    // // expecting array of objects
+    try {
+      const [notices, messages] = await Promise.all([
+        fetchNotices,
+        fetchMessages,
+      ]);
+
+      dispatch(setMessages(messages));
+      dispatch(setNotices(notices));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -72,7 +89,7 @@ const DashboardPage = () => {
       icon: <GraduationCap size={50} color="#6e6f71" />,
     },
     {
-      statNumber: inboxNumber > 9 ? "9+" : inboxNumber,
+      statNumber: inboxCount > 9 ? "9+" : inboxCount,
       statHeading: "Inbox",
       classNames: "bg-gray-400",
       link: "/inbox",
@@ -81,7 +98,7 @@ const DashboardPage = () => {
       readers: ["accountant", "admin"],
     },
     {
-      statNumber: 3,
+      statNumber: noticeCount > 9 ? "9+" : noticeCount,
       statHeading: "Notices",
       link: "/notice",
 
