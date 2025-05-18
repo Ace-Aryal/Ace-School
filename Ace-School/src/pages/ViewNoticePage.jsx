@@ -1,5 +1,5 @@
 import { Button } from "@/components/Atoms/button";
-import NoticeListElement from "@/components/Organisms/NoticeListElement";
+import NoticeListElement from "@/components/Molecules/NoticeListElement";
 import { Pin } from "lucide-react";
 import React, { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import { clearEditingNotice, setNotices } from "@/features/noticeSlice";
-import NoticeElement from "@/components/Organisms/NoticeElementPage";
+import NoticeElement from "@/components/Molecules/NoticeElementPage";
 const ViewNoticePage = () => {
   const { fetchNotices } = databaseService;
   const navigate = useNavigate();

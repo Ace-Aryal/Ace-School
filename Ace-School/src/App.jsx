@@ -20,14 +20,15 @@ import DashBoardPage from "./pages/DashBoardPage";
 import InboxPage from "./pages/InboxPage";
 import Calenderpage from "./pages/Calenderpage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
-import RecoverInitiationPage from "./components/Organisms/RecoverInitiationPage";
-import RecoveryPage from "./components/Organisms/Recoverypage";
+import RecoverInitiationPage from "./pages/RecoverInitiationPage";
+import RecoveryPage from "./pages/Recoverypage";
 import ViewStudents from "./pages/ViewStudents";
 import ViewTeachers from "./pages/ViewTeachers";
-import InboxViewPage from "./components/Organisms/InboxViewPage";
+import InboxViewPage from "./pages/InboxViewPage";
 import ViewNoticePage from "./pages/ViewNoticePage";
-import NoticeElement from "./components/Organisms/NoticeElementPage";
+import NoticeElement from "./components/Molecules/NoticeElementPage";
 import UpdateNoticePage from "./components/Organisms/UpdateNotice";
+import AddTeachersPage from "./pages/AddTeachersPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -93,6 +94,7 @@ function App() {
             <Route path="change-password" element={<ChangePasswordPage />} />
             <Route path="view-students" element={<ViewStudents />} />
             <Route path="view-teachers" element={<ViewTeachers />} />
+            <Route path="add-teacher" element={<AddTeachersPage />} />
           </>
         )}
       </Route>

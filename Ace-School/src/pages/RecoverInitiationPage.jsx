@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
 import authService from "@/appwrite/auth/auth";
 import { toast } from "sonner";
 const RecoverInitiationPage = () => {
