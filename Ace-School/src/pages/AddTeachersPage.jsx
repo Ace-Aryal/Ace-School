@@ -7,22 +7,6 @@ import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import Select from "react-select";
 
-const classes = [
-  { value: "nursery", label: "Nursery" },
-  { value: "lkg", label: "LKG" },
-  { value: "ukg", label: "UKG" },
-  { value: "grade-1", label: "Grade 1" },
-  { value: "grade-2", label: "Grade 2" },
-  { value: "grade-3", label: "Grade 3" },
-  { value: "grade-4", label: "Grade 4" },
-  { value: "grade-5", label: "Grade 5" },
-  { value: "grade-6", label: "Grade 6" },
-  { value: "grade-7", label: "Grade 7" },
-  { value: "grade-8", label: "Grade 8" },
-  { value: "grade-9", label: "Grade 9" },
-  { value: "grade-10", label: "Grade 10" },
-];
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -42,6 +26,21 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 
+const classes = [
+  { value: "nursery", label: "Nursery" },
+  { value: "lkg", label: "LKG" },
+  { value: "ukg", label: "UKG" },
+  { value: "grade-1", label: "Grade 1" },
+  { value: "grade-2", label: "Grade 2" },
+  { value: "grade-3", label: "Grade 3" },
+  { value: "grade-4", label: "Grade 4" },
+  { value: "grade-5", label: "Grade 5" },
+  { value: "grade-6", label: "Grade 6" },
+  { value: "grade-7", label: "Grade 7" },
+  { value: "grade-8", label: "Grade 8" },
+  { value: "grade-9", label: "Grade 9" },
+  { value: "grade-10", label: "Grade 10" },
+];
 const sexes = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
@@ -85,6 +84,20 @@ const qualifications = [
     label: "+2 / IA ",
   },
 ];
+const status = [
+  {
+    value: "onLeave",
+    label: "On Leave",
+  },
+  {
+    value: "active",
+    label: "Active",
+  },
+  {
+    value: "resigned",
+    label: "resigned",
+  },
+];
 const subjects = [
   { value: "english", label: "English" },
   { value: "nepali", label: "Nepali" },
@@ -113,12 +126,22 @@ export default function AddTeachersPage() {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {},
   });
 
   const onSubmit = (data) => {
+    const {
+      teacherEmail,
+      teacherId,
+      teacherName,
+      teacherPhone,
+      DOB,
+      address,
+      classes,
+      jobType,
+    } = data;
     const formattedDOB = data.DOB ? data.DOB.format("YYYY-MM-DD") : "";
     console.log(data);
   };
@@ -315,7 +338,7 @@ export default function AddTeachersPage() {
         <div className="flex flex-col">
           <label className="text-gray-600">Select Job Type</label>
           <Controller
-            name="job-type"
+            name="jobType"
             control={control}
             rules={{ required: "Job type is required" }}
             render={({ field }) => {
@@ -370,8 +393,8 @@ export default function AddTeachersPage() {
               );
             }}
           />
-          {errors.sex && (
-            <p className="text-sm text-red-500">{errors.sex.message}</p>
+          {errors.jobType && (
+            <p className="text-sm text-red-500">{error.jobType.message}</p>
           )}
         </div>
         {/* Qualification- ComboBox */}
@@ -433,8 +456,72 @@ export default function AddTeachersPage() {
               );
             }}
           />
-          {errors.sex && (
-            <p className="text-sm text-red-500">{errors.sex.message}</p>
+          {errors.qualification && (
+            <p className="text-sm text-red-500">
+              {errors.qualification.message}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col">
+          <label className="text-gray-600">Select Status</label>
+          <Controller
+            name="status"
+            control={control}
+            rules={{ required: "Status is required" }}
+            render={({ field }) => {
+              const selectedLabel =
+                status.find((f) => f.value === field.value)?.label ||
+                "Select status...";
+              const [open, setOpen] = React.useState(false);
+
+              return (
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild className="bg-gray-100 ">
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="w-full justify-between"
+                    >
+                      {selectedLabel}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0">
+                    <Command className="bg-gray-100">
+                      <CommandInput placeholder="Search..." />
+                      <CommandList>
+                        <CommandEmpty>No option found.</CommandEmpty>
+                        <CommandGroup>
+                          {status.map((item) => (
+                            <CommandItem
+                              key={item.value}
+                              value={item.value}
+                              onSelect={(val) => {
+                                field.onChange(val === field.value ? "" : val);
+                                setOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  field.value === item.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {item.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              );
+            }}
+          />
+          {errors.status && (
+            <p className="text-sm text-red-500">{errors.status.message}</p>
           )}
         </div>
         {/* {classes} */}
@@ -488,7 +575,7 @@ export default function AddTeachersPage() {
             type="submit"
             className="w-fit text-lg bg-blue-500 text-gray-100"
           >
-            Add
+            {isSubmitting ? "Adding.." : "Add"}
           </Button>
         </div>
       </form>

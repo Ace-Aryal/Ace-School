@@ -10,6 +10,8 @@ class DatabaseService {
             .setProject(appwritreProjectID)
         this.database = new Databases(this.client)
     }
+
+    /// inquiry messages from visitors
     createMessage = async ({ message, phone, fullName }) => {
 
 
@@ -101,7 +103,7 @@ class DatabaseService {
             return false
         }
     }
-
+    //// notice
     createNotice = async ({ author, subject, message, role }) => {
         try {
             const response = await this.database.createDocument(
@@ -190,6 +192,16 @@ class DatabaseService {
         } catch (error) {
             console.error(error)
             return false
+        }
+    }
+
+    /// handle users collections
+    //1. Teachers
+    createteacherDocument = async () => {
+        try {
+            const resposne = this.database.createDocument()
+        } catch (error) {
+
         }
     }
 

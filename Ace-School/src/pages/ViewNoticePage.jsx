@@ -19,7 +19,7 @@ const ViewNoticePage = () => {
   const { ref, inView } = useInView({
     threshold: 0,
   });
-  const role = useSelector((state) => state.auth.user.role);
+  const roles = useSelector((state) => state.auth.user.roles);
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
     useInfiniteQuery({
       queryKey: ["notices", NoticeElement],
@@ -67,7 +67,7 @@ const ViewNoticePage = () => {
       <h1 className="text-4xl text-center text-indigo-500 font-bold">
         Notices
       </h1>
-      {role === "admin" && (
+      {roles.includes("admin")  && (
         <Button
           onClick={() => {
             dispatch(clearEditingNotice());
@@ -93,7 +93,7 @@ const ViewNoticePage = () => {
         <div className="grid grid-cols-9 my-1 space-y-2 max-h-[70vh] overflow-y-scroll rounded ">
           {notices.map((notice) => {
             return (
-              <NoticeListElement key={notice.$id} role={role} data={notice} />
+              <NoticeListElement key={notice.$id} role={roles[0]} data={notice} />
             );
           })}
           <div ref={ref} className="w-full col-span-9 text-center">

@@ -2,8 +2,8 @@ import RTE from "@/components/Templates/RTE";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
 const CreateNoticePage = () => {
-  const role = useSelector((state) => state.auth.user.role);
-  if (role !== "admin") {
+  const roles = useSelector((state) => state.auth.user.roles);
+  if (!roles.includes("admin")) {
     return <Navigate to="*" />;
   }
   return (

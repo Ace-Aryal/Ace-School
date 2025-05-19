@@ -73,7 +73,7 @@ export default function RTE(props) {
     setValue,
   } = useForm();
   const [submitting, setSubmitting] = useState(false);
-  const { username: author, role } = useSelector((state) => state.auth.user);
+  const { username: author, roles } = useSelector((state) => state.auth.user);
   const handleCreate = async (data) => {
     console.log("data", data);
 
@@ -81,7 +81,7 @@ export default function RTE(props) {
       author,
       message: data.content,
       subject: data.subject,
-      role,
+      role: roles[0],
     });
 
     setSubmitting(true);
@@ -104,7 +104,7 @@ export default function RTE(props) {
         author,
         message: data.content,
         subject: data.subject,
-        role,
+        role: roles[0],
       },
       documentID: editingNotice.$id,
     });

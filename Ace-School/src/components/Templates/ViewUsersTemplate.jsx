@@ -25,7 +25,7 @@ const ViewUsers = ({ role, dataTable }) => {
         )}
         <Button
           onClick={() => {
-            navigate(`/add-${role}`);
+            navigate(`/view-${role}s/add-${role}`);
           }}
           className="w-fit self-end hover:bg-orange-600 text-gray-50 bg-red-500 cursor-pointer my-3"
         >

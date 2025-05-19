@@ -44,7 +44,7 @@ function App() {
           isLoggedIn: true,
           username: currentuser.name,
           email: currentuser.email,
-          role: currentuser.labels[0],
+          roles: currentuser.labels,
           phone: currentuser.phone,
           createdAt: currentuser.$createdAt,
         })
@@ -94,7 +94,10 @@ function App() {
             <Route path="change-password" element={<ChangePasswordPage />} />
             <Route path="view-students" element={<ViewStudents />} />
             <Route path="view-teachers" element={<ViewTeachers />} />
-            <Route path="add-teacher" element={<AddTeachersPage />} />
+            <Route
+              path="view-teachers/add-teacher"
+              element={<AddTeachersPage />}
+            />
           </>
         )}
       </Route>

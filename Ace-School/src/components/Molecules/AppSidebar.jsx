@@ -121,7 +121,7 @@ export default function AppSidebar() {
     toggleSidebar,
   } = useSidebar();
 
-  const { role, username } = useSelector((state) => state.auth.user);
+  const { roles, username } = useSelector((state) => state.auth.user);
 
   return (
     <Sidebar
@@ -133,7 +133,7 @@ export default function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="text-md flex gap-1 font-semibold ">
             <User size={64} />
-            {`${username} (${role})`}
+            {`${username} (${roles[0]})`}
           </SidebarGroupLabel>
 
           <SidebarGroupContent>
@@ -142,7 +142,7 @@ export default function AppSidebar() {
                 .filter(
                   (element) =>
                     element.readers.includes("all") ||
-                    element.readers.includes(role)
+                    element.readers.some((reader) => roles?.includes(reader))
                 )
                 .map((item) => (
                   <SidebarMenuItem key={item.title}>

@@ -26,10 +26,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { setNotices } from "@/features/noticeSlice";
 const DashboardPage = () => {
   const dispatch = useDispatch();
-  const { role, username } = useSelector((state) => state.auth.user);
+  const { roles, username } = useSelector((state) => state.auth.user);
 
-  if (role === "student" || role == "teacher") {
-    return <h1>Hello {role}s</h1>;
+  if (!roles?.includes("admin") && !roles?.includes("accountant")) {
+    return <h1>Hello {roles[0]}</h1>;
   }
   const inboxCount = useSelector((state) => state.inbox.noOfInboxes);
   const noticeCount = useSelector((state) => state.notice.noOfNotices);
@@ -66,7 +66,7 @@ const DashboardPage = () => {
       statNumber: 20000,
       statHeading: "Fees Collected",
       classNames: "bg-blue-500",
-      readers: ["accountant", "admin"],
+      readers: ["accountant"],
       link: "/billing",
       icon: <Coins size={50} color="#6e6f71" />,
     },
@@ -158,7 +158,11 @@ const DashboardPage = () => {
           {statItems.map((item) => (
             <Link
               className={`${item.classNames} flex items-center justify-center sm:justify-between`}
-              to={item.readers.includes(role) ? item.link : "/"}
+              to={
+                item.readers.some((reader) => roles?.includes(reader))
+                  ? item.link
+                  : "/"
+              }
               key={item.statHeading}
             >
               <StatElement
