@@ -1,35 +1,67 @@
-import { Client, Users } from 'node-appwrite';
+import { Client, Databases } from "node-appwrite";
 
-// This Appwrite function will be executed every time your function is triggered
-export default async ({ req, res, log, error }) => {
-  // You can use the Appwrite SDK to interact with other services
-  // For this example, we're using the Users service
+
+export default async ({ req, res, log }) => {
+
+
+
   const client = new Client()
-    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key'] ?? '');
-  const users = new Users(client);
+    .setEndpoint(process.env.APPWRITE_ENDPOINT)
+    .setProject(process.env.APPWRITE_PROJECT_ID)
+    .setKey(process.env.APPWRITE_API_KEY);
 
+  const databases = new Databases(client);
+
+  const inboxCleaner = databases.listDocuments(
+    process.env.DATABASE_ID,
+    process.env.INBOX_COLLECTION_ID
+  );
+  const noticeCleaner = databases.listDocuments(
+    process.env.DATABASE_ID,
+    process.env.NOTICE_COLLECTION_ID
+  );
   try {
-    const response = await users.list();
-    // Log messages and errors to the Appwrite Console
-    // These logs won't be seen by your end users
-    log(`Total users: ${response.total}`);
-  } catch(err) {
-    error("Could not list users: " + err.message);
+
+    const [inboxResponse, noticeResponse] = await Promise.all([inboxCleaner, noticeCleaner])
+    const now = new Date();
+    const cutoff = new Date(now.getTime() - /*15 * 24 * 60 * */ 60 * 1000); // 15 day ago
+
+    for (const doc of inboxResponse.documents) {
+      const createdAt = new Date(doc.$createdAt);
+
+      if (createdAt < cutoff) {
+        await databases.deleteDocument(
+          process.env.DATABASE_ID,
+          process.env.INBOX_COLLECTION_ID,
+          doc.$id
+        );
+        log(`Deleted old document: ${doc.$id}`);
+      }
+    }
+
+    for (const doc of noticeResponse.documents) {
+      const createdAt = new Date(doc.$createdAt);
+
+      if (createdAt < cutoff) {
+        await databases.deleteDocument(
+          process.env.DATABASE_ID,
+          process.env.NOTICE_COLLECTION_ID,
+          doc.$id
+        );
+        log(`Deleted old document: ${doc.$id}`);
+      }
+    }
+
+    log("Old mails deleted.");
+    return res.send("Old mails deleted.");
+
+
+
+  } catch (error) {
+    log("Error deleting mails: " + error.message);
+    return res.send("Error deleting mails."); // ✅ also good
   }
 
-  // The req object contains the request data
-  if (req.path === "/ping") {
-    // Use res object to respond with text(), json(), or binary()
-    // Don't forget to return a response!
-    return res.text("Pong");
-  }
-
-  return res.json({
-    motto: "Build like a team of hundreds_",
-    learn: "https://appwrite.io/docs",
-    connect: "https://appwrite.io/discord",
-    getInspired: "https://builtwith.appwrite.io",
-  });
+  // 🔁 If you somehow exit the try/catch without hitting return
+  return res.empty("empty"); // ✅ fallback to avoid warning
 };
