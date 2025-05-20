@@ -1,21 +1,21 @@
 import { Client, Databases } from "node-appwrite";
 
 
-export default async ({ req, res, log, env }) => {
+export default async ({ req, res, log }) => {
   const client = new Client()
-    .setEndpoint(env.APPWRITE_ENDPOINT)
-    .setProject(env.APPWRITE_PROJECT_ID)
-    .setKey(env.APPWRITE_API_KEY);
+    .setEndpoint(process.env.APPWRITE_ENDPOINT)
+    .setProject(process.env.APPWRITE_PROJECT_ID)
+    .setKey(process.env.APPWRITE_API_KEY);
 
   const databases = new Databases(client);
 
   const inboxCleaner = databases.listDocuments(
-    env.DATABASE_ID,
-    env.INBOX_COLLECTION_ID
+    process.env.DATABASE_ID,
+    process.env.INBOX_COLLECTION_ID
   );
   const noticeCleaner = databases.listDocuments(
-    env.DATABASE_ID,
-    env.NOTICE_COLLECTION_ID
+    process.env.DATABASE_ID,
+    process.env.NOTICE_COLLECTION_ID
   );
   try {
 
@@ -28,8 +28,8 @@ export default async ({ req, res, log, env }) => {
 
       if (createdAt < cutoff) {
         await databases.deleteDocument(
-          env.DATABASE_ID,
-          env.INBOX_COLLECTION_ID,
+          process.env.DATABASE_ID,
+          process.env.INBOX_COLLECTION_ID,
           doc.$id
         );
         log(`Deleted old document: ${doc.$id}`);
@@ -41,8 +41,8 @@ export default async ({ req, res, log, env }) => {
 
       if (createdAt < cutoff) {
         await databases.deleteDocument(
-          env.DATABASE_ID,
-          env.NOTICE_COLLECTION_ID,
+          process.env.DATABASE_ID,
+          process.env.NOTICE_COLLECTION_ID,
           doc.$id
         );
         log(`Deleted old document: ${doc.$id}`);
