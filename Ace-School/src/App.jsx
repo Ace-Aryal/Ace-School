@@ -29,6 +29,7 @@ import ViewNoticePage from "./pages/ViewNoticePage";
 import NoticeElement from "./components/Molecules/NoticeElementPage";
 import UpdateNoticePage from "./components/Organisms/UpdateNotice";
 import AddTeachersPage from "./pages/AddTeachersPage";
+import AddStudentsPage from "./pages/AddStudentsPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -93,6 +94,10 @@ function App() {
             <Route path="calender" element={<Calenderpage />} />
             <Route path="change-password" element={<ChangePasswordPage />} />
             <Route path="view-students" element={<ViewStudents />} />
+            <Route
+              path="view-students/add-student"
+              element={<AddStudentsPage />}
+            />
             <Route path="view-teachers" element={<ViewTeachers />} />
             <Route
               path="view-teachers/add-teacher"

@@ -18,7 +18,7 @@ const ViewUsers = ({ role, dataTable }) => {
         <h2 className="text-3xl font-semibold text-indigo-600">{`${roleObject.getRole(
           role
         )}s`}</h2>
-        {role === "Students" && (
+        {role === "student" && (
           <select>
             <option value="Hello">Hi</option>
           </select>
