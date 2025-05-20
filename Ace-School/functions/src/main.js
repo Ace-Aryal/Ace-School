@@ -3,12 +3,12 @@
 
 // export default async ({ req, res, log }) => {
 export default async ({ res, log }) => {
-
-  log("Env values:", JSON.stringify({
-    endpoint: process.env.APPWRITE_ENDPOINT,
-    projectId: process.env.APPWRITE_PROJECT_ID,
-    apiKey: process.env.APPWRITE_API_KEY,
-  }));
+  log("My updated code ran! 1");
+  //   log("Env values:", JSON.stringify({
+  //   endpoint: process.env.APPWRITE_ENDPOINT,
+  //   projectId: process.env.APPWRITE_PROJECT_ID,
+  //   apiKey: process.env.APPWRITE_API_KEY,
+  // }));
   return res.json({ message: "Updated function running" }
 
   );
