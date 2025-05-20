@@ -1,5 +1,6 @@
 import { Client, Account, ID } from 'appwrite';
 import config from '..';
+import { showErrorToast } from '@/components/Templates/toast';
 class AuthService {
     client = new Client()
     account;
@@ -19,6 +20,8 @@ class AuthService {
             return await this.account.createEmailPasswordSession(email, password);
 
         } catch (error) {
+            showErrorToast("Error logging in")
+            console.error(error);
 
             return false
 

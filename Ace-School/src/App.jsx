@@ -37,27 +37,6 @@ function App() {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
-  async function getCurrentUserData() {
-    const currentuser = await authService.getCurrentUser();
-    if (currentuser) {
-      console.log("curr user", currentuser);
-
-      dispatch(
-        setUser({
-          isLoggedIn: true,
-          username: currentuser.name,
-          email: currentuser.email,
-          roles: currentuser.labels,
-          phone: currentuser.phone,
-          createdAt: currentuser.$createdAt,
-        })
-      );
-    }
-    console.log("user", user);
-  }
-  useEffect(() => {
-    getCurrentUserData();
-  }, [isAuthenticated]);
   return (
     <Routes>
       <Route path="*" element={<ErrorPage />} />

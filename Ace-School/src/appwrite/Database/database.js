@@ -41,7 +41,7 @@ class DatabaseService {
 
 
     fetchMessages = async ({ pageParam = undefined, dashboardFetch = false }) => {
-        console.log(dashboardFetch);
+        console.log("doing sth");
 
         let queries = [
             Query.limit(20),

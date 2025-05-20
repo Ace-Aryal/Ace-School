@@ -28,7 +28,8 @@ const InboxPage = () => {
   } = useInfiniteQuery({
     queryKey: ["inboxMessages"],
     queryFn: fetchMessages,
-    staleTime: 10 * 60 * 1000,
+
+    refetchOnMount: true,
     refetchOnWindowFocus: true,
     getNextPageParam: (lastPage, allPages) => {
       // Return the cursor or pageParam for next fetch

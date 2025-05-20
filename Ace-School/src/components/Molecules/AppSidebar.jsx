@@ -42,7 +42,7 @@ const items = [
   },
   {
     title: "Fee Biling",
-    url: "/billling",
+    url: "/billing",
     icon: Coins,
     readers: ["accountant"],
     writers: ["accountant"],
@@ -129,7 +129,7 @@ export default function AppSidebar() {
     toggleSidebar,
   } = useSidebar();
 
-  const { roles, username } = useSelector((state) => state.auth.user);
+  const { roles, username } = useSelector((state) => state?.auth?.user);
 
   return (
     <Sidebar

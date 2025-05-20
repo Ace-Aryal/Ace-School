@@ -36,7 +36,6 @@ const AddStaffsPage = () => {
               <div key={formField.name} className="flex flex-col">
                 <label htmlFor={formField.name}>{formField.label}</label>
                 <input
-                  placeholder={`Enter ${formField.label}`}
                   type={formField.type}
                   id={formField.name}
                   {...register(formField.name, {
@@ -69,7 +68,6 @@ const AddStaffsPage = () => {
               <div key={formField.name} className="flex flex-col">
                 <label htmlFor={formField.name}>{formField.label}</label>
                 <select
-                  placeholder={`Select ${formField.label}`}
                   {...register(formField.name, {
                     required:
                       formField.required && `${formField.name} is required`,
@@ -105,7 +103,6 @@ const AddStaffsPage = () => {
                         className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
                         value={field.value}
                         onChange={field.onChange}
-                        placeholder={`Select ${formField.label}`}
                       />
                     );
                   }}

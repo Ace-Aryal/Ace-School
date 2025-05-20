@@ -2,9 +2,9 @@ import RTE from "@/components/Templates/RTE";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
 const UpdateNoticePage = () => {
-  const role = useSelector((state) => state.auth.user.role);
-  if (role !== "admin") {
-    return <Navigate to="*" />;
+  const roles = useSelector((state) => state?.auth?.user?.roles);
+  if (!roles?.includes("admin")) {
+    return <Navigate to="/*" />;
   }
   return (
     <main className="flex my-2 sm:my-4 flex-col w-full justify-center items-center">

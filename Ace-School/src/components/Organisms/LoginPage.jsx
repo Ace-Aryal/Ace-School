@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import authService from "@/appwrite/auth/auth";
-import { setLoggedIn } from "@/features/authSlice";
+import { setUser } from "@/features/authSlice";
 import { toast } from "sonner";
+import { showErrorToast } from "../Templates/toast";
 function LoginPage(props) {
   const {
     register,
     handleSubmit,
-    watch,
+
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
@@ -19,22 +20,44 @@ function LoginPage(props) {
   const login = async (data) => {
     setLogging(true);
 
-    const userSession = await authService.login({ ...data });
+    try {
+      let currentuser = (await authService.getCurrentUser()) || null;
+      if (currentuser) {
+        // covering edge case for bug
+        await authService.logout();
+      }
+      const userSession = await authService.login({ ...data });
+      currentuser = await authService.getCurrentUser();
+      if (userSession.current) {
+        if (currentuser) {
+          console.log("curr user", currentuser);
 
-    if (userSession.current) {
-      console.log("here");
+          dispatch(
+            setUser({
+              isLoggedIn: true,
+              username: currentuser.name,
+              email: currentuser.email,
+              roles: currentuser.labels,
+              phone: currentuser.phone,
+              createdAt: currentuser.$createdAt,
+            })
+          );
+        }
+        navigate("/");
 
-      dispatch(setLoggedIn());
-      navigate("/");
+        if (!userSession) {
+          setError("Error Logging In");
+          toast.custom(() => (
+            <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
+              ❌ Error Logging in
+            </div>
+          ));
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
-    if (!userSession) {
-      setError("Error Logging In");
-      toast.custom(() => (
-        <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
-          ❌ Error Logging in
-        </div>
-      ));
-    }
+
     setLogging(false);
   };
 
@@ -97,7 +120,7 @@ function LoginPage(props) {
                   {...register("password", {
                     required: true,
                   })}
-                  class=" border bg-white rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5  border-gray-500 placeholder-gray-400 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+                  class=" border bg-white rounded-lg block w-full p-2.5  border-gray-500 placeholder-gray-400 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
                   required=""
                 />
               </div>
@@ -121,14 +144,14 @@ function LoginPage(props) {
                 </div>
                 <Link
                   to="/recover-password-initiation"
-                  class="text-sm font-medium text-indigo-600 hover:underline text-indigo-500"
+                  class="text-sm font-medium text-indigo-600 hover:underline "
                 >
                   Forgot password?
                 </Link>
               </div>
               <button
                 type="submit"
-                class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-800"
+                class="w-full text-white  focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-800"
               >
                 {logging ? "Logging in" : "Login"}
               </button>
