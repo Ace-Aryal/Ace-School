@@ -102,3 +102,90 @@ export const useStudentFormFields = () => {
         },
     ];
 }
+export const useStaffFormField = () => {
+    return [
+        {
+            name: "staffId",
+            label: "Staff ID",
+            type: "text",
+            required: true,
+        },
+        {
+            name: "fullName",
+            label: "Full Name",
+            type: "text",
+            required: true,
+        },
+        {
+            name: "email",
+            label: "Email",
+            type: "email",
+            required: true,
+        },
+        {
+            name: "phoneNumber",
+            label: "Phone Number",
+            type: "number",
+            required: true,
+            isPhoneNumber: true,
+        },
+        {
+            name: "gender",
+            label: "Gender",
+            type: "select",
+            required: true,
+            options: [
+                { value: "male", label: "Male" },
+                { value: "female", label: "Female" },
+                { value: "other", label: "Other" },
+            ],
+        },
+        {
+            name: "DOB",
+            label: "Date of Birth",
+            type: "date",
+            required: true,
+            isExternal: true,
+        },
+        {
+            name: "address",
+            label: "Address",
+            type: "text",
+            required: true,
+        },
+        {
+            name: "role",
+            label: "Role",
+            type: "select",
+            required: true,
+            options: [
+                { value: "it", label: "IT" },
+                { value: "account", label: "Account" },
+                { value: "admin", label: "Admin" },
+                { value: "support", label: "Support" },
+                { value: "maintenance", label: "Maintenance" },
+                { value: "other", label: "Other" },
+            ],
+
+        },
+        {
+            name: "joiningDate",
+            label: "Joining Date",
+            type: "date",
+            required: true,
+            isExternal: true,
+        },
+        {
+            name: "status",
+            label: "Employment Status",
+            type: "select",
+            required: true,
+            options: [
+                { value: "active", label: "Active" },
+                { value: "on_leave", label: "On Leave" },
+                { value: "resigned", label: "Resigned" },
+            ],
+        },
+    ];
+
+}

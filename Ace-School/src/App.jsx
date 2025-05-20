@@ -30,6 +30,8 @@ import NoticeElement from "./components/Molecules/NoticeElementPage";
 import UpdateNoticePage from "./components/Organisms/UpdateNotice";
 import AddTeachersPage from "./pages/AddTeachersPage";
 import AddStudentsPage from "./pages/AddStudentsPage";
+import ViewStaffsPage from "./pages/ViewStaffsPage";
+import AddStaffsPage from "./pages/AddStaffsPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -98,6 +100,8 @@ function App() {
               path="view-students/add-student"
               element={<AddStudentsPage />}
             />
+            <Route path="view-staffs" element={<ViewStaffsPage />} />
+            <Route path="view-staffs/add-staff" element={<AddStaffsPage />} />
             <Route path="view-teachers" element={<ViewTeachers />} />
             <Route
               path="view-teachers/add-teacher"

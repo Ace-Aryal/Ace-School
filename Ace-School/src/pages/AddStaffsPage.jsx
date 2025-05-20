@@ -1,13 +1,12 @@
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
 import NepaliDatePicker from "@zener/nepali-datepicker-react";
 import "@zener/nepali-datepicker-react/index.css";
-import React, { useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useStudentFormFields } from "@/hooks/useFormFields";
+import { useStaffFormField } from "@/hooks/useFormFields";
 import { Button } from "@/components/ui/button";
-
-AuthenticatedContainer;
-const AddStudentsPage = () => {
+const AddStaffsPage = () => {
+  const staffsFormField = useStaffFormField();
   const {
     register,
     handleSubmit,
@@ -15,21 +14,19 @@ const AddStudentsPage = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const studentsFormFields = useStudentFormFields();
-  console.log(studentsFormFields);
   const onSubmit = (data) => {
     console.log(data);
   };
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
       <h2 className="text-2xl text-indigo-500 font-bold text-center">
-        Add Student
+        Add Staff
       </h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >
-        {studentsFormFields.map((formField) => {
+        {staffsFormField.map((formField) => {
           if (
             formField.type === "number" ||
             formField.type === "text" ||
@@ -135,4 +132,4 @@ const AddStudentsPage = () => {
   );
 };
 
-export default AddStudentsPage;
+export default AddStaffsPage;

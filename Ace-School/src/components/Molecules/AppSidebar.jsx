@@ -13,6 +13,7 @@ import {
   Clock,
   Library,
   User,
+  IdCard,
 } from "lucide-react";
 
 import { useSidebar } from "@/components/ui/sidebar";
@@ -85,6 +86,13 @@ const items = [
     title: "View Teachers",
     url: "/view-teachers",
     icon: Users,
+    readers: ["accountant", "admin"],
+    writers: ["none"],
+  },
+  {
+    title: "View Staffs",
+    url: "/view-staffs",
+    icon: IdCard,
     readers: ["accountant", "admin"],
     writers: ["none"],
   },
