@@ -20,7 +20,7 @@ export default async ({ req, res, log }) => {
 
     const [inboxResponse, noticeResponse] = await Promise.all([inboxCleaner, noticeCleaner])
     const now = new Date();
-    const cutoff = new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000); // 15 day ago
+    const cutoff = new Date(now.getTime() - /*15 * 24 * 60 * */ 60 * 1000); // 15 day ago
 
     for (const doc of inboxResponse.documents) {
       const createdAt = new Date(doc.$createdAt);
