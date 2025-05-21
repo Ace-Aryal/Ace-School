@@ -6,6 +6,7 @@ import authService from "@/appwrite/auth/auth";
 import { setUser } from "@/features/authSlice";
 import { toast } from "sonner";
 import { showErrorToast } from "../Templates/toast";
+import databaseService from "@/appwrite/Database/database";
 function LoginPage(props) {
   const {
     register,
@@ -21,44 +22,46 @@ function LoginPage(props) {
     setLogging(true);
 
     try {
-      let currentuser = (await authService.getCurrentUser()) || null;
-      if (currentuser) {
+      let isStillLoggedIn = (await authService.getCurrentUser()) || null;
+      if (isStillLoggedIn) {
         // covering edge case for bug
         await authService.logout();
       }
-      const userSession = await authService.login({ ...data });
-      currentuser = await authService.getCurrentUser();
-      if (userSession.current) {
-        if (currentuser) {
-          console.log("curr user", currentuser);
 
-          dispatch(
-            setUser({
-              isLoggedIn: true,
-              username: currentuser.name,
-              email: currentuser.email,
-              roles: currentuser.labels,
-              phone: currentuser.phone,
-              createdAt: currentuser.$createdAt,
-            })
-          );
-        }
+      const [userSession, currentuser] = await Promise.all([
+        authService.login({ ...data }),
+        authService.getCurrentUser(),
+      ]);
+      const currentUserDocument = databaseService.fetchUserDocument(
+        currentuser.email
+      );
+      if (userSession.current && currentuser && currentUserDocument) {
+        dispatch(
+          setUser({
+            isLoggedIn: true,
+            username: currentuser.name,
+            email: currentuser.email,
+            roles: currentuser?.labels || "admin",
+            phone: currentuser.phone,
+            createdAt: currentuser.$createdAt,
+          })
+        );
+
         navigate("/");
-
-        if (!userSession) {
-          setError("Error Logging In");
-          toast.custom(() => (
-            <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
-              ❌ Error Logging in
-            </div>
-          ));
-        }
+      }
+      if (!(userSession.current && currentuser && currentUserDocument)) {
+        setError("Error Logging In");
+        toast.custom(() => (
+          <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
+            ❌ Error Logging in
+          </div>
+        ));
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLogging(false);
     }
-
-    setLogging(false);
   };
 
   return (

@@ -3,7 +3,7 @@ const config = {
     appwritreURL: String(import.meta.env.VITE_APPWRITE_URL),
     appwritreProjectID: String(import.meta.env.VITE_PROJECT_ID),
     appwriteDatabaseID: String(import.meta.env.VITE_DATABASE_ID),
-    appwritreStdentCollectionID: String(import.meta.env.VITE_STUDENTS_COLLECTION_ID),
+    appwritreStudentCollectionID: String(import.meta.env.VITE_STUDENTS_COLLECTION_ID),
     appwritreStaffsCollectionID: String(import.meta.env.VITE_STAFFS_COLLECTION_ID),
     appwritreTeachersCollectionID: String(import.meta.env.VITE_TEACHERS_COLLECTION_ID),
     appwritreLibraryCollectionID: String(import.meta.env.VITE_LIBRARY_COLLECTION_ID),
@@ -12,7 +12,8 @@ const config = {
     appwriteBucketID: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
     emailCollectionID: String(import.meta.env.VITE_EMAIL_COLLECTION_ID),
     noticeCollectionID: String(import.meta.env.VITE_NOTICE_COLLECTION_ID),
-    appwriteCreateUserAPIKey: String(import.meta.env.VITE_CREATE_USERS_API_KEY)
+    userMetaDataCollectionID: String(import.meta.env.VITE_USER_COLLECTION_ID)
+
 
 }
 export default config

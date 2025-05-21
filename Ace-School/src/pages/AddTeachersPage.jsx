@@ -25,6 +25,7 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
+import databaseService from "@/appwrite/Database/database";
 
 const classes = [
   { value: "nursery", label: "Nursery" },
@@ -131,7 +132,7 @@ export default function AddTeachersPage() {
     defaultValues: {},
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const {
       teacherEmail,
       teacherId,
@@ -143,7 +144,21 @@ export default function AddTeachersPage() {
       jobType,
     } = data;
     const formattedDOB = data.DOB ? data.DOB.format("YYYY-MM-DD") : "";
-    console.log(data);
+
+    const documentData = {
+      ...data,
+      DOB: formattedDOB,
+      attendance: false,
+      "attendance-record": [],
+    };
+    const [teacherDocumentAlreadyExists, userDocumentAlreadyExists] =
+      await Promise.all([
+        databaseService.getTeacherDocument(teacherEmail),
+        databaseService.getUserDocument(teacherEmail),
+      ]);
+    console.log(teacherDocumentAlreadyExists, userDocumentAlreadyExists);
+
+    // const response = await databaseService.createteacherDocument(documentData);
   };
 
   return (

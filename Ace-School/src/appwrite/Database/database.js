@@ -1,7 +1,17 @@
 import { Client, Databases, ID } from 'appwrite';
 import config from '..';
 import { Query } from "appwrite";
-const { appwriteDatabaseID, appwritreProjectID, noticeCollectionID, emailCollectionID, appwritreURL, appwritreLibraryCollectionID, appwritreScheduleCollectionID, appwritreStdentCollectionID, appwritrefFeeCollectionID } = config
+const { appwriteDatabaseID, userMetaDataCollectionID, appwritreProjectID, appwritreStaffsCollectionID, appwritreTeachersCollectionID, noticeCollectionID, emailCollectionID, appwritreURL, appwritreLibraryCollectionID, appwritreScheduleCollectionID, appwritreStudentCollectionID, appwritrefFeeCollectionID } = config
+const collectionObject = {
+    inbox: emailCollectionID,
+    notice: noticeCollectionID,
+    teacher: appwritreTeachersCollectionID,
+    staff: appwritreStaffsCollectionID,
+    student: appwritreStudentCollectionID,
+    getCollectionID: (collectionName) => {
+        return collectionObject[collectionName]
+    }
+}
 class DatabaseService {
     client = new Client()
     database;
@@ -197,10 +207,83 @@ class DatabaseService {
 
     /// handle users collections
     //1. Teachers
-    createteacherDocument = async () => {
+    createteacherDocument = async (data) => {
+        // teacher form data
         try {
-            const resposne = this.database.createDocument()
+            const resposne = this.database.createDocument(
+                appwriteDatabaseID,
+                appwritreTeachersCollectionID,
+                ID.unique(),
+                data
+            )
         } catch (error) {
+
+        }
+    }
+    getTeacherDocument = async (email) => {
+
+        try {
+            const response = await this.database.listDocuments(
+                appwriteDatabaseID,
+                appwritreTeachersCollectionID
+                ,
+                [
+                    Query.equal('email', email)
+                ]
+            )
+            if (response) {
+                console.log(response);
+                return response
+
+
+            }
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+
+
+    createUserDocment = async (data) => {
+        // {email : "" , role : ""}
+        try {
+            const response = this.database.createDocument(
+                appwriteDatabaseID,
+                userMetaDataCollectionID,
+                ID.unique(),
+                data
+
+            )
+            if (response) {
+                console.log(response);
+
+            }
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+    getUserDocument = async (email) => {
+
+        try {
+            const response = await this.database.listDocuments(
+                appwriteDatabaseID,
+                userMetaDataCollectionID
+                ,
+                [
+                    Query.equal('email', email)
+                ]
+
+            )
+            if (response) {
+                console.log(response);
+                return response
+
+
+            }
+        } catch (error) {
+            console.error(error);
+            return false
 
         }
     }
