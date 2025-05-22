@@ -6,9 +6,11 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
     const formattedDOB = data.DOB ? data.DOB.format("YYYY-MM-DD") : "";
 
     let email;
+    let name;
     let documentData;
     if (userRole === "Student") {
         email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`
+        name = data.studentName
         documentData = {
             ...data,
             email,
@@ -19,6 +21,7 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
     }
     if (userRole === "Teacher") {
         email = data.email
+        name = data.teacherName
         const formattedJoiningDate = data.joiningDate ? data.joiningDate.format("YYYY-MM-DD") : "";
         documentData = {
             ...data,
@@ -32,7 +35,9 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
     }
     if (userRole === "Staff") {
         email = data.email
+        name = data.fullName
         const formattedJoiningDate = data.joiningDate ? data.joiningDate.format("YYYY-MM-DD") : "";
+        userRole = data.role
         documentData = {
             ...data,
             joiningDate: formattedJoiningDate,
@@ -115,6 +120,7 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
             await Promise.all([
                 createUserDocmentFn(documentData),
                 databaseService.createUserDocment({
+                    name,
                     email,
                     role: userRole.toLowerCase(),
                 }),

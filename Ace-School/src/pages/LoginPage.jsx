@@ -87,7 +87,7 @@ function LoginPage(props) {
             src="https://symbolikon.com/wp-content/uploads/edd/2022/11/Shatkona-hindu-bold.png"
             alt="logo"
           />
-          <h2 className="font-bold text-2xl ">Birendra Secondary School</h2>
+          <h2 className="font-bold text-2xl "></h2>
         </Link>
         <div class="w-full bg-blue-100 rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 border-gray-400">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -112,6 +112,10 @@ function LoginPage(props) {
                   name="email"
                   id="email"
                   {...register("email", {
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Enter valid email",
+                    },
                     required: true,
                   })}
                   className={`  border  rounded-lg   block w-full p-2  border-gray-500 placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500`}

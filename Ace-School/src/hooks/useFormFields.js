@@ -159,12 +159,11 @@ export const useStaffFormField = () => {
             type: "select",
             required: true,
             options: [
-                { value: "it", label: "IT" },
-                { value: "account", label: "Account" },
-                { value: "admin", label: "Admin" },
-                { value: "support", label: "Support" },
-                { value: "maintenance", label: "Maintenance" },
-                { value: "other", label: "Other" },
+                { value: "IT", label: "IT" },
+                { value: "Account", label: "Account" },
+                { value: "Support", label: "Support" },
+                { value: "Maintenance", label: "Maintenance" },
+                { value: "Other", label: "Other" },
             ],
 
         },
