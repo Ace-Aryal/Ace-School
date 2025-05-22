@@ -26,6 +26,8 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import databaseService from "@/appwrite/Database/database";
+import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
+import { useRegisterUser } from "@/hooks/useRegisterUser";
 
 const classes = [
   { value: "nursery", label: "Nursery" },
@@ -123,43 +125,18 @@ const subjects = [
 ];
 
 export default function AddTeachersPage() {
+  const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
   const {
     register,
     handleSubmit,
+    reset,
     control,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {},
   });
 
-  const onSubmit = async (data) => {
-    const {
-      teacherEmail,
-      teacherId,
-      teacherName,
-      teacherPhone,
-      DOB,
-      address,
-      classes,
-      jobType,
-    } = data;
-    const formattedDOB = data.DOB ? data.DOB.format("YYYY-MM-DD") : "";
-
-    const documentData = {
-      ...data,
-      DOB: formattedDOB,
-      attendance: false,
-      "attendance-record": [],
-    };
-    const [teacherDocumentAlreadyExists, userDocumentAlreadyExists] =
-      await Promise.all([
-        databaseService.getTeacherDocument(teacherEmail),
-        databaseService.getUserDocument(teacherEmail),
-      ]);
-    console.log(teacherDocumentAlreadyExists, userDocumentAlreadyExists);
-
-    // const response = await databaseService.createteacherDocument(documentData);
-  };
+  const { getTeacherDocument, createteacherDocument } = databaseService;
 
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
@@ -168,7 +145,16 @@ export default function AddTeachersPage() {
       </h2>
 
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) =>
+          useRegisterUser(data, {
+            reset,
+            getUserDocumentFn: getTeacherDocument,
+            createUserDocmentFn: createteacherDocument,
+            userRole: "Teacher",
+            setErrorDeletingDuplicate: setErrorDeletingDuplicate,
+            errorDeletingDuplicate: errorDeletingDuplicate,
+          })
+        )}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >
         <div className="flex flex-col">
@@ -208,7 +194,7 @@ export default function AddTeachersPage() {
           <input
             id="teacher-email"
             type="email"
-            {...register("teacherEmail", {
+            {...register("email", {
               required: "email is required",
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -217,10 +203,8 @@ export default function AddTeachersPage() {
             })}
             className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
           />
-          {errors.teacherEmail && (
-            <p className="text-sm text-red-500">
-              {errors.teacherEmail.message}
-            </p>
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
 
@@ -296,7 +280,7 @@ export default function AddTeachersPage() {
             render={({ field }) => {
               const selectedLabel =
                 sexes.find((f) => f.value === field.value)?.label ||
-                "Select your sex...";
+                "Select  sex...";
               const [open, setOpen] = React.useState(false);
 
               return (
@@ -409,7 +393,7 @@ export default function AddTeachersPage() {
             }}
           />
           {errors.jobType && (
-            <p className="text-sm text-red-500">{error.jobType.message}</p>
+            <p className="text-sm text-red-500">{errors.jobType.message}</p>
           )}
         </div>
         {/* Qualification- ComboBox */}
@@ -566,7 +550,7 @@ export default function AddTeachersPage() {
         <div className="flex flex-col">
           <label className="text-gray-600">Select subjects taught</label>
           <Controller
-            name="subjects"
+            name="subjectsTaught"
             control={control}
             rules={{ required: "Subjects are required" }}
             render={({ field }) => {
@@ -583,6 +567,28 @@ export default function AddTeachersPage() {
           />
           {errors.subjects && (
             <p className="text-sm text-red-500">{errors.subjects.message}</p>
+          )}
+        </div>
+        {/* Date Picker */}
+        <div className="flex flex-col">
+          <label className="text-gray-600">Select DOB</label>
+          <Controller
+            name="joiningDate"
+            control={control}
+            rules={{ required: "Date of birth is required" }}
+            render={({ field }) => {
+              return (
+                <NepaliDatePicker
+                  className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Select Joining date"
+                />
+              );
+            }}
+          />
+          {errors.DOB && (
+            <p className="text-sm text-red-500">{errors.DOB.message}</p>
           )}
         </div>
         <div className="sm:col-span-2 flex justify-center my-4 ">

@@ -36,6 +36,8 @@ class AuthService {
             return true
 
         } catch (error) {
+            console.error(error);
+
             return false
         }
     }

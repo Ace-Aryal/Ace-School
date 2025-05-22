@@ -6,6 +6,7 @@ import authService from "@/appwrite/auth/auth";
 import { clearUser } from "@/features/authSlice";
 import { SidebarTrigger } from "../ui/sidebar";
 import Logo from "../Atoms/logo";
+import { LogOut } from "lucide-react";
 function Navbar() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const [isloading, setIsLoading] = useState(false);
@@ -113,11 +114,13 @@ function Navbar() {
                 }  hover:text-orange-400 cursor-pointer shadow-md `}
                 variant="outline"
               >
-                {isloading
+                {isloading && "logging out"
                   ? "logging out"
                   : isAuthenticated
-                  ? "Logout →"
-                  : "Login →"}
+                  ? `Logout  `
+                  : `Login `}
+                {isAuthenticated && <LogOut />}
+                {!isAuthenticated && <LogOut />}
               </Button>
             </ul>
           </nav>

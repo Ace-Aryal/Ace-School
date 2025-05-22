@@ -10,7 +10,7 @@ export const useStudentFormFields = () => {
                 { value: "lkg", label: "LKG" },
                 { value: "ukg", label: "UKG" },
                 ...Array.from({ length: 10 }, (_, i) => ({
-                    value: `grade-${i + 1}`,
+                    value: `${i + 1}`,
                     label: `Grade ${i + 1}`,
                 })),
             ],

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import Applayout from "./components/Templates/Applayout";
-import HomePage from "./components/Organisms/HomePage";
-import AboutPage from "./components/Organisms/AboutPage";
-import ServicesPage from "./components/Organisms/ServicesPage";
-import ContactPage from "./components/Organisms/ContactPage";
-import LoginPage from "./components/Organisms/LoginPage";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import ServicesPage from "./pages/ServicesPage";
+import ContactPage from "./pages/ContactPage";
+import LoginPage from "./pages/LoginPage";
 import AttendancePage from "./pages/AttendancePage";
 import BillingPage from "./pages/BillingPage";
 import NoticePage from "./pages/NoticePage";
@@ -14,7 +14,7 @@ import TimetablePage from "./pages/TimetablePage";
 import authService from "./appwrite/auth/auth";
 import { setUser } from "./features/authSlice";
 import ErrorPage from "./pages/ErrorPage";
-import GallaryPage from "./components/Organisms/GallaryPage";
+import GallaryPage from "./pages/GallaryPage";
 import GallaryItem from "./components/Organisms/GallaryItem";
 import DashBoardPage from "./pages/DashBoardPage";
 import InboxPage from "./pages/InboxPage";
@@ -32,6 +32,7 @@ import AddTeachersPage from "./pages/AddTeachersPage";
 import AddStudentsPage from "./pages/AddStudentsPage";
 import ViewStaffsPage from "./pages/ViewStaffsPage";
 import AddStaffsPage from "./pages/AddStaffsPage";
+import SignupPage from "./pages/SignupPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
@@ -51,6 +52,7 @@ function App() {
             <Route path="services" element={<ServicesPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="signup" element={<SignupPage />} />
             <Route path="recover-account" element={<RecoveryPage />} />
             <Route
               path="/recover-password-initiation"

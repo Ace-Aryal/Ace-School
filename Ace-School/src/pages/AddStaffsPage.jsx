@@ -1,29 +1,41 @@
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
 import NepaliDatePicker from "@zener/nepali-datepicker-react";
 import "@zener/nepali-datepicker-react/index.css";
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useStaffFormField } from "@/hooks/useFormFields";
 import { Button } from "@/components/ui/button";
+import { useRegisterUser } from "@/hooks/useRegisterUser";
+import databaseService from "@/appwrite/Database/database";
 const AddStaffsPage = () => {
   const staffsFormField = useStaffFormField();
+  const { getStaffsDocument, createStaffsDocument } = databaseService;
+  const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
+
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
       <h2 className="text-2xl text-indigo-500 font-bold text-center">
         Add Staff
       </h2>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) => {
+          useRegisterUser(data, {
+            getUserDocumentFn: getStaffsDocument,
+            createUserDocmentFn: createStaffsDocument,
+            userRole: "Staff",
+            errorDeletingDuplicate,
+            setErrorDeletingDuplicate,
+            reset,
+          });
+        })}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >
         {staffsFormField.map((formField) => {

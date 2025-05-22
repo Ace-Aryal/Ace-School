@@ -4,9 +4,10 @@ import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import authService from "@/appwrite/auth/auth";
 import { setUser } from "@/features/authSlice";
-import { toast } from "sonner";
-import { showErrorToast } from "../Templates/toast";
+
+import { showErrorToast } from "@/components/Templates/toast";
 import databaseService from "@/appwrite/Database/database";
+import { Eye, EyeOff } from "lucide-react";
 function LoginPage(props) {
   const {
     register,
@@ -17,7 +18,7 @@ function LoginPage(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logging, setLogging] = useState(false);
-  const [error, setError] = useState("");
+  const [isShowingPassword, setIshowingPassword] = useState(false);
   const login = async (data) => {
     setLogging(true);
 
@@ -28,37 +29,47 @@ function LoginPage(props) {
         await authService.logout();
       }
 
-      const [userSession, currentuser] = await Promise.all([
-        authService.login({ ...data }),
-        authService.getCurrentUser(),
-      ]);
-      const currentUserDocument = databaseService.fetchUserDocument(
-        currentuser.email
-      );
-      if (userSession.current && currentuser && currentUserDocument) {
+      const userSession = await authService.login({ ...data });
+      const currentuser = await authService.getCurrentUser();
+
+      console.log(userSession, currentuser);
+
+      if (!(userSession || currentuser)) {
+        throw new Error("Failed to log in");
+      }
+      // others than admin dont have labels so we need to find role for them with their document
+      let currentUserDocument;
+      let roles = currentuser.labels;
+      if (currentuser.labels.length === 0) {
+        currentUserDocument = await databaseService.getUserDocument(
+          currentuser.email
+        );
+        roles = [currentUserDocument.documents[0].role];
+      }
+      if (
+        userSession.current &&
+        (currentuser.labels || currentUserDocument.total)
+      ) {
+        console.log(currentUserDocument);
+
         dispatch(
           setUser({
             isLoggedIn: true,
             username: currentuser.name,
             email: currentuser.email,
-            roles: currentuser?.labels || "admin",
+            roles,
             phone: currentuser.phone,
             createdAt: currentuser.$createdAt,
           })
         );
 
         navigate("/");
+        return;
       }
-      if (!(userSession.current && currentuser && currentUserDocument)) {
-        setError("Error Logging In");
-        toast.custom(() => (
-          <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
-            ❌ Error Logging in
-          </div>
-        ));
-      }
+      showErrorToast("Error logging in");
     } catch (error) {
       console.error(error);
+      showErrorToast("Error logging in");
     } finally {
       setLogging(false);
     }
@@ -80,12 +91,12 @@ function LoginPage(props) {
         </Link>
         <div class="w-full bg-blue-100 rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 border-gray-400">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
+            <h1 class="text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
               Sign in to your account
             </h1>
             <form
               id="form"
-              class="space-y-4 md:space-y-6"
+              class="space-y-2 md:space-y-4"
               onSubmit={handleSubmit(login)}
               action="#"
             >
@@ -103,7 +114,7 @@ function LoginPage(props) {
                   {...register("email", {
                     required: true,
                   })}
-                  className={` bg-white border  rounded-lg   block w-full p-2  border-gray-500 placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500`}
+                  className={`  border  rounded-lg   block w-full p-2  border-gray-500 placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500`}
                   placeholder="user@example.com"
                   required=""
                 />
@@ -115,36 +126,31 @@ function LoginPage(props) {
                 >
                   Password
                 </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  {...register("password", {
-                    required: true,
-                  })}
-                  class=" border bg-white rounded-lg block w-full p-2.5  border-gray-500 placeholder-gray-400 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
-                  required=""
-                />
+                <div className="mt-2 flex items-center relative">
+                  <input
+                    type={isShowingPassword ? "text" : "password"}
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
+                    {...register("password", {
+                      required: true,
+                    })}
+                    class=" border rounded-lg block w-full p-2.5  border-gray-500 placeholder-gray-400 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+                    required=""
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIshowingPassword((prev) => !prev);
+                    }}
+                    className="absolute right-2  text-gray-500 hover:text-gray-700"
+                  >
+                    {isShowingPassword ? <Eye /> : <EyeOff />}
+                  </button>
+                </div>
               </div>
 
               <div class="flex items-center justify-between">
-                <div class="flex items-start">
-                  <div class="flex items-center h-5">
-                    <input
-                      id="remember"
-                      aria-describedby="remember"
-                      type="checkbox"
-                      class="w-4 h-4 border border-gray-300 rounded focus:ring-3 focus:ring-indigo-300 bg-gray-700   ring-offset-gray-800"
-                      required=""
-                    />
-                  </div>
-                  <div class="ml-3 text-sm">
-                    <label for="remember" class="text-gray-500 ">
-                      Remember me
-                    </label>
-                  </div>
-                </div>
                 <Link
                   to="/recover-password-initiation"
                   class="text-sm font-medium text-indigo-600 hover:underline "
@@ -152,12 +158,22 @@ function LoginPage(props) {
                   Forgot password?
                 </Link>
               </div>
+
               <button
                 type="submit"
                 class="w-full text-white  focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-800"
               >
                 {logging ? "Logging in" : "Login"}
               </button>
+              <p class="text-sm font-light text-gray-500 dark:text-gray-800">
+                Don’t have an account yet?{" "}
+                <Link
+                  to="/signup"
+                  class="font-medium text-indigo-600 hover:underline dark:text-indigo-500"
+                >
+                  Signup
+                </Link>
+              </p>
             </form>
           </div>
         </div>

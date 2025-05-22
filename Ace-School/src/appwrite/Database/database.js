@@ -1,6 +1,7 @@
 import { Client, Databases, ID } from 'appwrite';
 import config from '..';
 import { Query } from "appwrite";
+import { showErrorToast, showSuccessToast } from '@/components/Templates/toast';
 const { appwriteDatabaseID, userMetaDataCollectionID, appwritreProjectID, appwritreStaffsCollectionID, appwritreTeachersCollectionID, noticeCollectionID, emailCollectionID, appwritreURL, appwritreLibraryCollectionID, appwritreScheduleCollectionID, appwritreStudentCollectionID, appwritrefFeeCollectionID } = config
 const collectionObject = {
     inbox: emailCollectionID,
@@ -216,6 +217,7 @@ class DatabaseService {
                 ID.unique(),
                 data
             )
+            return resposne
         } catch (error) {
 
         }
@@ -225,8 +227,7 @@ class DatabaseService {
         try {
             const response = await this.database.listDocuments(
                 appwriteDatabaseID,
-                appwritreTeachersCollectionID
-                ,
+                appwritreTeachersCollectionID,
                 [
                     Query.equal('email', email)
                 ]
@@ -244,6 +245,8 @@ class DatabaseService {
     }
 
 
+
+
     createUserDocment = async (data) => {
         // {email : "" , role : ""}
         try {
@@ -255,8 +258,8 @@ class DatabaseService {
 
             )
             if (response) {
-                console.log(response);
 
+                return response
             }
         } catch (error) {
             console.error(error);
@@ -287,6 +290,99 @@ class DatabaseService {
 
         }
     }
+    createStudentDocument = async (data) => {
+        // teacher form data
+        try {
+            const resposne = this.database.createDocument(
+                appwriteDatabaseID,
+                appwritreStudentCollectionID,
+                ID.unique(),
+                data
+            )
+            return resposne
+        } catch (error) {
+
+        }
+    }
+    getStudentDocument = async (email) => {
+
+        try {
+            const response = await this.database.listDocuments(
+                appwriteDatabaseID,
+                appwritreStudentCollectionID,
+                [
+                    Query.equal('email', email)
+                ]
+            )
+            if (response) {
+                console.log(response);
+
+                return response
+            }
+        } catch (error) {
+            console.error(error);
+            return false
+
+        }
+    }
+
+    createStaffsDocument = async (data) => {
+        // teacher form data
+        try {
+            const resposne = this.database.createDocument(
+                appwriteDatabaseID,
+                appwritreStaffsCollectionID,
+                ID.unique(),
+                data
+            )
+            return resposne
+        } catch (error) {
+
+        }
+    }
+    getStaffsDocument = async (email) => {
+
+        try {
+            const response = await this.database.listDocuments(
+                appwriteDatabaseID,
+                appwritreStaffsCollectionID,
+                [
+                    Query.equal('email', email)
+                ]
+            )
+            if (response) {
+                console.log(response);
+                return response
+
+
+            }
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+
+
+
+
+    deleteCollection = async (collectionID, documentID) => {
+
+        try {
+            await this.database.deleteDocument(
+                appwriteDatabaseID,
+                collectionID,
+                documentID
+            );
+
+            showSuccessToast("Duplicate document deleted successfully");
+            return true
+        } catch (error) {
+            console.error(error)
+            showErrorToast("Failed to delete duplicate document");
+            return false
+        }
+    }
+
 
 
 

@@ -4,7 +4,7 @@ import { Pin } from "lucide-react";
 import React, { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import databaseService from "@/appwrite/Database/database";
-import LoadingPage from "@/components/Organisms/LoadingPage";
+import LoadingPage from "@/pages/LoadingPage";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -67,7 +67,7 @@ const ViewNoticePage = () => {
       <h1 className="text-4xl text-center text-indigo-500 font-bold">
         Notices
       </h1>
-      {roles.includes("admin")  && (
+      {roles.includes("admin") && (
         <Button
           onClick={() => {
             dispatch(clearEditingNotice());
@@ -93,7 +93,11 @@ const ViewNoticePage = () => {
         <div className="grid grid-cols-9 my-1 space-y-2 max-h-[70vh] overflow-y-scroll rounded ">
           {notices.map((notice) => {
             return (
-              <NoticeListElement key={notice.$id} role={roles[0]} data={notice} />
+              <NoticeListElement
+                key={notice.$id}
+                role={roles[0]}
+                data={notice}
+              />
             );
           })}
           <div ref={ref} className="w-full col-span-9 text-center">

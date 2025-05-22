@@ -14,6 +14,7 @@ import {
   Library,
   User,
   IdCard,
+  ArrowBigRightDash,
 } from "lucide-react";
 
 import { useSidebar } from "@/components/ui/sidebar";
@@ -30,6 +31,10 @@ import {
 import { NavLink } from "react-router";
 
 import { useSelector } from "react-redux";
+import { Button } from "../ui/button";
+import databaseService from "@/appwrite/Database/database";
+import authService from "@/appwrite/auth/auth";
+import LogoutButton from "../Atoms/LogoutButton";
 
 // Menu items.
 const items = [
@@ -116,6 +121,12 @@ const items = [
     icon: Settings,
     readers: ["all"],
   },
+  {
+    title: "Logout",
+
+    icon: ArrowBigRightDash,
+    readers: ["all"],
+  },
 ];
 
 export default function AppSidebar() {
@@ -152,21 +163,27 @@ export default function AppSidebar() {
                     element.readers.includes("all") ||
                     element.readers.some((reader) => roles?.includes(reader))
                 )
-                .map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton>
-                      <NavLink
-                        to={item.url}
-                        className={({ isActive }) =>
-                          `${isActive ? `text-blue-700` : ""} flex gap-1`
-                        }
-                      >
-                        <item.icon size={18} />
-                        <span>{item.title}</span>
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                .map((item) => {
+                  if (item.title === "Logout") {
+                    return <LogoutButton key={item.title} />;
+                  }
+
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton>
+                        <NavLink
+                          to={item.url}
+                          className={({ isActive }) =>
+                            `${isActive ? `text-blue-700` : ""} flex gap-1`
+                          }
+                        >
+                          <item.icon size={18} />
+                          <span>{item.title}</span>
+                        </NavLink>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

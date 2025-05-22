@@ -5,28 +5,41 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useStudentFormFields } from "@/hooks/useFormFields";
 import { Button } from "@/components/ui/button";
+import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
+import { useRegisterUser } from "@/hooks/useRegisterUser";
+import databaseService from "@/appwrite/Database/database";
 
 AuthenticatedContainer;
 const AddStudentsPage = () => {
   const {
     register,
     handleSubmit,
+    reset,
     control,
     formState: { errors, isSubmitting },
   } = useForm();
+  const { getStudentDocument, createStudentDocument } = databaseService;
+  const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
 
   const studentsFormFields = useStudentFormFields();
   console.log(studentsFormFields);
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
       <h2 className="text-2xl text-indigo-500 font-bold text-center">
         Add Student
       </h2>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) =>
+          useRegisterUser(data, {
+            reset,
+            getUserDocumentFn: getStudentDocument,
+            createUserDocmentFn: createStudentDocument,
+            userRole: "Student",
+            setErrorDeletingDuplicate: setErrorDeletingDuplicate,
+            errorDeletingDuplicate: errorDeletingDuplicate,
+          })
+        )}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >
         {studentsFormFields.map((formField) => {

@@ -7,9 +7,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../Atoms/carousel";
-import { Card, CardContent } from "../Atoms/card";
-import Message from "../Molecules/message";
+} from "../components/Atoms/carousel";
+import { Card, CardContent } from "../components/Atoms/card";
+import Message from "../components/Molecules/message";
 function HomePage() {
   const schoolImageArray = [
     "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fb47dd0016548b2e1d/view?project=67f8cd5000374c4a813c&mode=admin",

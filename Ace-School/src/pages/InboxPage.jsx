@@ -5,7 +5,7 @@ import { Trash2 } from "lucide-react";
 import databaseService from "@/appwrite/Database/database";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-import LoadingPage from "@/components/Organisms/LoadingPage";
+import LoadingPage from "@/pages/LoadingPage";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import InboxElement from "@/components/Molecules/InboxElement";
 import { useDispatch, useSelector } from "react-redux";

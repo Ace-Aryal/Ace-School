@@ -1,7 +1,7 @@
 import React from "react";
 import { PiTargetBold } from "react-icons/pi";
 import { FaBookOpen } from "react-icons/fa";
-import { Button } from "../Atoms/button";
+import { Button } from "../components/Atoms/button";
 import { IoFastFoodOutline } from "react-icons/io5";
 import { SlChemistry } from "react-icons/sl";
 
