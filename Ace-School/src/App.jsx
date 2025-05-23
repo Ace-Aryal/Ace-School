@@ -35,8 +35,6 @@ import AddStaffsPage from "./pages/AddStaffsPage";
 import SignupPage from "./pages/SignupPage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
 
   return (
     <Routes>

@@ -7,7 +7,7 @@ const CreateNoticePage = () => {
     return <Navigate to="*" />;
   }
   return (
-    <main className="flex my-2 sm:my-4 flex-col w-full justify-center items-center">
+    <main className="flex my-2 sm:my-4 flex-col  justify-center items-center">
       <h2 className="text-4xl text-indigo-500 font-bold text-center">
         Create Notice
       </h2>

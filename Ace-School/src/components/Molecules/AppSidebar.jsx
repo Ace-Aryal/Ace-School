@@ -35,6 +35,7 @@ import { Button } from "../ui/button";
 import databaseService from "@/appwrite/Database/database";
 import authService from "@/appwrite/auth/auth";
 import LogoutButton from "../Atoms/LogoutButton";
+import { useEffect } from "react";
 
 // Menu items.
 const items = [
@@ -129,7 +130,7 @@ const items = [
   },
 ];
 
-export default function AppSidebar() {
+export default function AppSidebar({ getSidebarState }) {
   const {
     state,
     open,
@@ -137,11 +138,16 @@ export default function AppSidebar() {
     openMobile,
     setOpenMobile,
     isMobile,
+
     toggleSidebar,
   } = useSidebar();
 
   const { roles, username } = useSelector((state) => state?.auth?.user);
+  console.log(state);
 
+  useEffect(() => {
+    getSidebarState(state);
+  }, [state]);
   return (
     <Sidebar
       className="mt-14 z-1 sm:z-0 bg-indigo-100"

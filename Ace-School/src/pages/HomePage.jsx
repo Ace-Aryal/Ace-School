@@ -44,7 +44,7 @@ function HomePage() {
     },
   ];
   return (
-    <main className="flex  m-0 flex-col  justify-center items-center max-w-[100vw] mb-20   ">
+    <main className="flex  m-0 flex-col  justify-center items-center w-[100vw] mb-20   ">
       <Carousel
         plugins={[
           Autoplay({
@@ -54,7 +54,7 @@ function HomePage() {
         opts={{
           loop: true,
         }}
-        className="w-[99vw] p-0 m-0 relative"
+        className="w-full p-0 m-0 relative"
       >
         <CarouselContent className="p-0 m-0">
           {schoolImageArray.map((image) => (

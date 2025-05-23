@@ -4,9 +4,9 @@ import { Plus } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import ErrorPage from "@/pages/ErrorPage";
-import { DataTable } from "../Organisms/Datatable";
+import { DataTable } from "../Organisms/Datatable/Datatable";
 
-const ViewUsers = ({ role, dataTable }) => {
+const ViewUsers = ({ role, data, columns }) => {
   const navigate = useNavigate();
   const { roles } = useSelector((state) => state?.auth?.user);
   const roleObject = {
@@ -46,8 +46,11 @@ const ViewUsers = ({ role, dataTable }) => {
           ""
         )}
       </section>
-      <section id="data-table-container">
-        <DataTable />
+      <section
+        id="data-table-container"
+        className="max-w-full overflow-x-scroll"
+      >
+        <DataTable data={data} columns={columns} role={role} />
       </section>
     </main>
   );

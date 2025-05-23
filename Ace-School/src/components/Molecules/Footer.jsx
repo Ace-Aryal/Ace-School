@@ -3,8 +3,8 @@ import { Link } from "react-router";
 import Logo from "../Atoms/logo";
 function Footer() {
   return (
-    <footer className="bg-indigo-900 ">
-      <div className="max-w-screen-xl px-4 pt-8 pb-6 mx-auto sm:px-6 lg:px-8 lg:pt-16">
+    <footer className="bg-indigo-900 w-[100vw">
+      <div className=" px-4 pt-8 pb-6 mx-auto sm:px-6 lg:px-8 lg:pt-16">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
             <div className="flex justify-center text-teal-300 sm:justify-start">

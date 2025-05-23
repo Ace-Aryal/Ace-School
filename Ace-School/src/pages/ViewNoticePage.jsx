@@ -63,7 +63,7 @@ const ViewNoticePage = () => {
   console.log(notices);
 
   return (
-    <div className="w-full mx-2 my-2 min-h-[100dvh] flex  flex-col items-center ">
+    <div className="w-full my-2 min-h-[100dvh] flex  flex-col items-center ">
       <h1 className="text-4xl text-center text-indigo-500 font-bold">
         Notices
       </h1>

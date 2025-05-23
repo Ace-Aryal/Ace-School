@@ -43,7 +43,7 @@ function Navbar() {
     navigate("/");
   }
   return (
-    <header className="antialiased bg-indigo-900 shadow-lg fixed top-0 z-1 w-screen ">
+    <header className="antialiased w-[100vw] bg-indigo-900 shadow-lg fixed top-0 z-1  ">
       <nav className="lg:px-16 px-6  flex flex-wrap items-center justify-between lg:py-0 py-2">
         <div className="flex-1 flex items-center">
           <Link to="/">

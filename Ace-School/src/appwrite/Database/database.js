@@ -362,34 +362,91 @@ class DatabaseService {
         }
     }
 
-
-
-
-    deleteCollection = async (collectionID, documentID) => {
+    getAllStudentsDocs = async () => {
 
         try {
-            await this.database.deleteDocument(
+            const response = await this.database.listDocuments(
                 appwriteDatabaseID,
-                collectionID,
-                documentID
-            );
+                appwritreStudentCollectionID,
+                []
+            )
+            if (response) {
+                console.log(response);
 
-            showSuccessToast("Duplicate document deleted successfully");
-            return true
+            }
+            return response.documents
         } catch (error) {
-            console.error(error)
-            showErrorToast("Failed to delete duplicate document");
+            console.error(error);
             return false
         }
+
+
+        deleteCollection = async (collectionID, documentID) => {
+
+            try {
+                await this.database.deleteDocument(
+                    appwriteDatabaseID,
+                    collectionID,
+                    documentID
+                );
+
+                showSuccessToast("Duplicate document deleted successfully");
+                return true
+            } catch (error) {
+                console.error(error)
+                showErrorToast("Failed to delete duplicate document");
+                return false
+            }
+        }
+
+
+
+
+
+
+
     }
+    getAllTeachersDocument = async (email) => {
+
+        try {
+            const response = await this.database.listDocuments(
+                appwriteDatabaseID,
+                appwritreTeachersCollectionID,
+                [
+
+                ]
+            )
+            if (response) {
+                console.log(response);
+                return response
 
 
+            }
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+    getStaffsDocument = async (email) => {
+
+        try {
+            const response = await this.database.listDocuments(
+                appwriteDatabaseID,
+                appwritreStaffsCollectionID,
+                [
+                ]
+            )
+            if (response) {
+                console.log(response);
+                return response
 
 
+            }
+        } catch (error) {
+            console.error(error);
 
-
-
+        }
+    }
 }
-
 const databaseService = new DatabaseService()
 export default databaseService

@@ -42,14 +42,24 @@ const GallaryPage = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   if (isLoading) {
-    return <LoadingPage />;
+    return (
+      <main
+        id="container"
+        className=" mx-2 sm:mx-4 mb-10 w-full flex flex-col items-center justify-center"
+      >
+        <LoadingPage />
+      </main>
+    );
   }
   if (error)
     return <p className="mt-18">Error loading images: {error.message}</p>;
   console.log(data);
 
   return (
-    <main id="container" className=" mx-2 sm:mx-4 mb-10">
+    <main
+      id="container"
+      className=" mx-2 sm:mx-4 mb-10 w-full flex flex-col items-center justify-center"
+    >
       <h1 className="text-3xl text-center font-bold pt-4 text-indigo-500">
         Image Gallary
       </h1>
