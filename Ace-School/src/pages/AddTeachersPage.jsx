@@ -9,7 +9,7 @@ import Select from "react-select";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { useSelector } from "react-redux";
 import NepaliDatePicker from "@zener/nepali-datepicker-react";
 import "@zener/nepali-datepicker-react/index.css";
 import {
@@ -28,6 +28,7 @@ import {
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import { useRegisterUser } from "@/hooks/useRegisterUser";
+import ErrorPage from "./ErrorPage";
 
 const classes = [
   { value: "nursery", label: "Nursery" },
@@ -126,6 +127,7 @@ const subjects = [
 
 export default function AddTeachersPage() {
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
+  const { roles } = useSelector((state) => state?.auth?.user);
   const {
     register,
     handleSubmit,
@@ -137,6 +139,9 @@ export default function AddTeachersPage() {
   });
 
   const { getTeacherDocument, createteacherDocument } = databaseService;
+  if (!roles.includes("admin")) {
+    return <ErrorPage />;
+  }
 
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
@@ -258,7 +263,7 @@ export default function AddTeachersPage() {
             render={({ field }) => {
               return (
                 <NepaliDatePicker
-                lang="en"
+                  lang="en"
                   className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
                   value={field.value}
                   onChange={field.onChange}
@@ -580,7 +585,7 @@ export default function AddTeachersPage() {
             render={({ field }) => {
               return (
                 <NepaliDatePicker
-                lang="en"
+                  lang="en"
                   className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
                   value={field.value}
                   onChange={field.onChange}

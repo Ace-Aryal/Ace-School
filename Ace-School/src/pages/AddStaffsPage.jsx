@@ -7,8 +7,11 @@ import { useStaffFormField } from "@/hooks/useFormFields";
 import { Button } from "@/components/ui/button";
 import { useRegisterUser } from "@/hooks/useRegisterUser";
 import databaseService from "@/appwrite/Database/database";
+import { useSelector } from "react-redux";
+import ErrorPage from "./ErrorPage";
 const AddStaffsPage = () => {
   const staffsFormField = useStaffFormField();
+  const { roles } = useSelector((state) => state?.auth?.user);
   const { getStaffsDocument, createStaffsDocument } = databaseService;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
 
@@ -19,7 +22,9 @@ const AddStaffsPage = () => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
-
+  if (!roles.includes("admin")) {
+    return <ErrorPage />;
+  }
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
       <h2 className="text-2xl text-indigo-500 font-bold text-center">
@@ -112,7 +117,7 @@ const AddStaffsPage = () => {
                   render={({ field }) => {
                     return (
                       <NepaliDatePicker
-                      lang="en"
+                        lang="en"
                         className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
                         value={field.value}
                         onChange={field.onChange}

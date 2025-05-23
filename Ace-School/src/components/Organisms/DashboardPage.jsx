@@ -28,7 +28,7 @@ const DashboardPage = () => {
   const dispatch = useDispatch();
   const { roles, username } = useSelector((state) => state.auth.user);
 
-  if (!roles?.includes("admin") && !roles?.includes("accountant")) {
+  if (!roles?.includes("admin") && !roles?.includes("account")) {
     return <h1>Hello {roles[0]}</h1>;
   }
   const inboxCount = useSelector((state) => state.inbox.noOfInboxes);
@@ -66,7 +66,7 @@ const DashboardPage = () => {
       statNumber: 20000,
       statHeading: "Fees Collected",
       classNames: "bg-blue-500",
-      readers: ["accountant"],
+      readers: ["account", "admin"],
       link: "/billing",
       icon: <Coins size={50} color="#6e6f71" />,
     },
@@ -74,7 +74,7 @@ const DashboardPage = () => {
       statNumber: 20,
       statHeading: "Teachers",
       classNames: "bg-red-500",
-      readers: ["accountant", "admin"],
+      readers: ["account", "admin"],
       link: "/view-teachers",
 
       icon: <Users size={50} color="#6e6f71" />,
@@ -85,7 +85,7 @@ const DashboardPage = () => {
       classNames: "bg-cyan-500",
       link: "/view-students",
 
-      readers: ["accountant", "admin"],
+      readers: ["account", "admin"],
       icon: <GraduationCap size={50} color="#6e6f71" />,
     },
     {
@@ -95,7 +95,7 @@ const DashboardPage = () => {
       link: "/inbox",
 
       icon: <Inbox size={50} color="#6e6f71" />,
-      readers: ["accountant", "admin"],
+      readers: ["account", "admin"],
     },
     {
       statNumber: noticeCount > 9 ? "9+" : noticeCount,
@@ -104,7 +104,7 @@ const DashboardPage = () => {
 
       classNames: "bg-yellow-500",
       icon: <Bell size={50} color="#6e6f71" />,
-      readers: ["accountant", "admin"],
+      readers: ["account", "admin"],
     },
     {
       statNumber: 200,
@@ -112,7 +112,7 @@ const DashboardPage = () => {
       classNames: "bg-indigo-500",
       link: "/attendance",
 
-      readers: ["accountant", "admin"],
+      readers: ["account", "admin"],
       icon: <ChartColumn size={50} color="#6e6f71" />,
     },
     {

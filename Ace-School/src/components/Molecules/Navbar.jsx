@@ -9,6 +9,7 @@ import Logo from "../Atoms/logo";
 import { LogOut } from "lucide-react";
 function Navbar() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
+  const roles = useSelector((state) => state.auth.user.roles);
   const [isloading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -21,7 +22,11 @@ function Navbar() {
     { nav: "Gallary", requireAuthentication: false },
     { nav: "Dashboard", requireAuthentication: true },
     { nav: "Notice", requireAuthentication: true },
-    { nav: "Billing", requireAuthentication: true },
+    {
+      nav: "Billing",
+      requireAuthentication: true,
+      readers: ["admin", "account"],
+    },
     { nav: "Timetable", requireAuthentication: true },
     { nav: "Attendance", requireAuthentication: true },
   ];
@@ -76,6 +81,11 @@ function Navbar() {
             <ul className="lg:flex items-center justify-between text-base text-gray-50 pt-4 lg:pt-0">
               {navElememts.map((element) => {
                 if (element.requireAuthentication && !isAuthenticated) return;
+                if (
+                  element.requireAuthentication &&
+                  element?.readers?.some((reader) => !roles.includes(reader))
+                )
+                  return;
                 if (!element.requireAuthentication && isAuthenticated) return;
 
                 return (

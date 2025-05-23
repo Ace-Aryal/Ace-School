@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import { useRegisterUser } from "@/hooks/useRegisterUser";
 import databaseService from "@/appwrite/Database/database";
-
+import { useSelector } from "react-redux";
+import ErrorPage from "./ErrorPage";
 AuthenticatedContainer;
 const AddStudentsPage = () => {
   const {
@@ -20,9 +21,14 @@ const AddStudentsPage = () => {
   } = useForm();
   const { getStudentDocument, createStudentDocument } = databaseService;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
+  const { roles } = useSelector((state) => state?.auth?.user);
 
   const studentsFormFields = useStudentFormFields();
   console.log(studentsFormFields);
+
+  if(roles.some(role => role.toLowerCase() !== "teacher" || role.toLowerCase() !== "admin" )){
+    return <ErrorPage/>
+  }
 
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">

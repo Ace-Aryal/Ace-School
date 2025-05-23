@@ -9,7 +9,7 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
     let name;
     let documentData;
     if (userRole === "Student") {
-        email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`
+        email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`.toLowerCase().replaceAll(" ", "")
         name = data.studentName
         documentData = {
             ...data,
