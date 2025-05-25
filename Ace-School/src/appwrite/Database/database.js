@@ -368,7 +368,10 @@ class DatabaseService {
             const response = await this.database.listDocuments(
                 appwriteDatabaseID,
                 appwritreStudentCollectionID,
-                []
+                [
+                    Query.orderAsc("studentName")
+
+                ]
             )
             if (response) {
                 console.log(response);

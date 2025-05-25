@@ -1,11 +1,59 @@
 "use client";
 
+import { Link2, MoreHorizontal, PenSquare, Trash2 } from "lucide-react";
+import { Link } from "react-router";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+
 // import { ColumnDef } from "@tanstack/react-table";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
 export const studentColumns = [
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      console.log(row.original);
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="bg-gray-100" align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            {/* <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(original.email)}
+            >
+              Copy Email Address
+            </DropdownMenuItem> */}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
+              {" "}
+              // onclick handle update
+              <PenSquare /> Update
+            </DropdownMenuItem>
+            <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
+              {" "}
+              // onClick handle delete
+              <Trash2 /> Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
   {
     accessorKey: "grade",
     header: "Grade",
@@ -37,6 +85,18 @@ export const studentColumns = [
   {
     accessorKey: "sex",
     header: "Sex",
+    cell: ({ row }) => {
+      const sex = row.getValue("sex");
+      console.log(sex);
+
+      if (sex === "male") {
+        return <p>M</p>;
+      }
+      if (sex === "female") {
+        return <p>F</p>;
+      }
+      return <p>O</p>;
+    },
   },
   {
     accessorKey: "guardianName",
@@ -64,15 +124,23 @@ export const studentColumns = [
   },
   {
     accessorKey: "attendanceRecord",
-    header: "Attendence Records", // this will be link to a long table with date and true or false can add filter by date bte with date picker (later)
+    header: "Attendence Records",
+    cell: ({ row }) => {
+      return (
+        <Link className="text-blue-600 flex items-center gap-1" to="#">
+          View
+          <Link2 />
+        </Link>
+      );
+    }, // this will be link to a long table with date and true or false can add filter by date bte with date picker (later)
   },
   {
     accessorKey: "scholarship",
-    header: "Scholarship",
+    header: "Scholarship(%)",
   },
   {
     accessorKey: "discount",
-    header: "Discount",
+    header: "Discount(Rs)",
   },
 ];
 

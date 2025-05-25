@@ -31,21 +31,25 @@ function Applayout() {
   }
 
   return (
-    <SidebarProvider className={``}>
+    <SidebarProvider className="w-full overflow-auto">
       <Navbar />
-      <AppSidebar getSidebarState={getSidebarState} />
-
-      <main
-        className={`mt-14  flex ${
-          sidebarState.expanded === "expanded"
-            ? "w-full lg:w-[calc(100vw-16rem)]"
-            : "w-full"
-        }  `}
-      >
-        <SidebarTrigger className="p-1 mx-2 hidden lg:inline fixed px-1 z-10" />
-
-        <Outlet />
-      </main>
+      <div className="w-full flex">
+        <aside
+          className={`mt-14  flex ${
+            sidebarState.expanded === "expanded" ? "lg:w-64" : "lg:w-0"
+          }  `}
+        >
+          <AppSidebar getSidebarState={getSidebarState} />
+        </aside>
+        <main
+          className={`mt-14 w-full flex ${
+            sidebarState.expanded === "expanded"
+          }  overflow-auto`}
+        >
+          <SidebarTrigger className=" ml-2 hidden lg:inline fixed z-10" />
+          <Outlet />
+        </main>
+      </div>
     </SidebarProvider>
   );
 }

@@ -26,8 +26,13 @@ const AddStudentsPage = () => {
   const studentsFormFields = useStudentFormFields();
   console.log(studentsFormFields);
 
-  if(roles.some(role => role.toLowerCase() !== "teacher" || role.toLowerCase() !== "admin" )){
-    return <ErrorPage/>
+  if (
+    roles.some(
+      (role) =>
+        role.toLowerCase() !== "teacher" && role.toLowerCase() !== "admin"
+    )
+  ) {
+    return <ErrorPage />;
   }
 
   return (

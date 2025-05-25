@@ -22,7 +22,7 @@ const ViewUsers = ({ role, data, columns }) => {
   }
 
   return (
-    <main className="container mx-auto flex flex-col items-center m-2 p-5 w-full">
+    <main className="container  flex flex-col items-center  p-5 w-full">
       <section id="top" className="flex justify-between items-center w-full">
         <h2 className="text-3xl font-semibold text-indigo-600">{`${roleObject.getRole(
           role
@@ -37,7 +37,7 @@ const ViewUsers = ({ role, data, columns }) => {
             onClick={() => {
               navigate(`/view-${role}s/add-${role}`);
             }}
-            className="w-fit self-end hover:bg-orange-600 text-gray-50 bg-red-500 cursor-pointer my-3"
+            className=" self-end hover:bg-orange-600 text-gray-50 bg-red-500 cursor-pointer my-3"
           >
             Add new {roleObject.getRole(role)}
             <Plus />
@@ -46,10 +46,7 @@ const ViewUsers = ({ role, data, columns }) => {
           ""
         )}
       </section>
-      <section
-        id="data-table-container"
-        className="max-w-full overflow-x-scroll"
-      >
+      <section className="w-full m-0 p-0 overflow-x-auto">
         <DataTable data={data} columns={columns} role={role} />
       </section>
     </main>

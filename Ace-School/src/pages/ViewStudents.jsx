@@ -23,7 +23,11 @@ const ViewStudents = () => {
   if (!data) {
     return <LoadingPage />;
   }
-  return <ViewUsers role="student" columns={studentColumns} data={data} />;
+  return (
+    <div className="w-full flex justify-center m-0 p-0">
+      <ViewUsers role="student" columns={studentColumns} data={data} />
+    </div>
+  );
 };
 
 export default ViewStudents;

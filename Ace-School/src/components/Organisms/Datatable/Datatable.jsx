@@ -105,7 +105,7 @@ export function DataTable({ columns, data, role }) {
 
   return (
     <div className="w-full bg-gray-100 shadow-xl shadow-gray-800 rounded-2xl  p-5 px-10 mt-4">
-      <div className="flex items-center py-4">
+      <div className="flex w-full items-center py-4">
         <Input
           placeholder="Filter by name..."
           value={
@@ -147,7 +147,7 @@ export function DataTable({ columns, data, role }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border w-full">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -198,10 +198,6 @@ export function DataTable({ columns, data, role }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
