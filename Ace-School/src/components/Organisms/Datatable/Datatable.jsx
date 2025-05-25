@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useState, useEffect } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -31,46 +32,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const data = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 22,
-    status: "success",
-    email: "Hi5@example.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-  },
-]; // to delete
+import { showErrorToast } from "@/components/Templates/toast";
+import databaseService from "@/appwrite/Database/database";
+import LoadingPage from "@/pages/LoadingPage";
+import ErrorPage from "@/pages/ErrorPage";
+import { useQuery } from "@tanstack/react-query";
+// to delete
 
-export function DataTable({ columns, data, role }) {
+export function DataTable({ columns, role }) {
+  const [grade, setGrade] = useState("");
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -83,6 +53,20 @@ export function DataTable({ columns, data, role }) {
       return roleObject[role];
     },
   };
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      if (role.toLowerCase() === "student") {
+        return await databaseService.getAllStudentsDocs(grade);
+      }
+      if (role.toLowerCase() === "teacher") {
+        return await databaseService.getAllTeachersDocument();
+      }
+      if (role.toLowerCase() === "staff") {
+        return await databaseService.getAllStaffsDocument();
+      }
+    },
+  });
 
   const table = useReactTable({
     data,
@@ -95,6 +79,11 @@ export function DataTable({ columns, data, role }) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+        pageSize: 15, // ⬅️ Set your pagination size here
+      },
+    },
     state: {
       sorting,
       columnFilters,
@@ -102,6 +91,20 @@ export function DataTable({ columns, data, role }) {
       rowSelection,
     },
   });
+  const grades = Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`);
+
+  useEffect(() => {
+    if (role.toLowerCase() === "student") {
+      refetch();
+    }
+  }, [grade]);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <div className="w-full bg-gray-100 shadow-xl shadow-gray-800 rounded-2xl  p-5 px-10 mt-4">
@@ -120,6 +123,33 @@ export function DataTable({ columns, data, role }) {
           }
           className="max-w-sm"
         />
+
+        {role.toLowerCase() === "student" && (
+          <select
+            className="p-2 text-sm mx-2 border rounded-lg"
+            name="filter"
+            id="class"
+            value={table.getColumn("grade")?.getFilterValue() ?? ""}
+            onChange={(event) => {
+              setGrade(event.target.value);
+
+              table.getColumn("grade")?.setFilterValue(event.target.value);
+            }}
+          >
+            <option value="">All</option>
+            <option value="nursery">Nursery</option>
+            <option value="lkg">LKG</option>
+            <option value="ukg">UKG</option>
+            {grades.map((grade) => {
+              return (
+                <option key={grade} value={grade.substring(6)}>
+                  {grade}
+                </option>
+              );
+            })}
+          </select>
+        )}
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

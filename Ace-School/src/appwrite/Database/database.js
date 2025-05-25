@@ -362,16 +362,23 @@ class DatabaseService {
         }
     }
 
-    getAllStudentsDocs = async () => {
+    getAllStudentsDocs = async (grade) => {
+        console.log(grade)
+        let queries = [
+            Query.orderAsc("studentName"),
+            Query.limit(70),
 
+        ]
+        if (grade) {
+            queries = [Query.limit(70), , Query.equal("grade", grade), Query.orderAsc("rollNo"),]
+        }
         try {
             const response = await this.database.listDocuments(
+
+
                 appwriteDatabaseID,
                 appwritreStudentCollectionID,
-                [
-                    Query.orderAsc("studentName")
-
-                ]
+                queries
             )
             if (response) {
                 console.log(response);
@@ -415,36 +422,39 @@ class DatabaseService {
             const response = await this.database.listDocuments(
                 appwriteDatabaseID,
                 appwritreTeachersCollectionID,
-                [
 
+                [Query.orderAsc("teacherName"),
+                Query.limit(50)
                 ]
+
             )
             if (response) {
                 console.log(response);
-                return response
 
 
             }
+            return response.documents
         } catch (error) {
             console.error(error);
 
         }
     }
-    getStaffsDocument = async (email) => {
+    getAllStaffsDocument = async (email) => {
 
         try {
             const response = await this.database.listDocuments(
                 appwriteDatabaseID,
                 appwritreStaffsCollectionID,
-                [
+                [Query.orderAsc("fullName"),
+                Query.limit(50)
                 ]
             )
             if (response) {
                 console.log(response);
-                return response
 
 
             }
+            return response.documents
         } catch (error) {
             console.error(error);
 

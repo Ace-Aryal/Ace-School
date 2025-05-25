@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import ErrorPage from "@/pages/ErrorPage";
 import { DataTable } from "../Organisms/Datatable/Datatable";
 
-const ViewUsers = ({ role, data, columns }) => {
+const ViewUsers = ({ role, columns }) => {
   const navigate = useNavigate();
   const { roles } = useSelector((state) => state?.auth?.user);
   const roleObject = {
@@ -47,7 +47,7 @@ const ViewUsers = ({ role, data, columns }) => {
         )}
       </section>
       <section className="w-full m-0 p-0 overflow-x-auto">
-        <DataTable data={data} columns={columns} role={role} />
+        <DataTable columns={columns} role={role} />
       </section>
     </main>
   );

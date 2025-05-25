@@ -1,6 +1,12 @@
 "use client";
 
-import { Link2, MoreHorizontal, PenSquare, Trash2 } from "lucide-react";
+import {
+  ArrowUpDown,
+  Link2,
+  MoreHorizontal,
+  PenSquare,
+  Trash2,
+} from "lucide-react";
 import { Link } from "react-router";
 import {
   DropdownMenu,
@@ -21,8 +27,6 @@ export const studentColumns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      console.log(row.original);
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -41,12 +45,10 @@ export const studentColumns = [
             <DropdownMenuSeparator />
             <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
               {" "}
-              // onclick handle update
               <PenSquare /> Update
             </DropdownMenuItem>
             <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
               {" "}
-              // onClick handle delete
               <Trash2 /> Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -64,7 +66,17 @@ export const studentColumns = [
   },
   {
     accessorKey: "studentName",
-    header: "Name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "DOB",
@@ -87,7 +99,6 @@ export const studentColumns = [
     header: "Sex",
     cell: ({ row }) => {
       const sex = row.getValue("sex");
-      console.log(sex);
 
       if (sex === "male") {
         return <p>M</p>;
@@ -146,6 +157,38 @@ export const studentColumns = [
 
 export const staffColumns = [
   {
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="bg-gray-100" align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            {/* <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(original.email)}
+            >
+              Copy Email Address
+            </DropdownMenuItem> */}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
+              {" "}
+              <PenSquare /> Update
+            </DropdownMenuItem>
+            <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
+              {" "}
+              <Trash2 /> Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+  {
     accessorKey: "staffId",
     header: "Staff ID", // staffIdRequired
   },
@@ -195,6 +238,38 @@ export const staffColumns = [
   },
 ];
 export const teacherColumns = [
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="bg-gray-100" align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            {/* <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(original.email)}
+            >
+              Copy Email Address
+            </DropdownMenuItem> */}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
+              {" "}
+              <PenSquare /> Update
+            </DropdownMenuItem>
+            <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
+              {" "}
+              <Trash2 /> Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
   {
     accessorKey: "teacherId",
     header: "Teacher ID", // teacherIdRequired
