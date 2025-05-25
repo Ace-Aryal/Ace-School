@@ -11,8 +11,8 @@ const inboxSlice = createSlice({
     reducers: {
         setMessages(state, action) {
             state.noOfInboxes = 0
-            state.inbox = action.payload;
-            action?.payload.forEach(element => {
+            state.inbox = action?.payload || [];
+            action?.payload?.forEach(element => {
                 if (element?.seen === false) {
                     state.noOfInboxes++
                 }

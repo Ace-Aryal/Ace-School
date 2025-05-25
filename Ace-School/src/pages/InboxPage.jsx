@@ -16,7 +16,7 @@ const InboxPage = () => {
   const { ref, inView } = useInView({
     threshold: 0,
   });
-
+  const messages = useSelector((state) => state.inbox.inbox);
   const {
     data,
     fetchNextPage,
@@ -47,6 +47,11 @@ const InboxPage = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
+  useEffect(() => {
+    const messages = data?.pages?.flat(1);
+    dispatch(setMessages(messages));
+  }, [data]);
+
   if (isLoading) {
     return (
       <div className="w-full justify-center items-center">
@@ -58,32 +63,30 @@ const InboxPage = () => {
     return <div>Error Fetching</div>;
   }
 
-  const messages = data?.pages?.flat(1);
-  dispatch(setMessages(messages));
-
   return (
     <div className="w-full flex flex-col items-center">
       <h1 className="text-4xl text-indigo-500 text-center font-semibold my-4">
         Inbox
       </h1>
 
-      <div className="w-full sm:w-[80%] md:w-[70%] flex  flex-col">
-        <div
-          className={`w-full grid text-center my-0.5 grid-cols-5 bg-orange-600 rounded col-span-4  p-2 font-semibold text-gray-100  shadow-lg  justify-around items-center `}
-        >
-          <p className="col-span-2"> Sender</p>
-          <p className="col-span-2">Date</p>
+      <div className="w-9/10 sm:w-[80%]  flex  flex-col">
+        <div className="overflow-x-scroll w-full">
+          <table className="min-w-full table-auto   text-center text-gray-700 border border-gray-300 ">
+            <thead className="bg-indigo-500 text-gray-50 uppercase text-lg font-semibold border-2 border-white">
+              <tr>
+                <th className="px-4 py-3 border-r border-gray-300">
+                  Published
+                </th>
+                <th className="px-4 py-3 border-r border-gray-300">Author</th>
+                <th className="px-4 py-3 border-r border-gray-300">Subject</th>
+                <th className="px-4 py-3 border-r border-gray-300"> Actions</th>
+              </tr>
+            </thead>
 
-          <div className="col-span-1 flex items-center font-semibold rounded text-gray-100 bg-orange-600">
-            Actions
-          </div>
-        </div>
-        <div className="overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 max-h-[70dvh]">
-          {/* content */}
-
-          {messages?.map((message) => (
-            <InboxElement message={message} />
-          ))}
+            {messages?.map((message) => (
+              <InboxElement message={message} />
+            ))}
+          </table>
           <div ref={ref} className="w-full text-center">
             {!hasNextPage ? "End of results" : "Scroll to load more"}
           </div>

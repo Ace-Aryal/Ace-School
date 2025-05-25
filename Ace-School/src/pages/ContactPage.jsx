@@ -6,6 +6,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import databaseService from "@/appwrite/Database/database";
 import { toast } from "sonner";
+import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 function ContactPage() {
   const {
     register,
@@ -18,21 +19,14 @@ function ContactPage() {
     setSubmitting(true);
     const response = await databaseService.createMessage(data);
     if (response === true) {
-      toast.custom(() => (
-        <div className="px-4 py-2 rounded bg-green-600 text-white text-sm flex items-center gap-2 shadow">
-          ✅ Message Sent
-        </div>
-      ));
+      showSuccessToast("Message sent sucessfullly !");
       reset();
       setSubmitting(false);
       return;
     }
     setSubmitting(false);
-    toast.custom(() => (
-      <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
-        ❌ Error Sending Message
-      </div>
-    ));
+
+    showErrorToast("Error sending message");
   };
   return (
     <main className=" pt-18 sm:pt-24 flex justify-center mb-20 w-full">

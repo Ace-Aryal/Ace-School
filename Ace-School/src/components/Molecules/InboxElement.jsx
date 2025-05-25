@@ -33,33 +33,72 @@ const InboxElement = ({ message }) => {
     showErrorToast("Error deleting message !");
   };
   return (
-    <div
-      key={message.$id}
-      id={message.$id}
-      className={`w-full my-1.5  rounded p-1  text-[#212121] shadow-lg ${
-        message.seen ? "bg-[#E0E0E0]" : "bg-[#FAFAFA]"
-      } grid grid-cols-5 text-center  items-center `}
-    >
-      <div
-        onClick={() => {
-          handleItemClick(message.seen, message.$id);
-        }}
-        className="col-span-4 grid grid-cols-4 cursor-pointer"
-      >
-        <p className=" col-span-2">{message.fullName}</p>{" "}
-        <p className=" col-span-2">{message.date}</p>{" "}
-      </div>
+    <tbody className="bg-gray-200 border-2 border-white">
+      <tr>
+        <td
+          className="border-r border-white"
+          onClick={() => {
+            handleItemClick(message.seen, message.$id);
+          }}
+        >
+          {message.date}
+        </td>
+        <td
+          className="border-r border-white"
+          onClick={() => {
+            handleItemClick(message.seen, message.$id);
+          }}
+        >
+          {" "}
+          {message.fullName}
+        </td>
+        <td
+          className="border-r border-white"
+          onClick={() => {
+            handleItemClick(message.seen, message.$id);
+          }}
+        >
+          {message.message}
+        </td>
+        <td>
+          {" "}
+          <button
+            onClick={() => handleItemDelete(message.$id)}
+            className="bg-red-500 text-white px-2 py-1 rounded text-xs"
+          >
+            <Trash2 />
+          </button>
+        </td>
+      </tr>
+    </tbody>
 
-      <Button
-        onClick={() => handleItemDelete(message.$id)}
-        className={` col-span-1 hover:bg-orange-600 ${
-          message.seen ? "bg-red-400" : "bg-red-600"
-        }`}
-        variant="destructive"
-      >
-        {deleting ? "Deleting.." : <Trash2 />}
-      </Button>
-    </div>
+    // <div
+    //   key={message.$id}
+    //   id={message.$id}
+    //   className={`w-full my-1.5  rounded p-1  text-[#212121] shadow-lg ${
+    //     message.seen ? "bg-[#E0E0E0]" : "bg-[#FAFAFA]"
+    //   } grid grid-cols-5 text-center  items-center `}
+    // >
+    //   <div
+    //     onClick={() => {
+    //       handleItemClick(message.seen, message.$id);
+    //     }}
+    //     className="col-span-4 grid grid-cols-4 cursor-pointer"
+    //   >
+    //     <p className=" col-span-2">{message.fullName}</p>{" "}
+    //     <p className=" col-span-2">{message.date}</p>{" "}
+    //   </div>
+
+    //   <Button
+    //     onClick={() => handleItemDelete(message.$id)}
+    //     className={` col-span-1 hover:bg-orange-600 ${
+    //       message.seen ? "bg-red-400" : "bg-red-600"
+    //     }`}
+    //     variant="destructive"
+    //   >
+    //     {deleting ? "Deleting.." : <Trash2 />}
+    //   </Button>
+    // </div>
   );
 };
 

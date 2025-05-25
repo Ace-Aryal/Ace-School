@@ -60,7 +60,6 @@ const ViewNoticePage = () => {
   if (error) {
     return <div>Error Fetching</div>;
   }
-  console.log(notices);
 
   return (
     <div className="w-full my-2 min-h-[100dvh] flex  flex-col items-center ">
@@ -73,40 +72,42 @@ const ViewNoticePage = () => {
             dispatch(clearEditingNotice());
             navigate("/notice/publish");
           }}
-          className="w-fit self-end hover:bg-orange-600 text-gray-50 bg-red-500 cursor-pointer my-3"
+          className="w-fit self-end mr-3 hover:bg-orange-600 text-gray-50 bg-red-500 cursor-pointer my-3"
         >
           Publish New Notice <Pin />
         </Button>
       )}
-      <div className="my-4 w-[95vw] sm:w-[90%] text-sm sm:text-[1rem] overflow-x-scroll ">
-        <div className="grid grid-cols-10 sm:grid-cols-9 my-1  bg-orange-500  space-x-0 px-1 max-h-[70vh]  rounded w-full  ">
-          <div className="grid grid-cols-9   space-x-0 bg-orange-500  text-white p-2 text-[1rem] sm:text-lg col-span-8 text-center">
-            <div className="col-span-2 sm:min-w-30">Published</div>
+      <div className="my-4 w-9/10 sm:w-4/5  text-sm sm:text-[1rem]  ">
+        <div className="overflow-x-scroll w-full">
+          <table className="min-w-full table-auto   text-center text-gray-700 border border-gray-300 ">
+            <thead className="bg-indigo-500 text-gray-50 uppercase text-lg font-semibold border-2 border-white">
+              <tr>
+                <th className="px-4 py-3 border-r border-gray-300">
+                  Published
+                </th>
+                <th className="px-4 py-3 border-r border-gray-300">Author</th>
+                <th className="px-4 py-3 border-r border-gray-300">Subject</th>
+                <th className="px-4 py-3 border-r border-gray-300"> Actions</th>
+              </tr>
+            </thead>
 
-            <div className="col-span-3 sm:min-w-40">Author</div>
-            <div className="col-span-4 sm:min-w-50">Subject</div>
-          </div>
-          <div className="col-span-2 sm:min-w-20 sm:col-span-1   text-white grid grid-cols-1 justify-center items-center ">
-            <span className=" w-full text-center ">Actions</span>
-          </div>
+            {notices.map((notice) => {
+              return (
+                <NoticeListElement
+                  key={notice.$id}
+                  role={roles[0]}
+                  data={notice}
+                />
+              );
+            })}
+          </table>
         </div>
-        <div className="grid grid-cols-9 my-1 space-y-2 max-h-[70vh] overflow-y-scroll rounded ">
-          {notices.map((notice) => {
-            return (
-              <NoticeListElement
-                key={notice.$id}
-                role={roles[0]}
-                data={notice}
-              />
-            );
-          })}
-          <div ref={ref} className="w-full col-span-9 text-center">
-            {!hasNextPage
-              ? `End of results. Showed ${notices.length}/${notices.length}  entries`
-              : "Scroll to load more"}
-          </div>
-        </div>{" "}
-      </div>
+        <div ref={ref} className="w-full col-span-10 text-center">
+          {!hasNextPage
+            ? `End of results. Showed ${notices.length}/${notices.length}  entries`
+            : "Scroll to load more"}
+        </div>
+      </div>{" "}
     </div>
   );
 };

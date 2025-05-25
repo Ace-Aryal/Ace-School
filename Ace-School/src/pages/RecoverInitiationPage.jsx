@@ -3,6 +3,7 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import authService from "@/appwrite/auth/auth";
 import { toast } from "sonner";
+import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 const RecoverInitiationPage = () => {
   const emaiRef = useRef();
   const handleSubmit = async (e) => {
@@ -11,20 +12,12 @@ const RecoverInitiationPage = () => {
     const success = await authService.initiateAccountRecovery(email);
     if (success) {
       emaiRef.current.value = "";
-      toast.custom(() => (
-        <div className="px-4 py-2 rounded bg-green-600 text-white text-sm flex items-center gap-2 shadow">
-          ✅ If an account with this email exists, a recovery link has been
-          sent. Check the inbox.
-        </div>
-      ));
+      showSuccessToast(`If an account with this email exists, a recovery link has been
+          sent. Check the inbox.`);
       return;
     }
     if (!success) {
-      toast.custom(() => (
-        <div className="px-4 py-2 rounded bg-red-600 text-white text-sm flex items-center gap-2 shadow">
-          ❌ Error Sending Message.
-        </div>
-      ));
+      showErrorToast("Error sending message");
     }
   };
   return (

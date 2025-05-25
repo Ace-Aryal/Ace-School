@@ -7,9 +7,12 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "../Molecules/AppSidebar";
 
 function Applayout() {
-  const [sidebarState, setSidebarState] = useState("expanded");
-  const getSidebarState = (state) => {
-    setSidebarState(state);
+  const [sidebarState, setSidebarState] = useState({
+    expanded: "expanded",
+    isMobile: false,
+  });
+  const getSidebarState = (state, isMobile) => {
+    setSidebarState({ expanded: state, isMobile });
   };
   console.log(sidebarState);
 
@@ -28,13 +31,15 @@ function Applayout() {
   }
 
   return (
-    <SidebarProvider className={`w-[100vw] max-w-[100vw]`}>
+    <SidebarProvider className={``}>
       <Navbar />
       <AppSidebar getSidebarState={getSidebarState} />
 
       <main
         className={`mt-14  flex ${
-          sidebarState === "expanded" ? "w-[calc(100vw-16rem)]" : "w-full"
+          sidebarState.expanded === "expanded"
+            ? "w-full lg:w-[calc(100vw-16rem)]"
+            : "w-full"
         }  `}
       >
         <SidebarTrigger className="p-1 mx-2 hidden lg:inline fixed px-1 z-10" />

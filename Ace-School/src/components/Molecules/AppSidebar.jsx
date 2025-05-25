@@ -143,10 +143,11 @@ export default function AppSidebar({ getSidebarState }) {
   } = useSidebar();
 
   const { roles, username } = useSelector((state) => state?.auth?.user);
-  console.log(state);
 
   useEffect(() => {
-    getSidebarState(state);
+    console.log(state, isMobile);
+
+    getSidebarState(state, isMobile);
   }, [state]);
   return (
     <Sidebar

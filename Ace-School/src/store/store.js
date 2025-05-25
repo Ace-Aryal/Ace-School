@@ -2,23 +2,48 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import authReducer from '@/features/authSlice';
 import inboxReducer from '@/features/inboxSlice'
 import noticeReducer from "@/features/noticeSlice"
-import { persistStore, persistReducer, } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import {
+    persistReducer
+} from 'redux-persist';
+import storage, {
 
-const persistConfig = {
-    key: 'root',
+} from 'redux-persist/lib/storage';
+
+
+
+// Optional: transform for inbox if needed
+
+
+
+// ⬇️ Individual persist configs
+const authPersistConfig = {
+    key: 'auth',
     storage,
 };
 
+const inboxPersistConfig = {
+    key: 'inbox',
+    storage,
+
+};
+
+const noticePersistConfig = {
+    key: 'notice',
+    storage,
+};
+
+// ⬇️ Combine reducers and wrap each one
 const rootReducer = combineReducers({
-    auth: authReducer,
-    inbox: inboxReducer,
-    notice: noticeReducer,
+    auth: persistReducer(authPersistConfig, authReducer),
+    inbox: persistReducer(inboxPersistConfig, inboxReducer),
+    notice: persistReducer(noticePersistConfig, noticeReducer),
 });
-const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-
+// ⬇️ Create store
 export const store = configureStore({
-    reducer: persistedReducer
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false, // Optional: suppress serializable warnings
+        }),
 });
-export const persistor = persistStore(store);

@@ -6,10 +6,13 @@ import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 import authService from "@/appwrite/auth/auth";
 import { clearUser } from "@/features/authSlice";
+import persistStore from "redux-persist/es/persistStore";
+import { store } from "@/store/store";
 const LogoutButton = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const persist = persistStore(store);
   return (
     <Button
       onClick={async () => {
@@ -17,6 +20,7 @@ const LogoutButton = ({}) => {
         try {
           const loggedOut = await authService.logout();
           if (loggedOut) {
+            persist.purge();
             navigate("/");
             dispatch(clearUser());
 
