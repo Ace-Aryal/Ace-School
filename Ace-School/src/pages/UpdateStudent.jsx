@@ -10,15 +10,25 @@ import { useRegisterUser } from "@/hooks/useRegisterUser";
 import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
+import { useLocation } from "react-router";
+
 AuthenticatedContainer;
 const UpdateStudentPage = () => {
+  const location = useLocation();
+  const { originalData } = location.state;
+  console.log(originalData);
+
   const {
     register,
     handleSubmit,
     reset,
     control,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      ["DOB"]: originalData.DOB, // e.g. new Date() or a formatted date string
+    },
+  });
   const { getStudentDocument, createStudentDocument } = databaseService;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
   const { roles } = useSelector((state) => state?.auth?.user);
@@ -66,6 +76,7 @@ const UpdateStudentPage = () => {
                 <input
                   type={formField.type}
                   id={formField.name}
+                  defaultValue={originalData[formField.name]}
                   {...register(formField.name, {
                     required:
                       formField.required && `${formField.name} is required`,
@@ -96,6 +107,8 @@ const UpdateStudentPage = () => {
               <div key={formField.name} className="flex flex-col">
                 <label htmlFor={formField.name}>{formField.label}</label>
                 <select
+                  defaultChecked={originalData[formField.name]}
+                  defaultValue={originalData[formField.name]}
                   {...register(formField.name, {
                     required:
                       formField.required && `${formField.name} is required`,

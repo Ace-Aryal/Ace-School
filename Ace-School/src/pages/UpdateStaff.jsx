@@ -1,19 +1,23 @@
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
 import NepaliDatePicker from "@zener/nepali-datepicker-react";
 import "@zener/nepali-datepicker-react/index.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useStaffFormField } from "@/hooks/useFormFields";
 import { Button } from "@/components/ui/button";
-import { useRegisterUser } from "@/hooks/useRegisterUser";
+
 import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
-const UpdateStaffPage = ({ orignialData }) => {
+import { useLocation } from "react-router";
+const UpdateStaffPage = ({}) => {
+  const location = useLocation();
+  const { originalData } = location.state;
   const staffsFormField = useStaffFormField();
   const { roles } = useSelector((state) => state?.auth?.user);
-  const { getStaffsDocument, createStaffsDocument } = databaseService;
-  const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
+  const handleInitialFormFillup = () => {
+    console.log(originalData);
+  };
 
   const {
     register,
@@ -21,7 +25,16 @@ const UpdateStaffPage = ({ orignialData }) => {
     control,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      ["DOB"]: originalData.DOB,
+      ["joiningDate"]: originalData.joiningDate, // e.g. new Date() or a formatted date string
+    },
+  });
+
+  useEffect(() => {
+    handleInitialFormFillup();
+  }, []);
   if (!roles.includes("admin")) {
     return <ErrorPage />;
   }
@@ -48,6 +61,7 @@ const UpdateStaffPage = ({ orignialData }) => {
                 <input
                   type={formField.type}
                   id={formField.name}
+                  defaultValue={originalData[formField.name]}
                   {...register(formField.name, {
                     required:
                       formField.required && `${formField.name} is required`,
@@ -78,6 +92,7 @@ const UpdateStaffPage = ({ orignialData }) => {
               <div key={formField.name} className="flex flex-col">
                 <label htmlFor={formField.name}>{formField.label}</label>
                 <select
+                  defaultValue={originalData[formField.name]}
                   {...register(formField.name, {
                     required:
                       formField.required && `${formField.name} is required`,

@@ -44,7 +44,11 @@ export const studentColumns = [
               Copy Email Address
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <NavLink className="my-1" to="/view-students/update-student">
+            <NavLink
+              className="my-1"
+              to="/view-students/update-student"
+              state={{ originalData: row.original }}
+            >
               <DropdownMenuItem className=" bg-blue-500 text-white flex items-center">
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
@@ -180,7 +184,11 @@ export const staffColumns = [
               Copy Email Address
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <NavLink className="my-1r" to="/view-staffs/update-staff">
+            <NavLink
+              className="my-1r"
+              to="/view-staffs/update-staff"
+              state={{ originalData: row.original }}
+            >
               <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
                 {" "}
                 <PenSquare /> <p>Update</p>
@@ -289,6 +297,7 @@ export const teacherColumns = [
             <NavLink
               className="my-1   text-white"
               to="/view-teachers/update-teacher"
+              state={{ originalData: row.original }}
             >
               <DropdownMenuItem className=" flex items-center  bg-blue-500">
                 {" "}
