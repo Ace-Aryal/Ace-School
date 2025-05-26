@@ -100,6 +100,18 @@ export const useStudentFormFields = () => {
             type: "text",
             required: false,
         },
+        {
+            name: "scholarship",
+            label: "Scholarship(%)",
+            type: "number",
+            required: false,
+        },
+        {
+            name: "discount",
+            label: "Discount(Nrs)",
+            type: "number",
+            required: false,
+        },
     ];
 }
 export const useStaffFormField = () => {
@@ -185,6 +197,7 @@ export const useStaffFormField = () => {
                 { value: "resigned", label: "Resigned" },
             ],
         },
+
     ];
 
 }

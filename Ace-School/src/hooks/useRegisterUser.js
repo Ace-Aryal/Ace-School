@@ -11,9 +11,13 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
     if (userRole === "Student") {
         email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`.toLowerCase().replaceAll(" ", "")
         name = data.studentName
+
         documentData = {
             ...data,
             email,
+            phoneNumber: data.phoneNumber.trim(),
+            discount: Number(data.discount.trim()),
+            scholarship: Number(data.scholarship.trim()),
             DOB: formattedDOB,
             attendance: false,
             attendanceRecord: JSON.stringify([]),
@@ -25,6 +29,7 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
         const formattedJoiningDate = data.joiningDate ? data.joiningDate.format("YYYY-MM-DD") : "";
         documentData = {
             ...data,
+
             joiningDate: formattedJoiningDate,
             DOB: formattedDOB,
             classes: JSON.stringify(data.classes),
@@ -73,8 +78,14 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
             userMetadataCollectionExists?.total !== 0
         ) {
             // delete all the instances of user
+
             userMetadataCollectionExists.documents.map(async (document) => {
+                console.log(document.role, userRole)
+                if (document.role !== userRole.toLowerCase()) {
+                    return
+                }
                 try {
+
                     const response = await databaseService.deleteCollection(
                         document.$collectionId,
                         document.$id
@@ -83,6 +94,8 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
                         throw new Error("Failed to delete duplicate document");
                     }
                 } catch (error) {
+                    console.log("Here");
+
                     console.error(error);
                     setErrorDeletingDuplicate(true);
                 }
@@ -95,7 +108,9 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
         ) {
             // delete all instances of teacher
             userCollectionAlreadyExists.documents.map(async (document) => {
+                console.log(document.role, userRole)
                 try {
+
                     const response = await databaseService.deleteCollection(
                         document.$collectionId,
                         document.$id

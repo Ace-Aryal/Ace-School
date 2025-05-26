@@ -31,20 +31,21 @@ import { useRegisterUser } from "@/hooks/useRegisterUser";
 import ErrorPage from "./ErrorPage";
 
 const classes = [
-  { value: "nursery", label: "Nursery" },
-  { value: "lkg", label: "LKG" },
-  { value: "ukg", label: "UKG" },
-  { value: "grade-1", label: "Grade 1" },
-  { value: "grade-2", label: "Grade 2" },
-  { value: "grade-3", label: "Grade 3" },
-  { value: "grade-4", label: "Grade 4" },
-  { value: "grade-5", label: "Grade 5" },
-  { value: "grade-6", label: "Grade 6" },
-  { value: "grade-7", label: "Grade 7" },
-  { value: "grade-8", label: "Grade 8" },
-  { value: "grade-9", label: "Grade 9" },
-  { value: "grade-10", label: "Grade 10" },
+  { value: "nursery", label: "Nursery", abbreviation: "NRY" },
+  { value: "lkg", label: "LKG", abbreviation: "LKG" },
+  { value: "ukg", label: "UKG", abbreviation: "UKG" },
+  { value: "grade-1", label: "Grade 1", abbreviation: "G1" },
+  { value: "grade-2", label: "Grade 2", abbreviation: "G2" },
+  { value: "grade-3", label: "Grade 3", abbreviation: "G3" },
+  { value: "grade-4", label: "Grade 4", abbreviation: "G4" },
+  { value: "grade-5", label: "Grade 5", abbreviation: "G5" },
+  { value: "grade-6", label: "Grade 6", abbreviation: "G6" },
+  { value: "grade-7", label: "Grade 7", abbreviation: "G7" },
+  { value: "grade-8", label: "Grade 8", abbreviation: "G8" },
+  { value: "grade-9", label: "Grade 9", abbreviation: "G9" },
+  { value: "grade-10", label: "Grade 10", abbreviation: "G10" },
 ];
+
 const sexes = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
@@ -103,26 +104,69 @@ const status = [
   },
 ];
 const subjects = [
-  { value: "english", label: "English" },
-  { value: "nepali", label: "Nepali" },
-  { value: "math", label: "Mathematics" },
-  { value: "science", label: "Science" },
-  { value: "social", label: "Social Studies" },
-  { value: "moral", label: "Moral Education" },
-  { value: "gk", label: "General Knowledge" },
-  { value: "computer", label: "Computer Science" },
-  { value: "health", label: "Health & Physical Education" },
-  { value: "environment", label: "Environmental Science" },
-  { value: "occupation", label: "Occupation, Business & Technology Education" },
+  { value: "english", label: "English", abbreviation: "ENG" },
+  { value: "nepali", label: "Nepali", abbreviation: "NEP" },
+  { value: "math", label: "Mathematics", abbreviation: "MTH" },
+  { value: "science", label: "Science", abbreviation: "SCI" },
+  { value: "social", label: "Social Studies", abbreviation: "SST" },
+  { value: "moral", label: "Moral Education", abbreviation: "MOR" },
+  { value: "gk", label: "General Knowledge", abbreviation: "GK" },
+  { value: "computer", label: "Computer Science", abbreviation: "CST" },
+  {
+    value: "health",
+    label: "Health & Physical Education",
+    abbreviation: "HPE",
+  },
+  { value: "environment", label: "Environmental Science", abbreviation: "ENV" },
+  {
+    value: "occupation",
+    label: "Occupation, Business & Technology Education",
+    abbreviation: "OBTE",
+  },
 
-  // Optional Subjects (common for Grades 8, 9, 10)
-  { value: "optional_math", label: "Optional Mathematics", optional: true },
-  { value: "accountancy", label: "Accountancy", optional: true },
-  { value: "office_management", label: "Office Management", optional: true },
-  { value: "education", label: "Education", optional: true },
-  { value: "computer_optional", label: "Computer (Optional)", optional: true },
-  { value: "economics", label: "Economics", optional: true },
-  { value: "english_advanced", label: "Advanced English", optional: true },
+  // Optional Subjects
+  {
+    value: "optional_math",
+    label: "Optional Mathematics",
+    optional: true,
+    abbreviation: "O-MTH",
+  },
+  {
+    value: "accountancy",
+    label: "Accountancy",
+    optional: true,
+    abbreviation: "ACC",
+  },
+  {
+    value: "office_management",
+    label: "Office Management",
+    optional: true,
+    abbreviation: "OM",
+  },
+  {
+    value: "education",
+    label: "Education",
+    optional: true,
+    abbreviation: "EDU",
+  },
+  {
+    value: "computer_optional",
+    label: "Computer (Optional)",
+    optional: true,
+    abbreviation: "CST-O",
+  },
+  {
+    value: "economics",
+    label: "Economics",
+    optional: true,
+    abbreviation: "ECO",
+  },
+  {
+    value: "english_advanced",
+    label: "Advanced English",
+    optional: true,
+    abbreviation: "ENG-A",
+  },
 ];
 
 export default function AddTeachersPage() {

@@ -24,7 +24,6 @@ const AddStudentsPage = () => {
   const { roles } = useSelector((state) => state?.auth?.user);
 
   const studentsFormFields = useStudentFormFields();
-  console.log(studentsFormFields);
 
   if (
     roles.some(
