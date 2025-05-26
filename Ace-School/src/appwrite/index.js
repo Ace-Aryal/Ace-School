@@ -12,7 +12,8 @@ const config = {
     appwriteBucketID: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
     emailCollectionID: String(import.meta.env.VITE_EMAIL_COLLECTION_ID),
     noticeCollectionID: String(import.meta.env.VITE_NOTICE_COLLECTION_ID),
-    userMetaDataCollectionID: String(import.meta.env.VITE_USER_COLLECTION_ID)
+    userMetaDataCollectionID: String(import.meta.env.VITE_USER_COLLECTION_ID),
+    deleteUserFunctionID: String(import.meta.env.VITE_DELETE_USER_FUNCTION_ID),
 
 
 }

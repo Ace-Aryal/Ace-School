@@ -5,18 +5,23 @@ export default async ({ req, res, log, error }) => {
   // You can use the Appwrite SDK to interact with other services
   // For this example, we're using the Users service
   const client = new Client()
-    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key'] ?? '');
+    .setEndpoint(process.env.APPWRITE_ENDPOINT)
+    .setProject(process.env.APPWRITE_PROJECT_ID)
+    .setKey(process.env.DELETE_USER_API_KEY);
   const users = new Users(client);
 
   try {
-    const response = await users.list();
-    // Log messages and errors to the Appwrite Console
-    // These logs won't be seen by your end users
-    log(`Total users: ${response.total}`);
-  } catch(err) {
-    error("Could not list users: " + err.message);
+    const payload = JSON.parse(req.env.APPWRITE_FUNCTION_DATA || '{}');
+    const { userId } = payload;
+
+    if (!userId) {
+      return res.json({ error: "Missing userId in payload" });
+    }
+    await users.delete(userId)
+    return res.json({ success: true, deletedUser: userId });
+  } catch (err) {
+    error("Could not delete user: " + err.message);
+    return res.json({ success: false, error: err.message });
   }
 
   // The req object contains the request data
