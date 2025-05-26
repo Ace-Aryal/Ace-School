@@ -39,8 +39,16 @@ import ErrorPage from "@/pages/ErrorPage";
 import { useQuery } from "@tanstack/react-query";
 // to delete
 
-export function DataTable({ columns, role }) {
-  const [grade, setGrade] = useState("");
+export function DataTable({
+  role,
+  columns,
+  data,
+  isLoading,
+
+  error,
+
+  setGrade,
+}) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -53,20 +61,6 @@ export function DataTable({ columns, role }) {
       return roleObject[role];
     },
   };
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["users"],
-    queryFn: async () => {
-      if (role.toLowerCase() === "student") {
-        return await databaseService.getAllStudentsDocs(grade);
-      }
-      if (role.toLowerCase() === "teacher") {
-        return await databaseService.getAllTeachersDocument();
-      }
-      if (role.toLowerCase() === "staff") {
-        return await databaseService.getAllStaffsDocument();
-      }
-    },
-  });
 
   const table = useReactTable({
     data,
@@ -92,12 +86,6 @@ export function DataTable({ columns, role }) {
     },
   });
   const grades = Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`);
-
-  useEffect(() => {
-    if (role.toLowerCase() === "student") {
-      refetch();
-    }
-  }, [grade]);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -184,7 +172,10 @@ export function DataTable({ columns, role }) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      className="border-r border-r-gray-300"
+                      key={header.id}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -205,7 +196,10 @@ export function DataTable({ columns, role }) {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      className="border-r border-r-gray-300"
+                      key={cell.id}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

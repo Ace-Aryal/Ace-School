@@ -33,6 +33,9 @@ import AddStudentsPage from "./pages/AddStudentsPage";
 import ViewStaffsPage from "./pages/ViewStaffsPage";
 import AddStaffsPage from "./pages/AddStaffsPage";
 import SignupPage from "./pages/SignupPage";
+import UpdateStaffPage from "./pages/UpdateStaff";
+import UpdateTeacherPage from "./pages/UpdateTeacher";
+import UpdateStudentPage from "./pages/updateStudent";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
 
@@ -79,13 +82,22 @@ function App() {
               path="view-students/add-student"
               element={<AddStudentsPage />}
             />
+            <Route
+              path="view-students/update-student"
+              element={<UpdateStudentPage />}
+            />
             <Route path="view-staffs" element={<ViewStaffsPage />} />
             <Route path="view-staffs/add-staff" element={<AddStaffsPage />} />
+            <Route
+              path="view-staffs/update-staff"
+              element={<UpdateStaffPage />}
+            />
             <Route path="view-teachers" element={<ViewTeachers />} />
             <Route
               path="view-teachers/add-teacher"
               element={<AddTeachersPage />}
             />
+            <Route path="view-teachers/update-teacher" element={<UpdateTeacherPage />} />
           </>
         )}
       </Route>

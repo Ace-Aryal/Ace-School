@@ -4,7 +4,7 @@ export const useRegisterUser = async (data, { reset, getUserDocumentFn, createUs
 
     // expecting captalized user role
     const formattedDOB = data.DOB ? data.DOB.format("YYYY-MM-DD") : "";
-
+    setErrorDeletingDuplicate(false)
     let email;
     let name;
     let documentData;

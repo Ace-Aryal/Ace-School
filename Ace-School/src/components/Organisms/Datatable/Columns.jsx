@@ -7,7 +7,7 @@ import {
   PenSquare,
   Trash2,
 } from "lucide-react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +22,8 @@ import { Button } from "@/components/ui/button";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-
+import { Navigate } from "react-router";
+import { useCaptiaize } from "@/hooks/useCapitalize";
 export const studentColumns = [
   {
     id: "actions",
@@ -43,10 +44,11 @@ export const studentColumns = [
               Copy Email Address
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
-              {" "}
-              <PenSquare /> Update
-            </DropdownMenuItem>
+            <NavLink className="my-1" to="/view-students/update-student">
+              <DropdownMenuItem className=" bg-blue-500 text-white flex items-center">
+                <PenSquare /> <p>Update</p>
+              </DropdownMenuItem>
+            </NavLink>{" "}
             <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
               {" "}
               <Trash2 /> Delete
@@ -138,7 +140,10 @@ export const studentColumns = [
     header: "Attendence Records",
     cell: ({ row }) => {
       return (
-        <Link className="text-blue-600 flex items-center gap-1" to="#">
+        <Link
+          className="text-blue-600 flex items-center gap-1  w-full justify-center "
+          to="#"
+        >
           View
           <Link2 />
         </Link>
@@ -175,10 +180,12 @@ export const staffColumns = [
               Copy Email Address
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
-              {" "}
-              <PenSquare /> Update
-            </DropdownMenuItem>
+            <NavLink className="my-1r" to="/view-staffs/update-staff">
+              <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
+                {" "}
+                <PenSquare /> <p>Update</p>
+              </DropdownMenuItem>
+            </NavLink>{" "}
             <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
               {" "}
               <Trash2 /> Delete
@@ -211,6 +218,17 @@ export const staffColumns = [
   {
     accessorKey: "gender",
     header: "Gender", // genderRequired
+    cell: ({ row }) => {
+      const sex = row.getValue("gender");
+
+      if (sex === "male") {
+        return <p>M</p>;
+      }
+      if (sex === "female") {
+        return <p>F</p>;
+      }
+      return <p>O</p>;
+    },
   },
   {
     accessorKey: "address",
@@ -234,7 +252,18 @@ export const staffColumns = [
   },
   {
     accessorKey: "attendanceRecord",
-    header: "Attendance Records", // attendanceRecordRequired (Link to detailed table)
+    header: "Attendance Records",
+    cell: ({ row }) => {
+      return (
+        <Link
+          className="text-blue-600 flex items-center gap-1  w-full justify-center "
+          to="#"
+        >
+          View
+          <Link2 />
+        </Link>
+      ); // attendanceRecordRequired (Link to detailed table)
+    },
   },
 ];
 export const teacherColumns = [
@@ -257,10 +286,15 @@ export const teacherColumns = [
               Copy Email Address
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
-              {" "}
-              <PenSquare /> Update
-            </DropdownMenuItem>
+            <NavLink
+              className="my-1   text-white"
+              to="/view-teachers/update-teacher"
+            >
+              <DropdownMenuItem className=" flex items-center  bg-blue-500">
+                {" "}
+                <PenSquare /> <p>Update</p>
+              </DropdownMenuItem>
+            </NavLink>{" "}
             <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
               {" "}
               <Trash2 /> Delete
@@ -288,7 +322,18 @@ export const teacherColumns = [
   },
   {
     accessorKey: "sex",
-    header: "Sex", // sexRequired (Using 'sex' as per your studentColumns)
+    header: "Sex",
+    cell: ({ row }) => {
+      const sex = row.getValue("sex");
+
+      if (sex === "male") {
+        return <p>M</p>;
+      }
+      if (sex === "female") {
+        return <p>F</p>;
+      }
+      return <p>O</p>;
+    }, // sexRequired (Using 'sex' as per your studentColumns)
   },
   {
     accessorKey: "DOB",
@@ -301,10 +346,23 @@ export const teacherColumns = [
   {
     accessorKey: "qualification",
     header: "Qualification", // qualificationRequired
+    cell: ({ row }) => {
+      const qualification = row.getValue("qualification") || "null";
+      console.log(qualification);
+
+      const capitalized = useCaptiaize(qualification);
+      return <span>{capitalized}</span>; // attendanceRecordRequired (Link to detailed table)
+    },
   },
   {
     accessorKey: "jobType",
     header: "Job Type", // jobTypeRequired (e.g., Full-time, Part-time)
+    cell: ({ row }) => {
+      const jobType = row.getValue("jobType") || "null";
+
+      const capitalized = useCaptiaize(jobType);
+      return <span>{capitalized}</span>; // attendanceRecordRequired (Link to detailed table)
+    },
   },
   {
     accessorKey: "joiningDate",
@@ -320,18 +378,63 @@ export const teacherColumns = [
   },
   {
     accessorKey: "subjectsTaught",
-    header: "Subjects Taught", // subjectsTaughtRequired (Could be an array or comma-separated string)
+    header: "Subjects Taught",
+    cell: ({ row }) => {
+      const subjectsObject = JSON.parse(row.getValue("subjectsTaught") || "{}");
+
+      return (
+        <div className="flex gap-2">
+          {subjectsObject.map((subject) => (
+            <span key={subject.abbreviation}>{subject.abbreviation}</span>
+          ))}
+        </div>
+      );
+    }, // subjectsTaughtRequired (Could be an array or comma-separated string)
   },
   {
     accessorKey: "classes",
     header: "Classes", // classesRequired (e.g., Grade 10, Grade 12 Science)
+    cell: ({ row }) => {
+      const classesObject = JSON.parse(row.getValue("classes") || "{}");
+
+      return (
+        <div className="flex gap-2">
+          {classesObject.map((grade) => (
+            <span key={grade.abbreviation}>{grade.abbreviation}</span>
+          ))}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "attendance",
     header: "Attendance", // attendance
+    cell: ({ row }) => {
+      const attendance = row.getValue("attendance");
+      return (
+        <div>
+          {attendance ? (
+            <span className="text-green-500"> Present </span>
+          ) : (
+            <span className="text-red-500">Absent</span>
+          )}
+        </div>
+      ); // attendanceRecordRequired (Link to detailed table)
+    },
   },
   {
     accessorKey: "attendanceRecord",
-    header: "Attendance Records", // attendanceRecordRequired (Link to detailed table)
+    header: "Attendance Records",
+    cell: ({ row }) => {
+      return (
+        <Link
+          className="text-blue-600 flex items-center w-full justify-center gap-1"
+          to="#"
+        >
+          View
+          <Link2 />
+        </Link>
+      ); // attendanceRecordRequired (Link to detailed table)
+    },
   },
 ];
