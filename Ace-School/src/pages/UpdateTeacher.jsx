@@ -27,8 +27,9 @@ import {
 } from "@/components/ui/command";
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
-import { useRegisterUser } from "@/hooks/useRegisterUser";
+import { registerUser } from "@/utils/handleRegisterUser";
 import ErrorPage from "./ErrorPage";
+import { useLocation } from "react-router";
 
 const classes = [
   { value: "nursery", label: "Nursery", abbreviation: "NRY" },
@@ -170,6 +171,8 @@ const subjects = [
 ];
 
 export default function UpdateTeacherPage() {
+  const location = useLocation();
+  const { originalData } = location.state;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
   const { roles } = useSelector((state) => state?.auth?.user);
   const {
@@ -179,7 +182,21 @@ export default function UpdateTeacherPage() {
     control,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+      teacherId: originalData?.teacherId || "",
+      teacherName: originalData?.teacherName || "",
+      email: originalData?.email || "",
+      teacherPhone: originalData?.teacherPhone || "",
+      address: originalData?.address || "",
+      DOB: originalData?.DOB || "", // Assuming DOB is stored in a format compatible with NepaliDatePicker
+      sex: originalData?.sex || "",
+      jobType: originalData?.jobType || "",
+      qualification: originalData?.qualification || "",
+      status: originalData?.status || "",
+      classes: JSON.parse(originalData?.classes) || [], // Assuming classes is an array of objects {value, label}
+      subjectsTaught: JSON.parse(originalData?.subjectsTaught) || [], // Assuming subjectsTaught is an array of objects {value, label}
+      joiningDate: originalData?.joiningDate || "", // Assuming joiningDate is stored in a format compatible with NepaliDatePicker
+    },
   });
 
   const { getTeacherDocument, createteacherDocument } = databaseService;

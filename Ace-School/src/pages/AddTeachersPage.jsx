@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/command";
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
-import { useRegisterUser } from "@/hooks/useRegisterUser";
+import { registerUser } from "@/utils/handleRegisterUser";
 import ErrorPage from "./ErrorPage";
 
 const classes = [
@@ -179,7 +179,9 @@ export default function AddTeachersPage() {
     control,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+      ["subjectsTaught"]: "",
+    },
   });
 
   const { getTeacherDocument, createteacherDocument } = databaseService;
@@ -195,7 +197,7 @@ export default function AddTeachersPage() {
 
       <form
         onSubmit={handleSubmit((data) =>
-          useRegisterUser(data, {
+          registerUser(data, {
             reset,
             getUserDocumentFn: getTeacherDocument,
             createUserDocmentFn: createteacherDocument,
@@ -585,6 +587,7 @@ export default function AddTeachersPage() {
                 <Select
                   className=" border text-md  rounded bg-gray-100 shadow focus:outline-gray-700"
                   isMulti
+                  defaultValue=""
                   options={classes}
                   value={field.value}
                   onChange={(value) => field.onChange(value)}
@@ -606,6 +609,7 @@ export default function AddTeachersPage() {
             render={({ field }) => {
               return (
                 <Select
+                  defaultValue=""
                   className=" border text-md  rounded bg-gray-100 shadow focus:outline-gray-700"
                   isMulti
                   options={subjects}
@@ -615,8 +619,10 @@ export default function AddTeachersPage() {
               );
             }}
           />
-          {errors.subjects && (
-            <p className="text-sm text-red-500">{errors.subjects.message}</p>
+          {errors.subjectsTaught && (
+            <p className="text-sm text-red-500">
+              {errors.subjectsTaught.message}
+            </p>
           )}
         </div>
         {/* Date Picker */}

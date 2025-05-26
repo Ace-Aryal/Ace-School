@@ -3,10 +3,10 @@ import NepaliDatePicker from "@zener/nepali-datepicker-react";
 import "@zener/nepali-datepicker-react/index.css";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useStudentFormFields } from "@/hooks/useFormFields";
+import { getStudentFormFiled } from "@/utils/formFields";
 import { Button } from "@/components/ui/button";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
-import { useRegisterUser } from "@/hooks/useRegisterUser";
+import { registerUser } from "@/utils/handleRegisterUser";
 import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
@@ -26,14 +26,14 @@ const UpdateStudentPage = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      ["DOB"]: originalData.DOB, // e.g. new Date() or a formatted date string
+      ["DOB"]: originalData.DOB || " ", // e.g. new Date() or a formatted date string
     },
   });
   const { getStudentDocument, createStudentDocument } = databaseService;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
   const { roles } = useSelector((state) => state?.auth?.user);
 
-  const studentsFormFields = useStudentFormFields();
+  const studentsFormFields = getStudentFormFiled();
 
   if (
     roles.some(
@@ -51,7 +51,7 @@ const UpdateStudentPage = () => {
       </h2>
       <form
         onSubmit={handleSubmit((data) =>
-          useRegisterUser(data, {
+          registerUser(data, {
             reset,
             getUserDocumentFn: getStudentDocument,
             createUserDocmentFn: createStudentDocument,

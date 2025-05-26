@@ -3,7 +3,7 @@ import NepaliDatePicker from "@zener/nepali-datepicker-react";
 import "@zener/nepali-datepicker-react/index.css";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useStaffFormField } from "@/hooks/useFormFields";
+import { getStaffFormField } from "@/utils/formFields";
 import { Button } from "@/components/ui/button";
 
 import databaseService from "@/appwrite/Database/database";
@@ -13,7 +13,7 @@ import { useLocation } from "react-router";
 const UpdateStaffPage = ({}) => {
   const location = useLocation();
   const { originalData } = location.state;
-  const staffsFormField = useStaffFormField();
+  const staffsFormField = getStaffFormField();
   const { roles } = useSelector((state) => state?.auth?.user);
   const handleInitialFormFillup = () => {
     console.log(originalData);
@@ -27,8 +27,8 @@ const UpdateStaffPage = ({}) => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      ["DOB"]: originalData.DOB,
-      ["joiningDate"]: originalData.joiningDate, // e.g. new Date() or a formatted date string
+      ["DOB"]: originalData?.DOB || "",
+      ["joiningDate"]: originalData?.joiningDate || "", // e.g. new Date() or a formatted date string
     },
   });
 

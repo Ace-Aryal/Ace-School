@@ -3,14 +3,14 @@ import NepaliDatePicker from "@zener/nepali-datepicker-react";
 import "@zener/nepali-datepicker-react/index.css";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useStaffFormField } from "@/hooks/useFormFields";
+import { getStaffFormField } from "@/utils/formFields";
 import { Button } from "@/components/ui/button";
-import { useRegisterUser } from "@/hooks/useRegisterUser";
+import { registerUser } from "@/utils/handleRegisterUser";
 import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
 const AddStaffsPage = () => {
-  const staffsFormField = useStaffFormField();
+  const staffsFormField = getStaffFormField();
   const { roles } = useSelector((state) => state?.auth?.user);
   const { getStaffsDocument, createStaffsDocument } = databaseService;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
@@ -32,7 +32,7 @@ const AddStaffsPage = () => {
       </h2>
       <form
         onSubmit={handleSubmit((data) => {
-          useRegisterUser(data, {
+          registerUser(data, {
             getUserDocumentFn: getStaffsDocument,
             createUserDocmentFn: createStaffsDocument,
             userRole: "Staff",

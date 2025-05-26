@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 import { Navigate } from "react-router";
-import { useCaptiaize } from "@/hooks/useCapitalize";
+import { capitalize } from "@/utils/capitalize";
 export const studentColumns = [
   {
     id: "actions",
@@ -359,7 +359,7 @@ export const teacherColumns = [
       const qualification = row.getValue("qualification") || "null";
       console.log(qualification);
 
-      const capitalized = useCaptiaize(qualification);
+      const capitalized = capitalize(qualification);
       return <span>{capitalized}</span>; // attendanceRecordRequired (Link to detailed table)
     },
   },
@@ -369,7 +369,7 @@ export const teacherColumns = [
     cell: ({ row }) => {
       const jobType = row.getValue("jobType") || "null";
 
-      const capitalized = useCaptiaize(jobType);
+      const capitalized = capitalize(jobType);
       return <span>{capitalized}</span>; // attendanceRecordRequired (Link to detailed table)
     },
   },

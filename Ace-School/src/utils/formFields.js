@@ -1,4 +1,4 @@
-export const useStudentFormFields = () => {
+export const getStudentFormFiled = () => {
     return [
         {
             name: "grade",
@@ -114,7 +114,7 @@ export const useStudentFormFields = () => {
         },
     ];
 }
-export const useStaffFormField = () => {
+export const getStaffFormField = () => {
     return [
         {
             name: "staffId",
