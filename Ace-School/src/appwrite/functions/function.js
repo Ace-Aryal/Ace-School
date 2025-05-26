@@ -11,8 +11,8 @@ class FunctionService {
             .setProject(config.appwritreProjectID)
         this.functions = new Functions(this.client)
 
-        deleteUser = (userId) => {
-            this.functions.createExecution(config.deleteUserFunctionID, JSON.stringify({ userId: userId }))
+        deleteUser = (email) => {
+            this.functions.createExecution(config.deleteUserFunctionID, JSON.stringify({ email: email }))
                 .then((response) => {
                     console.log("Function executed successfully", response);
                     showSuccessToast("User account deleted sucessfully")

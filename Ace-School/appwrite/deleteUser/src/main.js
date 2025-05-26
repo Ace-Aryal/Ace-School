@@ -1,3 +1,4 @@
+import { Query } from 'appwrite';
 import { Client, Users } from 'node-appwrite';
 
 // This Appwrite function will be executed every time your function is triggered
@@ -12,13 +13,24 @@ export default async ({ req, res, log, error }) => {
 
   try {
     const payload = JSON.parse(req.env.APPWRITE_FUNCTION_DATA || '{}');
-    const { userId } = payload;
-
-    if (!userId) {
-      return res.json({ error: "Missing userId in payload" });
+    const { email } = payload;
+    if (!email) {
+      return res.json({ error: "Missing email in payload" });
     }
-    await users.delete(userId)
+    const userList = await users.list([
+      Query.equal("email", [email])
+    ]);
+
+    if (userList.total === 0) {
+      return res.json({ success: false, error: "User not found" });
+    }
+
+    const userId = userList.users[0].$id;
+
+    await users.delete(userId);
+
     return res.json({ success: true, deletedUser: userId });
+
   } catch (err) {
     error("Could not delete user: " + err.message);
     return res.json({ success: false, error: err.message });
