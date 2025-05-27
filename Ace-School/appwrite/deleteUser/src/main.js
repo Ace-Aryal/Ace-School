@@ -14,6 +14,9 @@ export default async ({ req, res, log, error }) => {
   try {
     const payload = JSON.parse(req.bodyRaw || '{}');
     const email = payload;
+    console.log(email);
+    log(email)
+
     if (!email) {
       return res.json({ error: "Missing email in payload" });
     }
