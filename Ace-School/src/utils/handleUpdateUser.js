@@ -73,7 +73,7 @@ export const updateUser = async (data, { reset, navigate, documentID, collection
     try {
         if (email !== originalEmail) {
             const [response, metadataFetchResponse] = await Promise.all([functionService.deleteUser(originalEmail), await databaseService.getUserDocument(originalEmail)])
-            console.log(response)
+            console.log(response, metadataFetchResponse)
             if (response?.responseStatusCode !== 200) {
                 showErrorToast("Failed to delete user")
                 return
@@ -83,16 +83,16 @@ export const updateUser = async (data, { reset, navigate, documentID, collection
 
 
             if (!responseBody.success) {
-                showErrorToast("Failed to delete user")
+                showErrorToast("Failed to update user")
                 return
             }
-            showSuccessToast("User Deleted Sucessfully")
+
             const updatedMetadataDocument = { email, name, role: userRole }
             if (!metadataFetchResponse) {
                 showErrorToast("Could'nt fetch metadata")
                 return
             }
-            const documentID = metadataFetchResponse.documents[0].$documentId
+            const documentID = metadataFetchResponse.documents[0]?.$id
             const metadataUpdateResponse = await databaseService.updateUserMetaData(updatedMetadataDocument, documentID)
             if (!metadataUpdateResponse) {
                 showErrorToast("Could'nt update metadata  ")

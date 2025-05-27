@@ -456,6 +456,7 @@ class DatabaseService {
 
     }
     updateUserMetaData = async (updatedDocument, documentID) => {
+        console.log(documentID)
         try {
             const result = await this.database.updateDocument(
                 appwriteDatabaseID, // databaseId
@@ -466,8 +467,8 @@ class DatabaseService {
             );
             return true
         } catch (error) {
-            return false
             console.error(error);
+            return false
 
         }
 

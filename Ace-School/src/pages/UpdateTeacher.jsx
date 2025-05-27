@@ -672,7 +672,7 @@ export default function UpdateTeacherPage() {
             type="submit"
             className="w-fit text-lg bg-blue-500 text-gray-100"
           >
-            {isSubmitting ? "Adding.." : "Add"}
+            {isSubmitting ? "Updating.." : "Update"}
           </Button>
         </div>
       </form>

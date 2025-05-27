@@ -53,7 +53,10 @@ export const studentColumns = [
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
             </NavLink>{" "}
-            <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
+            <DropdownMenuItem
+              onClick={() => {}}
+              className="my-1 bg-red-500 text-white flex items-center"
+            >
               {" "}
               <Trash2 /> Delete
             </DropdownMenuItem>
