@@ -6,11 +6,15 @@ export const updateUser = async (data, { reset, documentID, collectionID, userRo
 
     // expecting captalized user role
     let formattedDOB
+    let formattedJoiningDate
     if (data.DOB !== originalDOB) {
+        console.log(data.DOB, originalDOB);
 
         formattedDOB = data.DOB ? data.DOB.format("YYYY-MM-DD") : "";
     }
-    if ((userRole.toLowerCase() === "teacher" || userRole.toLowerCase() === "staff") && data.joiningDate !== originalJoiningDate) { }
+    if ((userRole.toLowerCase() === "teacher" || userRole.toLowerCase() === "staff") && data.joiningDate !== originalJoiningDate) {
+        formattedJoiningDate = data.joiningDate ? data.joiningDate.format("YYYY-MM-DD") : ""
+    }
 
     let email;
     let name;
@@ -31,7 +35,7 @@ export const updateUser = async (data, { reset, documentID, collectionID, userRo
     if (userRole.toLowerCase() === "teacher") {
         email = data.email
         name = data.teacherName
-        const formattedJoiningDate = data.joiningDate ? data.joiningDate.format("YYYY-MM-DD") : "";
+
         updatedDocument = {
             ...data,
 
@@ -43,7 +47,7 @@ export const updateUser = async (data, { reset, documentID, collectionID, userRo
     if (userRole.toLowerCase() === "staff") {
         email = data.email
         name = data.fullName
-        const formattedJoiningDate = data.joiningDate ? data.joiningDate.format("YYYY-MM-DD") : "";
+
         userRole = data.role // staff has multiple roles so mutating userrole 
         updatedDocument = {
             ...data,

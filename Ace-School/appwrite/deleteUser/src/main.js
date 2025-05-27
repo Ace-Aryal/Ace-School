@@ -12,8 +12,8 @@ export default async ({ req, res, log, error }) => {
   const users = new Users(client);
 
   try {
-    const payload = JSON.parse(process.env.APPWRITE_FUNCTION_DATA || '{}');
-    const { email } = payload;
+    const payload = JSON.parse(req.bodyRaw || '{}');
+    const email = payload;
     if (!email) {
       return res.json({ error: "Missing email in payload" });
     }

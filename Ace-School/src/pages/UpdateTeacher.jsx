@@ -179,6 +179,7 @@ export default function UpdateTeacherPage() {
   const collectionID = originalData.$collectionId;
   const documentID = originalData.$documentId;
   const originalDOB = originalData.DOB;
+  const originalEmail = originalData.email;
   const originalJoiningDate = originalData.joiningDate;
   const {
     register,
