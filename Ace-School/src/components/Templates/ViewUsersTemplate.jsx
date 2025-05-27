@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../Atoms/button";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ErrorPage from "@/pages/ErrorPage";
 import { DataTable } from "../Organisms/Datatable/Datatable";
 
@@ -13,10 +13,12 @@ const ViewUsers = ({
   isLoading,
 
   error,
-
+  refetch,
   setGrade,
 }) => {
   const navigate = useNavigate();
+  const loading = useSelector((state) => state.loading.isLoading);
+  const dispatch = useDispatch();
   const { roles } = useSelector((state) => state?.auth?.user);
   const roleObject = {
     teacher: "Teacher",
@@ -29,7 +31,12 @@ const ViewUsers = ({
   if (roles.some((role) => role !== "teacher" && role !== "admin")) {
     return <ErrorPage />;
   }
-
+  const dataWithContext = data.map((item) => ({
+    ...item,
+    dispatch,
+    loading,
+    refetch,
+  }));
   return (
     <main className="container  flex flex-col items-center  p-5 w-full">
       <section id="top" className="flex justify-between items-center w-full">
@@ -59,7 +66,7 @@ const ViewUsers = ({
         <DataTable
           columns={columns}
           role={role}
-          data={data}
+          data={dataWithContext}
           isLoading={isLoading}
           error={error}
           setGrade={setGrade}

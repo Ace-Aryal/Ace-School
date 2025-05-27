@@ -3,9 +3,11 @@ import { studentColumns } from "@/components/Organisms/Datatable/Columns";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import databaseService from "@/appwrite/Database/database";
+import LoadingPage from "./LoadingPage";
+import ErrorPage from "./ErrorPage";
 const ViewStudents = () => {
   const [grade, setGrade] = useState(null);
-  const { data, isLoading, isFetching, error, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["students"],
     queryFn: async () => {
       try {
@@ -18,6 +20,13 @@ const ViewStudents = () => {
   useEffect(() => {
     refetch();
   }, [grade]);
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+  if (isError) {
+    return <ErrorPage />;
+  }
+
   return (
     <div className="w-full flex justify-center m-0 p-0">
       <ViewUsers
@@ -27,6 +36,7 @@ const ViewStudents = () => {
         isLoading={isLoading}
         error={error}
         setGrade={setGrade}
+        refetch={refetch}
       />
     </div>
   );

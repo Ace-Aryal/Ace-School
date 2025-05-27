@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import authService from "@/appwrite/auth/auth";
+import Spinner from "@/components/Atoms/Spinner";
 
 export default function SignupPage() {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export default function SignupPage() {
     handleSubmit,
     reset,
     watch,
-    formState: { errors, isSubmitted },
+    formState: { errors, isSubmitting },
   } = useForm();
   const [isShowingPassword, setIshowingPassword] = useState(false);
   const password = watch("password");
@@ -211,7 +212,7 @@ export default function SignupPage() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                {"Signup"}
+                {isSubmitting ? <Spinner /> : "Signup"}
               </button>
             </div>
           </form>

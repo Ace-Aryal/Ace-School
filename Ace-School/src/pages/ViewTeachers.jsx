@@ -4,8 +4,10 @@ import ViewUsers from "@/components/Templates/ViewUsersTemplate";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
+import LoadingPage from "./LoadingPage";
+import ErrorPage from "./ErrorPage";
 const ViewTeachers = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, isError, refetch } = useQuery({
     queryKey: ["teachers"],
     queryFn: async () => {
       try {
@@ -15,6 +17,13 @@ const ViewTeachers = () => {
       }
     },
   });
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+  if (isError) {
+    return <ErrorPage />;
+  }
+
   return (
     <ViewUsers
       role="teacher"
@@ -24,6 +33,7 @@ const ViewTeachers = () => {
       error={error}
       setGrade={null}
       key="teacher"
+      refetch={refetch}
     />
   );
 };

@@ -7,24 +7,23 @@ import { useForm } from "react-hook-form";
 import databaseService from "@/appwrite/Database/database";
 import { toast } from "sonner";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
+import Spinner from "@/components/Atoms/Spinner";
 function ContactPage() {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
-  const [submitting, setSubmitting] = useState(false);
+
   const sendMessage = async (data) => {
-    setSubmitting(true);
     const response = await databaseService.createMessage(data);
     if (response === true) {
       showSuccessToast("Message sent sucessfullly !");
       reset();
-      setSubmitting(false);
+
       return;
     }
-    setSubmitting(false);
 
     showErrorToast("Error sending message");
   };
@@ -87,10 +86,11 @@ function ContactPage() {
           )}
           <button
             type="submit"
+            disabled={isSubmitting}
             id="message"
-            className=" border-1  focus:ring-blue-500 focus:border-blue-500   rounded-3xl py-2.5 pl-2 pr-2 text-left w-fit bg-orange-400 text-white self-center hover:bg-blue-50 hover:text-black"
+            className=" border-1  focus:ring-blue-500 focus:border-blue-500   rounded-3xl py-2.5 pl-2 pr-2 text-left w-32 bg-orange-400 text-white self-center hover:bg-blue-50 hover:text-black"
           >
-            {submitting ? "Sending..." : "Send Message"}
+            {isSubmitting ? <Spinner /> : "Send Message"}
           </button>
         </form>
         <div className="flex text-[0.9rem] justify-center  mt-6 sm:mt-0">

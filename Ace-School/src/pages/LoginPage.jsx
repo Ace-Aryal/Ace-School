@@ -8,20 +8,19 @@ import { setUser } from "@/features/authSlice";
 import { showErrorToast } from "@/components/Templates/toast";
 import databaseService from "@/appwrite/Database/database";
 import { Eye, EyeOff } from "lucide-react";
+import Spinner from "@/components/Atoms/Spinner";
 function LoginPage(props) {
   const {
     register,
     handleSubmit,
 
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [logging, setLogging] = useState(false);
+
   const [isShowingPassword, setIshowingPassword] = useState(false);
   const login = async (data) => {
-    setLogging(true);
-
     try {
       let isStillLoggedIn = (await authService.getCurrentUser()) || null;
       if (isStillLoggedIn) {
@@ -71,7 +70,6 @@ function LoginPage(props) {
       console.error(error);
       showErrorToast("Error logging in");
     } finally {
-      setLogging(false);
     }
   };
 
@@ -100,7 +98,7 @@ function LoginPage(props) {
               onSubmit={handleSubmit(login)}
               action="#"
             >
-              <div>
+              <div className="flex flex-col">
                 <label
                   for="email"
                   class="block mb-2 text-sm font-medium  text-gray-900"
@@ -112,18 +110,21 @@ function LoginPage(props) {
                   name="email"
                   id="email"
                   {...register("email", {
+                    required: "Email is required",
                     pattern: {
                       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                       message: "Enter valid email",
                     },
-                    required: true,
                   })}
                   className={`  border  rounded-lg   block w-full p-2  border-gray-500 placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500`}
                   placeholder="user@example.com"
                   required=""
                 />
+                {errors.email && (
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                )}
               </div>
-              <div>
+              <div className="flex flex-col">
                 <label
                   for="password"
                   class="block mb-2 text-sm font-medium text-gray-900 text-text-900"
@@ -137,10 +138,13 @@ function LoginPage(props) {
                     id="password"
                     placeholder="••••••••"
                     {...register("password", {
-                      required: true,
+                      required: "Password is required",
+                      pattern: {
+                        value: /^.{8,}$/,
+                        message: "Password must be greater than 8 characters",
+                      },
                     })}
-                    class=" border rounded-lg block w-full p-2.5  border-gray-500 placeholder-gray-400 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
-                    required=""
+                    className=" border rounded-lg block w-full p-2.5  border-gray-500 placeholder-gray-400 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
                   />
                   <button
                     type="button"
@@ -152,6 +156,11 @@ function LoginPage(props) {
                     {isShowingPassword ? <Eye /> : <EyeOff />}
                   </button>
                 </div>
+                {errors.password && (
+                  <p className="text-sm text-red-500">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               <div class="flex items-center justify-between">
@@ -165,9 +174,10 @@ function LoginPage(props) {
 
               <button
                 type="submit"
+                disabled={isSubmitting}
                 class="w-full text-white  focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-800"
               >
-                {logging ? "Logging in" : "Login"}
+                {isSubmitting ? <Spinner /> : "Login"}
               </button>
               <p class="text-sm font-light text-gray-500 dark:text-gray-800">
                 Don’t have an account yet?{" "}

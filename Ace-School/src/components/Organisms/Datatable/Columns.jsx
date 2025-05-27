@@ -8,6 +8,16 @@ import {
   Trash2,
 } from "lucide-react";
 import { Link, NavLink } from "react-router";
+import { useSelector } from "react-redux";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Spinner from "@/components/Atoms/Spinner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,10 +35,18 @@ import { Button } from "@/components/ui/button";
 import { Navigate } from "react-router";
 import { capitalize } from "@/utils/capitalize";
 import { handleDocumentDelete } from "@/utils/handleDocumentDelete";
+import { setLoading } from "@/features/loadingStateTrackerSlice";
+
+let isLoading;
 export const studentColumns = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const { email, $collectionId, $id, loading, dispatch, refetch } =
+        row.original;
+      const originalData = JSON.parse(JSON.stringify(row.original));
+      delete originalData.dispatch;
+      delete originalData.refetch;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -48,27 +66,35 @@ export const studentColumns = [
             <NavLink
               className="my-1"
               to="/view-students/update-student"
-              state={{ originalData: row.original }}
+              state={{ originalData }}
             >
-              <DropdownMenuItem className=" bg-zinc-800 text-white flex items-center">
+              <DropdownMenuItem className=" bg-zinc-800 text-white gap-1 justify-center flex items-center">
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
             </NavLink>{" "}
             <DropdownMenuItem
-              onClick={() => {
+              onSelect={(event) => {
+                event.preventDefault();
+              }}
+              onClick={async () => {
                 console.log(row.original);
-
-                const { email, $collectionId, $id } = row.original;
+                dispatch(setLoading());
                 handleDocumentDelete({
                   documentId: $id,
                   collectionId: $collectionId,
                   email,
+                  refetch,
                 });
               }}
-              className="my-1 bg-red-500 text-white flex items-center"
+              className="my-1 bg-red-500 text-white gap-1 justify-center flex items-center"
             >
-              {" "}
-              <Trash2 /> Delete
+              {loading ? (
+                <Spinner />
+              ) : (
+                <>
+                  <Trash2 /> <span>Delete</span>
+                </>
+              )}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -193,6 +219,11 @@ export const staffColumns = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const { email, $collectionId, $id, loading, dispatch, refetch } =
+        row.original;
+      const originalData = JSON.parse(JSON.stringify(row.original));
+      delete originalData.dispatch;
+      delete originalData.refetch;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -212,16 +243,37 @@ export const staffColumns = [
             <NavLink
               className="my-1r"
               to="/view-staffs/update-staff"
-              state={{ originalData: row.original }}
+              state={{ originalData }}
             >
-              <DropdownMenuItem className="my-1 bg-zinc-800 text-white flex items-center">
+              <DropdownMenuItem className="my-1 bg-zinc-800 text-white justify-center gap-1  flex items-center">
                 {" "}
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
             </NavLink>{" "}
-            <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault();
+              }}
+              onClick={async () => {
+                console.log(row.original);
+                dispatch(setLoading());
+                handleDocumentDelete({
+                  documentId: $id,
+                  collectionId: $collectionId,
+                  email,
+                  refetch,
+                });
+              }}
+              className="my-1 bg-red-500 text-white justify-center gap-1 flex items-center"
+            >
               {" "}
-              <Trash2 /> Delete
+              {loading ? (
+                <Spinner />
+              ) : (
+                <>
+                  <Trash2 /> <span>Delete</span>
+                </>
+              )}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -315,6 +367,11 @@ export const teacherColumns = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const { email, $collectionId, $id, loading, dispatch, refetch } =
+        row.original;
+      const originalData = JSON.parse(JSON.stringify(row.original));
+      delete originalData.dispatch;
+      delete originalData.refetch;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -334,16 +391,36 @@ export const teacherColumns = [
             <NavLink
               className="my-1   text-white"
               to="/view-teachers/update-teacher"
-              state={{ originalData: row.original }}
+              state={{ originalData }}
             >
-              <DropdownMenuItem className=" flex items-center  bg-zinc-800">
+              <DropdownMenuItem className=" flex items-center justify-center gap-1  bg-zinc-800">
                 {" "}
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
             </NavLink>{" "}
-            <DropdownMenuItem className="my-1 bg-red-500 text-white flex items-center">
-              {" "}
-              <Trash2 /> Delete
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault();
+              }}
+              onClick={async () => {
+                console.log(row.original);
+                dispatch(setLoading());
+                handleDocumentDelete({
+                  documentId: $id,
+                  collectionId: $collectionId,
+                  email,
+                  refetch,
+                });
+              }}
+              className="my-1 w-full bg-red-500 text-white flex items-center gap-1 justify-center"
+            >
+              {loading ? (
+                <Spinner />
+              ) : (
+                <>
+                  <Trash2 /> <span>Delete</span>
+                </>
+              )}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

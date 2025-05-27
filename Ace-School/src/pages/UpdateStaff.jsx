@@ -41,7 +41,7 @@ const UpdateStaffPage = ({}) => {
   }
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
-      <h2 className="text-2xl text-zinc-800 font-bold text-center">
+      <h2 className="text-3xl text-zinc-800 w-full font-semibold md:max-w-[70vw]">
         Update Staff Info
       </h2>
       <form
@@ -51,9 +51,9 @@ const UpdateStaffPage = ({}) => {
             collectionID,
             originalEmail,
             originalDOB,
-            navigate,
             originalJoiningDate,
             documentID,
+            navigate,
             userRole: "staff",
           });
         })}
@@ -155,6 +155,7 @@ const UpdateStaffPage = ({}) => {
         <div className="sm:col-span-2 flex justify-center my-4 ">
           <Button
             type="submit"
+            disabled={isSubmitting}
             className=" w-24 text-lg bg-[#203047] text-gray-100"
           >
             {isSubmitting ? <Spinner /> : "Update"}

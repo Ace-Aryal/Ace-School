@@ -58,6 +58,7 @@ import { showErrorToast, showSuccessToast } from "./toast";
 import { clearEditingNotice } from "@/features/noticeSlice";
 import { useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
+import Spinner from "../Atoms/Spinner";
 
 export default function RTE(props) {
   const queryClient = useQueryClient();
@@ -68,11 +69,11 @@ export default function RTE(props) {
     handleSubmit,
     control,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
     setValue,
   } = useForm();
-  const [submitting, setSubmitting] = useState(false);
+
   const { username: author, roles } = useSelector((state) => state.auth.user);
   const handleCreate = async (data) => {
     console.log("data", data);
@@ -84,17 +85,14 @@ export default function RTE(props) {
       role: roles[0],
     });
 
-    setSubmitting(true);
-
     if (response) {
       showSuccessToast("Notice Published Sucessfully!");
-      setSubmitting(false);
+
       reset();
       queryClient.invalidateQueries(["notices"]);
       return;
     }
     showErrorToast("Error Publishing Notice");
-    setSubmitting(false);
   };
   const handleUpdate = async (data) => {
     console.log("data", data);
@@ -109,18 +107,15 @@ export default function RTE(props) {
       documentID: editingNotice.$id,
     });
 
-    setSubmitting(true);
-
     if (response) {
       showSuccessToast("Notice Updated Sucessfully!");
-      setSubmitting(false);
+
       navigate("/notice");
       queryClient.invalidateQueries(["notices"]);
       dispatch(clearEditingNotice());
       return;
     }
     showErrorToast("Error updating Notice");
-    setSubmitting(false);
   };
   useEffect(() => {
     if (isEditing) {
@@ -197,9 +192,10 @@ export default function RTE(props) {
       )}
       <button
         type="submit"
+        disabled={submitting}
         className="mt-4 bg-zinc-800 hover:bg-zinc-600 text-white p-2 rounded"
       >
-        {submitting ? "Publishing..." : "Publish"}
+        {isSubmitting ? <Spinner /> : "Publish"}
       </button>
     </form>
   );

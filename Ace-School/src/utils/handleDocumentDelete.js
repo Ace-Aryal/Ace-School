@@ -3,7 +3,9 @@ import config from "@/appwrite"
 import databaseService from "@/appwrite/Database/database"
 import functionService from "@/appwrite/functions/function"
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast"
-export const handleDocumentDelete = async ({ documentId, email, collectionId }) => {
+import { clearLoading } from "@/features/loadingStateTrackerSlice"
+import { store } from "@/store/store"
+export const handleDocumentDelete = async ({ documentId, email, collectionId, refetch }) => {
 
 
     try {
@@ -12,7 +14,7 @@ export const handleDocumentDelete = async ({ documentId, email, collectionId }) 
             showErrorToast("Failed to delete user")
             return
         }
-        const responseBody = JSON.parse(deleteAccountResponse.responseBody)
+        const responseBody = await JSON.parse(deleteAccountResponse.responseBody)
         if (!responseBody.success) {
             showErrorToast("Failed to delete user")
             return
@@ -20,7 +22,7 @@ export const handleDocumentDelete = async ({ documentId, email, collectionId }) 
         showSuccessToast("Account Deleted Sucessfully!")
         const metadataId = fetchMetaDataResponse?.documents[0]?.$id || null
         if (!metadataId) {
-            showErrorToast("Cant find metadata on database")
+            showErrorToast("Can't find metadata on database, please delete from console")
             return
         }
         const deleteUserMetadataRespone = await databaseService.deleteCollection(config.userMetaDataCollectionID, metadataId)
@@ -30,7 +32,7 @@ export const handleDocumentDelete = async ({ documentId, email, collectionId }) 
         }
         showSuccessToast("Metadata deleted sucessfully")
         const deleteUserDocumentResponse = await databaseService.deleteCollection(collectionId, documentId)
-        if (!!deleteUserDocumentResponse) {
+        if (!deleteUserDocumentResponse) {
             showErrorToast("Metadata deleted. Could'nt delete user document please use appwrite console for the user")
         }
         showSuccessToast("User document deleted sucessfully")
@@ -38,5 +40,11 @@ export const handleDocumentDelete = async ({ documentId, email, collectionId }) 
     } catch (error) {
         showErrorToast("Error deleting user data")
         console.error(error)
+    } finally {
+        store.dispatch(clearLoading())
+
+        refetch()
+
+
     }
 }

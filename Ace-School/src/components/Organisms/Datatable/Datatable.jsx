@@ -37,6 +37,7 @@ import databaseService from "@/appwrite/Database/database";
 import LoadingPage from "@/pages/LoadingPage";
 import ErrorPage from "@/pages/ErrorPage";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector, useDispatch } from "react-redux";
 // to delete
 
 export function DataTable({
@@ -49,7 +50,9 @@ export function DataTable({
 
   setGrade,
 }) {
+  const dispatch = useDispatch();
   const [sorting, setSorting] = React.useState([]);
+  const loading = useSelector((state) => state.loading.isLoading);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -93,6 +96,7 @@ export function DataTable({
   if (error) {
     return <ErrorPage />;
   }
+  console.log(data);
 
   return (
     <div className="w-full bg-gray-50 shadow-xl shadow-gray-800 rounded-2xl  p-5 px-10 mt-4">

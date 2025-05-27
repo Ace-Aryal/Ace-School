@@ -9,6 +9,7 @@ import { registerUser } from "@/utils/handleRegisterUser";
 import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
+import Spinner from "@/components/Atoms/Spinner";
 const AddStaffsPage = () => {
   const staffsFormField = getStaffFormField();
   const { roles } = useSelector((state) => state?.auth?.user);
@@ -32,7 +33,7 @@ const AddStaffsPage = () => {
       </h2>
       <form
         onSubmit={handleSubmit(async (data) => {
-          registerUser(data, {
+          await registerUser(data, {
             getUserDocumentFn: getStaffsDocument,
             createUserDocmentFn: createStaffsDocument,
             userRole: "Staff",
@@ -137,9 +138,10 @@ const AddStaffsPage = () => {
         <div className="sm:col-span-2 flex justify-center my-4 ">
           <Button
             type="submit"
-            className="w-fit text-lg bg-zinc-800 text-gray-100"
+            disabled={isSubmitting}
+            className="w-20 text-lg bg-zinc-800 text-gray-100"
           >
-            {isSubmitting ? "Adding.." : "Add"}
+            {isSubmitting ? <Spinner /> : "Add"}
           </Button>
         </div>
       </form>

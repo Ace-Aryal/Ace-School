@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
 import { useLocation, useNavigate } from "react-router";
 import { updateUser } from "@/utils/handleUpdateUser";
+import Spinner from "@/components/Atoms/Spinner";
 
 AuthenticatedContainer;
 const UpdateStudentPage = () => {
@@ -47,7 +48,7 @@ const UpdateStudentPage = () => {
 
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
-      <h2 className="text-2xl text-zinc-800 text-center">
+      <h2 className="text-3xl text-zinc-800 w-full font-semibold md:max-w-[70vw]  ">
         Update Student Info
       </h2>
       <form
@@ -169,9 +170,10 @@ const UpdateStudentPage = () => {
         <div className="sm:col-span-2 flex justify-center my-4 ">
           <Button
             type="submit"
-            className="w-fit text-lg bg-zinc-800 text-gray-100"
+            disabled={isSubmitting}
+            className="w-24 text-lg bg-zinc-800 text-gray-100"
           >
-            {isSubmitting ? "Updating.." : "Update"}
+            {isSubmitting ? <Spinner /> : "Update"}
           </Button>
         </div>
       </form>

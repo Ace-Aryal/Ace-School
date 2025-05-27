@@ -3,8 +3,10 @@ import { staffColumns } from "@/components/Organisms/Datatable/Columns";
 import ViewUsers from "@/components/Templates/ViewUsersTemplate";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import LoadingPage from "./LoadingPage";
+import ErrorPage from "./ErrorPage";
 const ViewStaffsPage = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, isError, refetch } = useQuery({
     queryKey: ["staffs"],
     queryFn: async () => {
       try {
@@ -14,6 +16,12 @@ const ViewStaffsPage = () => {
       }
     },
   });
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+  if (isError) {
+    return <ErrorPage />;
+  }
   return (
     <ViewUsers
       role="staff"
@@ -23,6 +31,7 @@ const ViewStaffsPage = () => {
       error={error}
       setGrade={null}
       key="staff"
+      refetch={refetch}
     />
   );
 };

@@ -31,6 +31,7 @@ import { registerUser } from "@/utils/handleRegisterUser";
 import ErrorPage from "./ErrorPage";
 import { useLocation, useNavigate } from "react-router";
 import { updateUser } from "@/utils/handleUpdateUser";
+import Spinner from "@/components/Atoms/Spinner";
 
 const classes = [
   { value: "nursery", label: "Nursery", abbreviation: "NRY" },
@@ -212,13 +213,13 @@ export default function UpdateTeacherPage() {
 
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
-      <h2 className="text-2xl text-zinc-800 font-bold text-center">
+      <h2 className="text-3xl text-zinc-800 w-full font-semibold md:max-w-[70vw]">
         Update Teacher Info
       </h2>
 
       <form
         onSubmit={handleSubmit(async (data) => {
-          updateUser(data, {
+          await updateUser(data, {
             reset,
             collectionID,
             originalEmail,
@@ -670,9 +671,10 @@ export default function UpdateTeacherPage() {
         <div className="sm:col-span-2 flex justify-center my-4 ">
           <Button
             type="submit"
-            className="w-fit text-lg bg-zinc-800 text-gray-100"
+            disabled={isSubmitting}
+            className="w-24 text-lg bg-zinc-800 text-gray-100"
           >
-            {isSubmitting ? "Updating.." : "Update"}
+            {isSubmitting ? <Spinner /> : "Update"}
           </Button>
         </div>
       </form>

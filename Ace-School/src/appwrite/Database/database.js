@@ -443,11 +443,11 @@ class DatabaseService {
                 documentID
             );
 
-            showSuccessToast("Duplicate document deleted successfully");
+
             return true
         } catch (error) {
             console.error(error)
-            showErrorToast("Failed to delete duplicate document");
+
             return false
         }
 

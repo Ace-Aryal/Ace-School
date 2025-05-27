@@ -29,6 +29,7 @@ import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import { registerUser } from "@/utils/handleRegisterUser";
 import ErrorPage from "./ErrorPage";
+import Spinner from "@/components/Atoms/Spinner";
 
 const classes = [
   { value: "nursery", label: "Nursery", abbreviation: "NRY" },
@@ -196,15 +197,16 @@ export default function AddTeachersPage() {
       </h2>
 
       <form
-        onSubmit={handleSubmit(async (data) =>
-          registerUser(data, {
-            reset,
-            getUserDocumentFn: getTeacherDocument,
-            createUserDocmentFn: createteacherDocument,
-            userRole: "Teacher",
-            setErrorDeletingDuplicate: setErrorDeletingDuplicate,
-            errorDeletingDuplicate: errorDeletingDuplicate,
-          })
+        onSubmit={handleSubmit(
+          async (data) =>
+            await registerUser(data, {
+              reset,
+              getUserDocumentFn: getTeacherDocument,
+              createUserDocmentFn: createteacherDocument,
+              userRole: "Teacher",
+              setErrorDeletingDuplicate: setErrorDeletingDuplicate,
+              errorDeletingDuplicate: errorDeletingDuplicate,
+            })
         )}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >
@@ -651,9 +653,10 @@ export default function AddTeachersPage() {
         <div className="sm:col-span-2 flex justify-center my-4 ">
           <Button
             type="submit"
-            className="w-fit text-lg bg-zinc-800 text-gray-100"
+            disabled={isSubmitting}
+            className="w-20 text-lg bg-zinc-800 text-gray-100"
           >
-            {isSubmitting ? "Adding.." : "Add"}
+            {isSubmitting ? <Spinner /> : "Add"}
           </Button>
         </div>
       </form>
