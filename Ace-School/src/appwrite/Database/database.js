@@ -455,14 +455,11 @@ class DatabaseService {
 
 
     }
-    updateUserMetaData = async () => {
-
-    }
-    updateUserDocument = async (collectionID, documentID, updatedDocument) => {
+    updateUserMetaData = async (updatedDocument, documentID) => {
         try {
             const result = await this.database.updateDocument(
                 appwriteDatabaseID, // databaseId
-                collectionID, // collectionId
+                userMetaDataCollectionID, // collectionId
                 documentID, // documentId
                 updatedDocument, // data (optional)
 
@@ -471,6 +468,26 @@ class DatabaseService {
         } catch (error) {
             return false
             console.error(error);
+
+        }
+
+    }
+    updateUserDocument = async (collectionID, documentID, updatedDocument) => {
+        console.log(documentID, collectionID, updatedDocument);
+
+        try {
+            const result = await this.database.updateDocument(
+                appwriteDatabaseID, // databaseId
+                collectionID, // collectionId
+                documentID, // documentId
+                updatedDocument, // data (optional)
+
+            );
+            console.log(result)
+            return true
+        } catch (error) {
+            console.error(error);
+            return false
 
         }
     }

@@ -9,16 +9,17 @@ import { Button } from "@/components/ui/button";
 import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { updateUser } from "@/utils/handleUpdateUser";
 const UpdateStaffPage = ({}) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { originalData } = location.state;
   const staffsFormField = getStaffFormField();
   const { roles } = useSelector((state) => state?.auth?.user);
   const originalEmail = originalData.email;
   const collectionID = originalData.$collectionId;
-  const documentID = originalData.$documentId;
+  const documentID = originalData.$id;
   const originalDOB = originalData.DOB;
   const originalJoiningDate = originalData.joiningDate;
   const {
@@ -43,12 +44,13 @@ const UpdateStaffPage = ({}) => {
         Update Staff Info
       </h2>
       <form
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(async (data) => {
           updateUser(data, {
             reset,
             collectionID,
             originalEmail,
             originalDOB,
+            navigate,
             originalJoiningDate,
             documentID,
             userRole: "staff",

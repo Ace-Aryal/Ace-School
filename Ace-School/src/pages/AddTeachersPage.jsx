@@ -196,7 +196,7 @@ export default function AddTeachersPage() {
       </h2>
 
       <form
-        onSubmit={handleSubmit((data) =>
+        onSubmit={handleSubmit(async (data) =>
           registerUser(data, {
             reset,
             getUserDocumentFn: getTeacherDocument,

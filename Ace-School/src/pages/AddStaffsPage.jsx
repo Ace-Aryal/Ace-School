@@ -31,7 +31,7 @@ const AddStaffsPage = () => {
         Add Staff
       </h2>
       <form
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(async (data) => {
           registerUser(data, {
             getUserDocumentFn: getStaffsDocument,
             createUserDocmentFn: createStaffsDocument,

@@ -40,7 +40,7 @@ const AddStudentsPage = () => {
         Add Student
       </h2>
       <form
-        onSubmit={handleSubmit((data) =>
+        onSubmit={handleSubmit(async (data) =>
           registerUser(data, {
             reset,
             getUserDocumentFn: getStudentDocument,
@@ -68,7 +68,7 @@ const AddStudentsPage = () => {
                   id={formField.name}
                   {...register(formField.name, {
                     required:
-                      formField.required && `${formField.name} is required`,
+                      formField.required && `${formField.label} is required`,
                     pattern: formField?.isPhoneNumber
                       ? {
                           value: /^(97|98)\d{8}$/,
@@ -78,6 +78,11 @@ const AddStudentsPage = () => {
                       ? {
                           value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                           message: "Enter valid email",
+                        }
+                      : formField.name === "rollNo"
+                      ? {
+                          value: /^[1-9]\d*$/,
+                          message: "Enter valid Roll No",
                         }
                       : {},
                   })}

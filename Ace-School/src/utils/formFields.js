@@ -24,13 +24,13 @@ export const getStudentFormFiled = () => {
         {
             name: "rollNo",
             label: "Roll Number",
-            type: "number",
+            type: "text",
             required: true,
         },
         {
             name: "phoneNumber",
             label: "Phone Number",
-            type: "number",
+            type: "text",
             required: false,
             isPhoneNumber: true
         },
@@ -84,7 +84,7 @@ export const getStudentFormFiled = () => {
         {
             name: "guardianPhone",
             label: "Guardian Phone Number",
-            type: "number",
+            type: "text",
             required: true,
             isPhoneNumber: true
         },

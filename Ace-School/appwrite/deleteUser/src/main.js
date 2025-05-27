@@ -25,7 +25,7 @@ export default async ({ req, res, log, error }) => {
     ]);
 
     if (userList.total === 0) {
-      return res.json({ success: false, error: "User not found" });
+      return res.json({ success: true, error: "Account not created yet" });
     }
 
     const userId = userList.users[0].$id;

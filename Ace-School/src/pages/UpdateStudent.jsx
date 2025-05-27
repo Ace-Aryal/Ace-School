@@ -7,16 +7,17 @@ import { getStudentFormFiled } from "@/utils/formFields";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { updateUser } from "@/utils/handleUpdateUser";
 
 AuthenticatedContainer;
 const UpdateStudentPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { originalData } = location.state;
   const originalEmail = originalData.email;
   const collectionID = originalData.$collectionId;
-  const documentID = originalData.$documentId;
+  const documentID = originalData.$id;
   const originalDOB = originalData.DOB;
   const originalJoiningDate = "";
   const {
@@ -50,10 +51,11 @@ const UpdateStudentPage = () => {
         Update Student Info
       </h2>
       <form
-        onSubmit={handleSubmit((data) =>
+        onSubmit={handleSubmit(async (data) =>
           updateUser(data, {
             reset: reset,
             collectionID,
+            navigate,
             originalEmail,
             originalDOB,
             originalJoiningDate,
@@ -90,6 +92,11 @@ const UpdateStudentPage = () => {
                       ? {
                           value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                           message: "Enter valid email",
+                        }
+                      : formField.name === "rollNo"
+                      ? {
+                          value: /^[1-9]\d*$/,
+                          message: "Enter valid Roll No",
                         }
                       : {},
                   })}
