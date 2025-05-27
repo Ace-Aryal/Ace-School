@@ -7,6 +7,7 @@ import { setEditingNotice } from "@/features/noticeSlice";
 import databaseService from "@/appwrite/Database/database";
 import { useQueryClient } from "@tanstack/react-query";
 import { showSuccessToast, showErrorToast } from "../Templates/toast";
+import Spinner from "../Atoms/Spinner";
 const NoticeListElement = ({ data: notice, role }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const NoticeListElement = ({ data: notice, role }) => {
     navigate("/notice/update");
   };
   const handleNoticeDelete = async () => {
-    setDeleting(false);
+    setDeleting(true);
     const response = await databaseService.deleteNotice(notice.$id);
     if (response === true) {
       showSuccessToast("Notice deleted sucessfully !");
@@ -69,12 +70,18 @@ const NoticeListElement = ({ data: notice, role }) => {
               >
                 <PenSquare />
               </button>
-              <button
-                onClick={handleNoticeDelete}
-                className="bg-red-500 text-white px-2 py-1 rounded text-xs"
-              >
-                <Trash2Icon />
-              </button>
+              {deleting ? (
+                <Button className="bg-red-500 text-white">
+                  <Spinner />
+                </Button>
+              ) : (
+                <button
+                  onClick={handleNoticeDelete}
+                  className="bg-red-500 text-white px-2 py-1 rounded text-xs"
+                >
+                  <Trash2Icon />
+                </button>
+              )}
             </>
           ) : (
             <button

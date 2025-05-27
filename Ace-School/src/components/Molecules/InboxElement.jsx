@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react";
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "../Templates/toast";
 import { useQueryClient } from "@tanstack/react-query";
+import Spinner from "../Atoms/Spinner";
 const InboxElement = ({ message }) => {
   const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
@@ -62,12 +63,18 @@ const InboxElement = ({ message }) => {
         </td>
         <td>
           {" "}
-          <button
-            onClick={() => handleItemDelete(message.$id)}
-            className="bg-red-500 text-white px-2 py-1 rounded text-xs"
-          >
-            <Trash2 />
-          </button>
+          {deleting ? (
+            <Button className="bg-red-500 text-white">
+              <Spinner />
+            </Button>
+          ) : (
+            <button
+              onClick={() => handleItemDelete(message.$id)}
+              className="bg-red-500 text-white px-2 py-1 rounded text-xs"
+            >
+              <Trash2 />
+            </button>
+          )}
         </td>
       </tr>
     </tbody>

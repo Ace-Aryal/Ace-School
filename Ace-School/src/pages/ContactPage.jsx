@@ -88,7 +88,7 @@ function ContactPage() {
             type="submit"
             disabled={isSubmitting}
             id="message"
-            className=" border-1  focus:ring-blue-500 focus:border-blue-500   rounded-3xl py-2.5 pl-2 pr-2 text-left w-32 bg-orange-400 text-white self-center hover:bg-blue-50 hover:text-black"
+            className=" border-1  focus:ring-blue-500 focus:border-blue-500   rounded-3xl py-2.5 pl-2 pr-2 text-left min-w-40 bg-orange-400 text-white self-center hover:bg-indigo-800 "
           >
             {isSubmitting ? <Spinner /> : "Send Message"}
           </button>
