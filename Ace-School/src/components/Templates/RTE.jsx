@@ -197,7 +197,7 @@ export default function RTE(props) {
       )}
       <button
         type="submit"
-        className="mt-4 bg-indigo-500 hover:bg-indigo-400 text-white p-2 rounded"
+        className="mt-4 bg-zinc-800 hover:bg-zinc-600 text-white p-2 rounded"
       >
         {submitting ? "Publishing..." : "Publish"}
       </button>

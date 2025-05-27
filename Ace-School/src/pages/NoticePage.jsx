@@ -8,7 +8,7 @@ const CreateNoticePage = () => {
   }
   return (
     <main className="flex w-full my-2 sm:my-4 flex-col  justify-center items-center">
-      <h2 className="text-4xl text-indigo-500 font-bold text-center">
+      <h2 className="text-4xl text-zinc-800 font-bold text-center">
         Create Notice
       </h2>
 

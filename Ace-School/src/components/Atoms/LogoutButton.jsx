@@ -36,7 +36,7 @@ const LogoutButton = ({}) => {
       }}
       size="sm"
       variant="outline"
-      className="w-3/5 text-sm hover:bg-red-50 border border-red-500  text-red-500 "
+      className="w-3/5 text-sm text-red-500 border hover:bg-zinc-800 hover:text-white "
     >
       {isSubmitting ? "Logging out .." : "Logout"} <LogOut />
     </Button>

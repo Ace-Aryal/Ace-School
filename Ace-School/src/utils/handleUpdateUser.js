@@ -65,13 +65,21 @@ export const updateUser = async (data, { reset, navigate, documentID, collection
 
 
         };
-        console.log(updatedDocument);
 
     }
 
 
     try {
+        console.log(email, originalEmail);
+
         if (email !== originalEmail) {
+            const emailAlreadyExists = await databaseService.getUserDocument(email)
+
+            console.log(emailAlreadyExists)
+            if (emailAlreadyExists.total !== 0) {
+                showErrorToast("Updated email already exists in database")
+                return
+            }
             const [response, metadataFetchResponse] = await Promise.all([functionService.deleteUser(originalEmail), await databaseService.getUserDocument(originalEmail)])
             console.log(response, metadataFetchResponse)
             if (response?.responseStatusCode !== 200) {

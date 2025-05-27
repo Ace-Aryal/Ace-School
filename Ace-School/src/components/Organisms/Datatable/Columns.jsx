@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 // You can use a Zod schema here if you want.
 import { Navigate } from "react-router";
 import { capitalize } from "@/utils/capitalize";
+import { handleDocumentDelete } from "@/utils/handleDocumentDelete";
 export const studentColumns = [
   {
     id: "actions",
@@ -49,12 +50,21 @@ export const studentColumns = [
               to="/view-students/update-student"
               state={{ originalData: row.original }}
             >
-              <DropdownMenuItem className=" bg-blue-500 text-white flex items-center">
+              <DropdownMenuItem className=" bg-zinc-800 text-white flex items-center">
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
             </NavLink>{" "}
             <DropdownMenuItem
-              onClick={() => {}}
+              onClick={() => {
+                console.log(row.original);
+
+                const { email, $collectionId, $id } = row.original;
+                handleDocumentDelete({
+                  documentId: $id,
+                  collectionId: $collectionId,
+                  email,
+                });
+              }}
               className="my-1 bg-red-500 text-white flex items-center"
             >
               {" "}
@@ -204,7 +214,7 @@ export const staffColumns = [
               to="/view-staffs/update-staff"
               state={{ originalData: row.original }}
             >
-              <DropdownMenuItem className="my-1 bg-blue-500 text-white flex items-center">
+              <DropdownMenuItem className="my-1 bg-zinc-800 text-white flex items-center">
                 {" "}
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
@@ -326,7 +336,7 @@ export const teacherColumns = [
               to="/view-teachers/update-teacher"
               state={{ originalData: row.original }}
             >
-              <DropdownMenuItem className=" flex items-center  bg-blue-500">
+              <DropdownMenuItem className=" flex items-center  bg-zinc-800">
                 {" "}
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>

@@ -212,7 +212,7 @@ export default function UpdateTeacherPage() {
 
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
-      <h2 className="text-2xl text-indigo-500 font-bold text-center">
+      <h2 className="text-2xl text-zinc-800 font-bold text-center">
         Update Teacher Info
       </h2>
 
@@ -670,7 +670,7 @@ export default function UpdateTeacherPage() {
         <div className="sm:col-span-2 flex justify-center my-4 ">
           <Button
             type="submit"
-            className="w-fit text-lg bg-blue-500 text-gray-100"
+            className="w-fit text-lg bg-zinc-800 text-gray-100"
           >
             {isSubmitting ? "Updating.." : "Update"}
           </Button>

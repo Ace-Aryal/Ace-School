@@ -43,16 +43,26 @@ function Navbar() {
     navigate("/");
   }
   return (
-    <header className="antialiased w-[100vw] bg-indigo-900 shadow-lg fixed top-0 z-1  ">
-      <nav className="lg:px-16 px-6  flex flex-wrap items-center justify-between lg:py-0 py-2">
+    <header
+      className={`antialiased w-[100vw] ${
+        isAuthenticated
+          ? "border-b border-gray-300 backdrop-blur-md bg-white"
+          : "bg-indigo-900"
+      } shadow-lg fixed top-0 z-1  `}
+    >
+      <nav
+        className={`lg:px-16 px-6  flex flex-wrap items-center justify-between lg:py-0 py-2`}
+      >
         <div className="flex-1 flex items-center">
           <Link to="/">
-            <Logo />
+            <Logo
+              className={isAuthenticated ? "text-zinc-800" : "text-gray-50"}
+            />
           </Link>
         </div>
 
         {isAuthenticated ? (
-          <SidebarTrigger className="lg:hidden text-white" />
+          <SidebarTrigger className="lg:hidden text-zinc-800" />
         ) : (
           <>
             <label
@@ -78,7 +88,7 @@ function Navbar() {
           id="menu"
         >
           <nav>
-            <ul className="lg:flex items-center justify-between text-base text-gray-50 pt-4 lg:pt-0">
+            <ul className="lg:flex items-center justify-between gap-1 text-base text-gray-50 pt-4 lg:pt-0">
               {navElememts.map((element) => {
                 if (element.requireAuthentication && !isAuthenticated) return;
                 if (
@@ -92,8 +102,14 @@ function Navbar() {
                   <li key={element.nav}>
                     <NavLink
                       className={({ isActive }) =>
-                        `  lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:text-red-400  md:hover:border-indigo-400 ${
+                        `   block border-b-2 border-transparent hover:text-red-400  rounded-xl ${
                           isActive ? "text-cyan-300" : ""
+                        } ${!isAuthenticated && "py-4 px-2"} ${
+                          isActive && isAuthenticated
+                            ? "text-zinc-800 font-semibold py-1.5 px-2 bg-gray-100 hover:text-zinc-800"
+                            : isAuthenticated && !isActive
+                            ? "text-zinc-800 py-1.5 px-2 hover:text-zinc-800  hover:bg-gray-100"
+                            : ""
                         }`
                       }
                       to={
@@ -120,8 +136,8 @@ function Navbar() {
                   handleLogout();
                 }}
                 className={`${
-                  isAuthenticated ? "text-red-300" : "text-cyan-500"
-                }  hover:text-orange-400 cursor-pointer shadow-md `}
+                  isAuthenticated ? "text-red-500" : "text-cyan-500"
+                }  hover:bg-zinc-800 hover:text-white cursor-pointer shadow-md `}
                 variant="outline"
               >
                 {isloading && "logging out"

@@ -63,7 +63,7 @@ const ViewNoticePage = () => {
 
   return (
     <div className="w-full my-2 min-h-[100dvh] flex  flex-col items-center ">
-      <h1 className="text-4xl text-center text-indigo-500 font-bold">
+      <h1 className="text-4xl text-center text-zinc-800 font-semibold">
         Notices
       </h1>
       {roles.includes("admin") && (
@@ -72,17 +72,17 @@ const ViewNoticePage = () => {
             dispatch(clearEditingNotice());
             navigate("/notice/publish");
           }}
-          className="w-fit self-end mr-3 hover:bg-orange-600 text-gray-50 bg-red-500 cursor-pointer my-3"
+          className="w-fit self-end mr-3 hover:bg-zinc-600 text-gray-50 bg-zinc-800 cursor-pointer my-3"
         >
           Publish New Notice <Pin />
         </Button>
       )}
       <div className="my-4 w-9/10 sm:w-4/5  text-sm sm:text-[1rem]  ">
         <div className="overflow-x-scroll w-full">
-          <table className="min-w-full table-auto   text-center text-gray-700 border border-gray-300 ">
-            <thead className="bg-indigo-500 text-gray-50 uppercase text-lg font-semibold border-2 border-white">
+          <table className="min-w-full table-auto  rounded-2xl   text-center text-zinc-700 border b ">
+            <thead className="bg-zinc-800 text-gray-50 uppercase text-sm font-semibold border-2 ">
               <tr>
-                <th className="px-4 py-3 border-r border-gray-300">
+                <th className="px-4 py-2 border-r border-gray-300">
                   Published
                 </th>
                 <th className="px-4 py-3 border-r border-gray-300">Author</th>

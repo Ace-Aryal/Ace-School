@@ -151,11 +151,11 @@ export default function AppSidebar({ getSidebarState }) {
   }, [state]);
   return (
     <Sidebar
-      className="mt-14 z-1 sm:z-0 bg-indigo-100"
+      className="mt-10 pt-10 z-1 sm:z-0 border-r border-gray-300"
       variant="sidebar"
       collapsible="offcanvas"
     >
-      <SidebarContent className="bg-indigo-200">
+      <SidebarContent className="bg-white">
         <SidebarGroup>
           <SidebarGroupLabel className="text-md flex gap-1 font-semibold ">
             <User size={64} />
@@ -181,7 +181,9 @@ export default function AppSidebar({ getSidebarState }) {
                         <NavLink
                           to={item.url}
                           className={({ isActive }) =>
-                            `${isActive ? `text-blue-700` : ""} flex gap-1`
+                            `${
+                              isActive ? ` font-semibold bg-gray-100  ` : ""
+                            } flex gap-1 p-2 rounded-xl hover:bg-gray-100 w-full`
                           }
                         >
                           <item.icon size={18} />

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 const ErrorPage = () => {
   const [loading, setLoading] = useState(true);
+  const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -12,7 +14,11 @@ const ErrorPage = () => {
 
   if (loading) {
     return (
-      <div class="flex w-full space-x-2 justify-center items-center bg-primary h-screen ">
+      <div
+        class={`flex w-full space-x-2 justify-center items-center ${
+          isAuthenticated && "bg-white"
+        } h-screen `}
+      >
         <span class="sr-only">Loading...</span>
         <div class="h-8 w-8 bg-blue-900 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
         <div class="h-8 w-8 bg-blue-900 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
@@ -22,7 +28,11 @@ const ErrorPage = () => {
   }
 
   return (
-    <div className="flex items-center flex-col justify-center lg:flex-row py-28 px-6 md:px-24 md:py-20 lg:py-32 gap-16 lg:gap-28">
+    <div
+      className={`flex items-center flex-col justify-center lg:flex-row py-28 px-6 md:px-24 md:py-20 lg:py-32 gap-16 lg:gap-28 ${
+        isAuthenticated && "bg-white"
+      } `}
+    >
       <div className="w-full lg:w-1/2">
         <img
           className="hidden lg:block"

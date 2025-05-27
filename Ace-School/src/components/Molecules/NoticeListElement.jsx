@@ -65,7 +65,7 @@ const NoticeListElement = ({ data: notice, role }) => {
             <>
               <button
                 onClick={handleNoticeUpdate}
-                className="bg-blue-500 text-white px-2 mx-1 py-1 rounded text-xs"
+                className="bg-zinc-800 text-white px-2 mx-1 py-1 rounded text-xs"
               >
                 <PenSquare />
               </button>
@@ -79,7 +79,7 @@ const NoticeListElement = ({ data: notice, role }) => {
           ) : (
             <button
               onClick={() => navigate(`/notice/${notice.$id}`)}
-              className="bg-indigo-500 text-white px-2 py-1 rounded text-xs"
+              className="bg-zinc-800 text-white px-2 py-1 rounded text-xs"
             >
               <Eye />
             </button>

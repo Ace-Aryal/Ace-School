@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
 import { useLocation, useNavigate } from "react-router";
 import { updateUser } from "@/utils/handleUpdateUser";
+import Spinner from "@/components/Atoms/Spinner";
 const UpdateStaffPage = ({}) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,12 +41,12 @@ const UpdateStaffPage = ({}) => {
   }
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
-      <h2 className="text-2xl text-indigo-500 font-bold text-center">
+      <h2 className="text-2xl text-zinc-800 font-bold text-center">
         Update Staff Info
       </h2>
       <form
         onSubmit={handleSubmit(async (data) => {
-          updateUser(data, {
+          await updateUser(data, {
             reset,
             collectionID,
             originalEmail,
@@ -154,9 +155,9 @@ const UpdateStaffPage = ({}) => {
         <div className="sm:col-span-2 flex justify-center my-4 ">
           <Button
             type="submit"
-            className="w-fit text-lg bg-blue-500 text-gray-100"
+            className=" w-24 text-lg bg-[#203047] text-gray-100"
           >
-            {isSubmitting ? "Updating.." : "Update"}
+            {isSubmitting ? <Spinner /> : "Update"}
           </Button>
         </div>
       </form>

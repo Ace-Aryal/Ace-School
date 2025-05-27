@@ -20,7 +20,7 @@ function Applayout() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   if (!isAuthenticated) {
     return (
-      <main className="flex flex-col w-[100w]">
+      <main className="flex flex-col bg-[#E6E6FA] ">
         <Navbar />
         <div className="mt-14 w-full flex ">
           <Outlet />
@@ -33,7 +33,7 @@ function Applayout() {
   return (
     <SidebarProvider className="w-full overflow-auto">
       <Navbar />
-      <div className="w-full flex">
+      <div className="w-full flex bg-white">
         <aside
           className={`mt-14  flex ${
             sidebarState.expanded === "expanded" ? "lg:w-64" : "lg:w-0"

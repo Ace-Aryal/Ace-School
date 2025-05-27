@@ -95,7 +95,7 @@ export function DataTable({
   }
 
   return (
-    <div className="w-full bg-gray-100 shadow-xl shadow-gray-800 rounded-2xl  p-5 px-10 mt-4">
+    <div className="w-full bg-gray-50 shadow-xl shadow-gray-800 rounded-2xl  p-5 px-10 mt-4">
       <div className="flex w-full items-center py-4">
         <Input
           placeholder="Filter by name..."

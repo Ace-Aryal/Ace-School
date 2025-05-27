@@ -65,7 +65,6 @@ const DashboardPage = () => {
     {
       statNumber: 20000,
       statHeading: "Fees Collected",
-      classNames: "bg-blue-500",
       readers: ["account", "admin"],
       link: "/billing",
       icon: <Coins size={50} color="#6e6f71" />,
@@ -73,7 +72,7 @@ const DashboardPage = () => {
     {
       statNumber: 20,
       statHeading: "Teachers",
-      classNames: "bg-red-500",
+      classNames: "border rounded-xl text-zinc-700",
       readers: ["account", "admin"],
       link: "/view-teachers",
 
@@ -82,7 +81,7 @@ const DashboardPage = () => {
     {
       statNumber: 300,
       statHeading: "Students",
-      classNames: "bg-cyan-500",
+      classNames: "border rounded-xl text-zinc-700",
       link: "/view-students",
 
       readers: ["account", "admin"],
@@ -91,7 +90,7 @@ const DashboardPage = () => {
     {
       statNumber: inboxCount > 9 ? "9+" : inboxCount,
       statHeading: "Inbox",
-      classNames: "bg-gray-400",
+      classNames: "border rounded-xl text-zinc-700",
       link: "/inbox",
 
       icon: <Inbox size={50} color="#6e6f71" />,
@@ -102,14 +101,14 @@ const DashboardPage = () => {
       statHeading: "Notices",
       link: "/notice",
 
-      classNames: "bg-yellow-500",
+      classNames: "border rounded-xl text-zinc-700",
       icon: <Bell size={50} color="#6e6f71" />,
       readers: ["account", "admin"],
     },
     {
       statNumber: 200,
       statHeading: "Atendence Today",
-      classNames: "bg-indigo-500",
+      classNames: "border rounded-xl text-zinc-700",
       link: "/attendance",
 
       readers: ["account", "admin"],
@@ -120,7 +119,7 @@ const DashboardPage = () => {
       statHeading: "Subjects",
       link: "/subjects",
 
-      classNames: "bg-lime-500",
+      classNames: "border rounded-xl text-zinc-700",
       readers: ["admin"],
       icon: <Library size={50} color="#6e6f71" />,
     },
@@ -129,14 +128,14 @@ const DashboardPage = () => {
       statHeading: "Classes",
       link: "/classes",
 
-      classNames: "bg-pink-500",
+      classNames: "border rounded-xl text-zinc-700",
       readers: ["admin"],
       icon: <Presentation size={50} color="#6e6f71" />,
     },
     {
       statNumber: 20,
       statHeading: "Staffs",
-      classNames: "bg-orange-500",
+      classNames: "border rounded-xl text-zinc-700",
       link: "/staffs",
 
       readers: ["admin"],
@@ -147,17 +146,17 @@ const DashboardPage = () => {
   return (
     <main
       id="container"
-      className="m-0 pl-2 p-0 flex flex-col items-center w-full mt-2 "
+      className="m-0 pl-2 p-0 flex flex-col items-center w-full mt-10 "
     >
-      <h2 className="text-2xl text-center font-bold text-indigo-500 ">
-        Welcome {username}
+      <h2 className="text-2xl text-center font-bold text-zinc-700">
+        Welcome, {username}
       </h2>
       <section className="data-section flex flex-col w-full px-4 sm:px-5 my-6 self-start ">
-        <h3 className="text-xl">Dashboard</h3>
+        <h3 className="text-xl my-3">Dashboard</h3>
         <div className="grid grid-cols-2 my-4 mb-16  items-stretch md:grid-cols-3 w-full gap-2 ">
           {statItems.map((item) => (
             <Link
-              className={`${item.classNames} flex items-center justify-center sm:justify-between`}
+              className={`shadow-lg hover:bg-gray-100 shadow-black/30 border rounded-xl border-gray-400 flex items-center justify-center sm:justify-between`}
               to={
                 item.readers.some((reader) => roles?.includes(reader))
                   ? item.link
@@ -175,7 +174,7 @@ const DashboardPage = () => {
             </Link>
           ))}
         </div>
-        <div className="calender w-full flex justify-center ">
+        <div className="calender w-full flex justify-center mt-10 ">
           <div className="w-full md:w-[60vw]">
             <iframe
               className=" w-full md:w-[60vw] aspect-square"
