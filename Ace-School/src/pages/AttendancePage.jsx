@@ -6,7 +6,7 @@ const AttendancePage = () => {
     <div
       onClick={() => {
         showSuccessToast("Metadata Updated sucessfully");
-        showErrorToast("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        showErrorToast("Test");
       }}
     >
       AttendancePage
