@@ -13,7 +13,7 @@ export default async ({ req, res, log, error }) => {
 
   try {
     const payload = JSON.parse(req.bodyRaw || '{}');
-    const email = payload;
+    const email = payload["email"];
     console.log(email);
     log(email)
 
