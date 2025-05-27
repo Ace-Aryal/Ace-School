@@ -67,7 +67,7 @@ export const updateUser = async (data, { reset, documentID, collectionID, userRo
             return
         }
         // only update
-        const response = await updateUserDocmentFn(data)
+        const response = await databaseService.updateUserDocument(collectionID, documentID, updatedDocument)
         if (response) {
             console.log(response)
         }
