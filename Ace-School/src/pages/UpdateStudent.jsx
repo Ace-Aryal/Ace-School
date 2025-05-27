@@ -5,19 +5,20 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { getStudentFormFiled } from "@/utils/formFields";
 import { Button } from "@/components/ui/button";
-import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
-import { registerUser } from "@/utils/handleRegisterUser";
-import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
 import { useLocation } from "react-router";
+import { updateUser } from "@/utils/handleUpdateUser";
 
 AuthenticatedContainer;
 const UpdateStudentPage = () => {
   const location = useLocation();
   const { originalData } = location.state;
-  console.log(originalData);
-
+  const originalEmail = originalData.email;
+  const collectionID = originalData.$collectionId;
+  const documentID = originalData.$documentId;
+  const originalDOB = originalData.DOB;
+  const originalJoiningDate = "";
   const {
     register,
     handleSubmit,
@@ -29,8 +30,7 @@ const UpdateStudentPage = () => {
       ["DOB"]: originalData.DOB || " ", // e.g. new Date() or a formatted date string
     },
   });
-  const { getStudentDocument, createStudentDocument } = databaseService;
-  const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
+
   const { roles } = useSelector((state) => state?.auth?.user);
 
   const studentsFormFields = getStudentFormFiled();
@@ -51,13 +51,14 @@ const UpdateStudentPage = () => {
       </h2>
       <form
         onSubmit={handleSubmit((data) =>
-          registerUser(data, {
-            reset,
-            getUserDocumentFn: getStudentDocument,
-            createUserDocmentFn: createStudentDocument,
-            userRole: "Student",
-            setErrorDeletingDuplicate: setErrorDeletingDuplicate,
-            errorDeletingDuplicate: errorDeletingDuplicate,
+          updateUser(data, {
+            reset: reset,
+            collectionID,
+            originalEmail,
+            originalDOB,
+            originalJoiningDate,
+            documentID,
+            userRole: "student",
           })
         )}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"

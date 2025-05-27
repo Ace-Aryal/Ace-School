@@ -10,15 +10,17 @@ import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
 import { useLocation } from "react-router";
+import { updateUser } from "@/utils/handleUpdateUser";
 const UpdateStaffPage = ({}) => {
   const location = useLocation();
   const { originalData } = location.state;
   const staffsFormField = getStaffFormField();
   const { roles } = useSelector((state) => state?.auth?.user);
-  const handleInitialFormFillup = () => {
-    console.log(originalData);
-  };
-
+  const originalEmail = originalData.email;
+  const collectionID = originalData.$collectionId;
+  const documentID = originalData.$documentId;
+  const originalDOB = originalData.DOB;
+  const originalJoiningDate = originalData.joiningDate;
   const {
     register,
     handleSubmit,
@@ -32,9 +34,6 @@ const UpdateStaffPage = ({}) => {
     },
   });
 
-  useEffect(() => {
-    handleInitialFormFillup();
-  }, []);
   if (!roles.includes("admin")) {
     return <ErrorPage />;
   }
@@ -45,7 +44,15 @@ const UpdateStaffPage = ({}) => {
       </h2>
       <form
         onSubmit={handleSubmit((data) => {
-          // update hook
+          updateUser(data, {
+            reset,
+            collectionID,
+            originalEmail,
+            originalDOB,
+            originalJoiningDate,
+            documentID,
+            userRole: "staff",
+          });
         })}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >

@@ -30,6 +30,7 @@ import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import { registerUser } from "@/utils/handleRegisterUser";
 import ErrorPage from "./ErrorPage";
 import { useLocation } from "react-router";
+import { updateUser } from "@/utils/handleUpdateUser";
 
 const classes = [
   { value: "nursery", label: "Nursery", abbreviation: "NRY" },
@@ -173,8 +174,12 @@ const subjects = [
 export default function UpdateTeacherPage() {
   const location = useLocation();
   const { originalData } = location.state;
-  const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
+
   const { roles } = useSelector((state) => state?.auth?.user);
+  const collectionID = originalData.$collectionId;
+  const documentID = originalData.$documentId;
+  const originalDOB = originalData.DOB;
+  const originalJoiningDate = originalData.joiningDate;
   const {
     register,
     handleSubmit,
@@ -199,7 +204,6 @@ export default function UpdateTeacherPage() {
     },
   });
 
-  const { getTeacherDocument, createteacherDocument } = databaseService;
   if (!roles.includes("admin")) {
     return <ErrorPage />;
   }
@@ -211,7 +215,17 @@ export default function UpdateTeacherPage() {
       </h2>
 
       <form
-        onSubmit={handleSubmit((data) => {})}
+        onSubmit={handleSubmit((data) => {
+          updateUser(data, {
+            reset,
+            collectionID,
+            originalEmail,
+            documentID,
+            userRole: "teacher",
+            originalDOB,
+            originalJoiningDate,
+          });
+        })}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >
         <div className="flex flex-col">

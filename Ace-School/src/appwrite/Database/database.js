@@ -244,9 +244,6 @@ class DatabaseService {
         }
     }
 
-
-
-
     createUserDocment = async (data) => {
         // {email : "" , role : ""}
         try {
@@ -391,31 +388,8 @@ class DatabaseService {
         }
 
 
-
-
-
     }
-    deleteCollection = async (collectionID, documentID) => {
 
-        try {
-            await this.database.deleteDocument(
-                appwriteDatabaseID,
-                collectionID,
-                documentID
-            );
-
-            showSuccessToast("Duplicate document deleted successfully");
-            return true
-        } catch (error) {
-            console.error(error)
-            showErrorToast("Failed to delete duplicate document");
-            return false
-        }
-
-
-
-
-    }
     getAllTeachersDocument = async (email) => {
 
         try {
@@ -456,6 +430,46 @@ class DatabaseService {
             }
             return response.documents
         } catch (error) {
+            console.error(error);
+
+        }
+    }
+    deleteCollection = async (collectionID, documentID) => {
+
+        try {
+            await this.database.deleteDocument(
+                appwriteDatabaseID,
+                collectionID,
+                documentID
+            );
+
+            showSuccessToast("Duplicate document deleted successfully");
+            return true
+        } catch (error) {
+            console.error(error)
+            showErrorToast("Failed to delete duplicate document");
+            return false
+        }
+
+
+
+
+    }
+    updateUserMetaData = async () => {
+
+    }
+    updateUserDocument = async (collectionID, documentID, updatedDocument) => {
+        try {
+            const result = await this.database.updateDocument(
+                appwriteDatabaseID, // databaseId
+                collectionID, // collectionId
+                documentID, // documentId
+                updatedDocument, // data (optional)
+
+            );
+            return true
+        } catch (error) {
+            return false
             console.error(error);
 
         }

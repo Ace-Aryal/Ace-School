@@ -1,15 +1,21 @@
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
+
+import functionService from "@/appwrite/functions/function";
 import databaseService from "@/appwrite/Database/database";
-import { capitalize } from "./capitalize";
-export const updateUser = async (data, { reset, getUserDocumentFn, toDelete, setToDelete, updateUserDocmentFn, userRole, setErrorUpdating, errorUpdating }) => {
+export const updateUser = async (data, { reset, documentID, collectionID, userRole, originalEmail, originalDOB, originalJoiningDate }) => {
 
     // expecting captalized user role
-    const formattedDOB = data.DOB ? data.DOB.format("YYYY-MM-DD") : "";
-    setErrorDeletingDuplicate(false)
+    let formattedDOB
+    if (data.DOB !== originalDOB) {
+
+        formattedDOB = data.DOB ? data.DOB.format("YYYY-MM-DD") : "";
+    }
+    if ((userRole.toLowerCase() === "teacher" || userRole.toLowerCase() === "staff") && data.joiningDate !== originalJoiningDate) { }
+
     let email;
     let name;
     let updatedDocument;
-    if (userRole === "Student") {
+    if (userRole.toLowerCase() === "student") {
         email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`.toLowerCase().replaceAll(" ", "")
 
         updatedDocument = {
@@ -19,11 +25,10 @@ export const updateUser = async (data, { reset, getUserDocumentFn, toDelete, set
             discount: Number(data.discount.trim()),
             scholarship: Number(data.scholarship.trim()),
             DOB: formattedDOB,
-            attendance: false,
-            attendanceRecord: JSON.stringify([]),
+
         };
     }
-    if (userRole === "Teacher") {
+    if (userRole.toLowerCase() === "teacher") {
         email = data.email
         name = data.teacherName
         const formattedJoiningDate = data.joiningDate ? data.joiningDate.format("YYYY-MM-DD") : "";
@@ -32,13 +37,10 @@ export const updateUser = async (data, { reset, getUserDocumentFn, toDelete, set
 
             joiningDate: formattedJoiningDate,
             DOB: formattedDOB,
-            classes: JSON.stringify(data.classes),
-            attendance: false,
-            subjectsTaught: JSON.stringify(data.subjectsTaught),
-            attendanceRecord: JSON.stringify([]),
+
         };
     }
-    if (userRole === "Staff") {
+    if (userRole.toLowerCase() === "staff") {
         email = data.email
         name = data.fullName
         const formattedJoiningDate = data.joiningDate ? data.joiningDate.format("YYYY-MM-DD") : "";
@@ -48,22 +50,31 @@ export const updateUser = async (data, { reset, getUserDocumentFn, toDelete, set
             joiningDate: formattedJoiningDate,
             DOB: formattedDOB,
 
-            attendance: false,
 
-            attendanceRecord: JSON.stringify([]),
         };
         console.log(updatedDocument);
 
     }
 
+
     try {
-        if (toDelete) {
-            // delete then update
+        if (email !== originalEmail) {
+            const response = await functionService.deleteUser(originalEmail)
+            console.log(response)
+            if (response?.status === "failed") {
+                showErrorToast("Failed to delete user")
+            }
             return
         }
         // only update
-
+        const response = await updateUserDocmentFn(data)
+        if (response) {
+            console.log(response)
+        }
+        showSuccessToast("Document Updated sucessfully")
+        reset()
     } catch (error) {
-
+        console.error(error)
+        showErrorToast("Failed to update document")
     }
 }

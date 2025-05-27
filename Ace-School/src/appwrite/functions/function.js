@@ -11,18 +11,19 @@ class FunctionService {
             .setProject(config.appwritreProjectID)
         this.functions = new Functions(this.client)
 
-        deleteUser = (email) => {
-            this.functions.createExecution(config.deleteUserFunctionID, JSON.stringify({ email: email }))
-                .then((response) => {
-                    console.log("Function executed successfully", response);
-                    showSuccessToast("User account deleted sucessfully")
-                })
-                .catch((error) => {
-                    showErrorToast("Unable to delete user account")
-                    console.error("Execution failed", error);
-                });
-        }
     }
+    deleteUser = async (email) => {
+        try {
+            const response = await this.functions.createExecution(config.deleteUserFunctionID, JSON.stringify({ email: email }))
+            console.log(response);
+            console.log("Function executed successfully", response);
+            return response
+        } catch (error) {
+            console.error("Execution failed", error);
+        }
+
+    }
+
 }
 const functionService = new FunctionService()
 export default functionService
