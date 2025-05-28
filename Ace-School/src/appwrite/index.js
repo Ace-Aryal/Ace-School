@@ -14,7 +14,7 @@ const config = {
     noticeCollectionID: String(import.meta.env.VITE_NOTICE_COLLECTION_ID),
     userMetaDataCollectionID: String(import.meta.env.VITE_USER_COLLECTION_ID),
     deleteUserFunctionID: String(import.meta.env.VITE_DELETE_USER_FUNCTION_ID),
-
+    classScheduleDocumentID: String(import.meta.env.VITE_CLASS_SCHEDULE_DOCUMEMT_ID),
 
 }
 export default config

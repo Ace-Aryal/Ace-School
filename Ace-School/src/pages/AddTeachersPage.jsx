@@ -192,7 +192,7 @@ export default function AddTeachersPage() {
 
   return (
     <AuthenticatedContainer classnames="items-center min-h-[105vh]">
-      <h2 className="text-2xl text-zinc-800 font-bold text-center">
+      <h2 className="text-3xl text-zinc-800 font-semibold w-full md:max-w-[70vw]">
         Add Teacher
       </h2>
 

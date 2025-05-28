@@ -65,21 +65,21 @@ const InboxPage = () => {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <h1 className="text-4xl text-zinc-800 text-center font-semibold my-4">
+      <h1 className="text-3xl text-zinc-800 w-full md:max-w-[80%] font-semibold my-4">
         Inbox
       </h1>
 
       <div className="w-9/10 sm:w-[80%]  flex  flex-col">
         <div className="overflow-x-scroll w-full">
-          <table className="min-w-full table-auto   text-center text-gray-700 border border-gray-300 ">
-            <thead className="bg-zinc-800 text-gray-50 uppercase text-sm font-semibold border-2 border-white">
+          <table className="min-w-full table-auto border border-gray-500   text-center text-zinc-700  ">
+            <thead className=" text-zinc-800  ">
               <tr>
                 <th className="px-4 py-2 border-r border-gray-300">
                   Published
                 </th>
                 <th className="px-4 py-3 border-r border-gray-300">Author</th>
                 <th className="px-4 py-3 border-r border-gray-300">Subject</th>
-                <th className="px-4 py-3 border-r border-gray-300"> Actions</th>
+                <th className="px-4 py-3 "> Actions</th>
               </tr>
             </thead>
 

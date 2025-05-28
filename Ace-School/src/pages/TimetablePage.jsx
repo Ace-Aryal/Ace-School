@@ -1,7 +1,32 @@
+import { Button } from "@/components/ui/button";
+import { FilePenLine } from "lucide-react";
 import React from "react";
+import { useSelector } from "react-redux";
+import { SimpleTable } from "@/components/Molecules/SimpleTable";
+import AlertDialogComponent from "@/components/Molecules/AlertDialog";
 
 const TimetablePage = () => {
-  return <div>TimetablePage</div>;
+  const roles = useSelector((state) => state?.auth?.user?.roles);
+  console.log(roles);
+
+  return (
+    <div className="w-full mt-14 flex flex-col gap-8 items-center px-2">
+      <section id="top" className="flex w-full sm:w-4/5">
+        <h2 className="w-full text-2xl sm:text-3xl font-semibold text-zinc-800">
+          Class Schedule
+        </h2>
+
+        {roles?.includes("admin") && (
+          <Button className="bg-zinc-800 text-white">
+            Modify Schedule <FilePenLine />
+          </Button>
+        )}
+      </section>
+      <section id="bottom" className=" p-0  w-full sm:w-4/5">
+        <SimpleTable />
+      </section>
+    </div>
+  );
 };
 
 export default TimetablePage;

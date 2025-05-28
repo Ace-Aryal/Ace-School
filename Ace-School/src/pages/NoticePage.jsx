@@ -8,11 +8,11 @@ const CreateNoticePage = () => {
   }
   return (
     <main className="flex w-full my-2 sm:my-4 flex-col  justify-center items-center">
-      <h2 className="text-4xl text-zinc-800 font-bold text-center">
+      <h2 className="text-3xl text-zinc-800 font-semibold w-full sm:max-w-[80%]">
         Create Notice
       </h2>
 
-      <RTE className="w-full  px-1 mx-1 sm:w-[80%]" />
+      <RTE className="w-full  px-1 mx-1 sm:max-w-[80%]" />
     </main>
   );
 };

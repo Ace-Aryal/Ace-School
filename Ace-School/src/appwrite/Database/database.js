@@ -2,7 +2,19 @@ import { Client, Databases, ID } from 'appwrite';
 import config from '..';
 import { Query } from "appwrite";
 import { showErrorToast, showSuccessToast } from '@/components/Templates/toast';
-const { appwriteDatabaseID, userMetaDataCollectionID, appwritreProjectID, appwritreStaffsCollectionID, appwritreTeachersCollectionID, noticeCollectionID, emailCollectionID, appwritreURL, appwritreLibraryCollectionID, appwritreScheduleCollectionID, appwritreStudentCollectionID, appwritrefFeeCollectionID } = config
+const { appwriteDatabaseID,
+    userMetaDataCollectionID,
+    classScheduleDocumentID,
+    appwritreProjectID,
+    appwritreStaffsCollectionID,
+    appwritreTeachersCollectionID,
+    noticeCollectionID,
+    emailCollectionID,
+    appwritreURL,
+    appwritreLibraryCollectionID,
+    appwritreScheduleCollectionID,
+    appwritreStudentCollectionID,
+    appwritrefFeeCollectionID } = config
 const collectionObject = {
     inbox: emailCollectionID,
     notice: noticeCollectionID,
@@ -48,9 +60,6 @@ class DatabaseService {
 
         }
     }
-
-
-
     fetchMessages = async ({ pageParam = undefined, dashboardFetch = false }) => {
         console.log("doing sth");
 
@@ -207,7 +216,7 @@ class DatabaseService {
     }
 
     /// handle users collections
-    //1. Teachers
+
     createteacherDocument = async (data) => {
         // teacher form data
         try {
@@ -434,27 +443,7 @@ class DatabaseService {
 
         }
     }
-    deleteCollection = async (collectionID, documentID) => {
 
-        try {
-            await this.database.deleteDocument(
-                appwriteDatabaseID,
-                collectionID,
-                documentID
-            );
-
-
-            return true
-        } catch (error) {
-            console.error(error)
-
-            return false
-        }
-
-
-
-
-    }
     updateUserMetaData = async (updatedDocument, documentID) => {
         console.log(documentID)
         try {
@@ -490,6 +479,53 @@ class DatabaseService {
             console.error(error);
             return false
 
+        }
+    }
+
+    // document delete fn
+    deleteCollection = async (collectionID, documentID) => {
+
+        try {
+            await this.database.deleteDocument(
+                appwriteDatabaseID,
+                collectionID,
+                documentID
+            );
+
+
+            return true
+        } catch (error) {
+            console.error(error)
+
+            return false
+        }
+
+
+
+
+    }
+
+    // schedule update fn : note : Already createed and initialized on database so only update fn is here 
+
+    getClassSchedule = async () => {
+        try {
+            const response = await this.database.getDocument(appwriteDatabaseID, appwritreScheduleCollectionID, classScheduleDocumentID)
+            console.log(JSON.parse(response.scheduleJSON))
+            return await JSON.parse(response.scheduleJSON)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    updateClassSchedule = async (updatedData) => {
+
+        try {
+            const response = await this.database.updateDocument(appwriteDatabaseID, appwritreScheduleCollectionID, classScheduleDocumentID, { scheduleJSON: JSON.stringify(updatedData) })
+            return true
+
+        } catch (error) {
+            console.error(error)
+            return false
         }
     }
 }

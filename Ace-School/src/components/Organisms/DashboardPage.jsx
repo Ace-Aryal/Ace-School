@@ -148,11 +148,11 @@ const DashboardPage = () => {
       id="container"
       className="m-0 pl-2 p-0 flex flex-col items-center w-full mt-10 "
     >
-      <h2 className="text-2xl text-center font-bold text-zinc-700">
+      <h2 className="text-2xl text-center font-semibold text-zinc-700">
         Welcome, {username}
       </h2>
       <section className="data-section flex flex-col w-full px-4 sm:px-5 my-6 self-start ">
-        <h3 className="text-xl my-3">Dashboard</h3>
+        <h3 className="text-3xl my-3 font-semibold">Dashboard</h3>
         <div className="grid grid-cols-2 my-4 mb-16  items-stretch md:grid-cols-3 w-full gap-2 ">
           {statItems.map((item) => (
             <Link

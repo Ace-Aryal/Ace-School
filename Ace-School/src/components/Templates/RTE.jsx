@@ -127,7 +127,7 @@ export default function RTE(props) {
   return (
     <form
       {...props}
-      className="flex flex-col items-center z-0"
+      className="flex w-full sm:max-w-[80%] flex-col items-center z-0"
       onSubmit={
         isEditing ? handleSubmit(handleUpdate) : handleSubmit(handleCreate)
       }
@@ -141,7 +141,7 @@ export default function RTE(props) {
         type="text"
         name="subject"
         id="subject"
-        className="mt-5 text-lg bg-white mb-0 p-1 rounded shadow w-full"
+        className="mt-5 border border-gray-300 rounded-xl text-lg bg-white mb-0 px-4 py-2 shadow w-full"
         placeholder="Enter subject of notice"
       />
       {errors.subject && (

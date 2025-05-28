@@ -34,10 +34,10 @@ const InboxElement = ({ message }) => {
     showErrorToast("Error deleting message !");
   };
   return (
-    <tbody className="bg-gray-200 border-2 border-white">
+    <tbody className=" border-t border-gray-300">
       <tr>
         <td
-          className="border-r border-white"
+          className="border-r border-gray-300"
           onClick={() => {
             handleItemClick(message.seen, message.$id);
           }}
@@ -45,7 +45,7 @@ const InboxElement = ({ message }) => {
           {message.date}
         </td>
         <td
-          className="border-r border-white"
+          className="border-r border-gray-300"
           onClick={() => {
             handleItemClick(message.seen, message.$id);
           }}
@@ -54,7 +54,7 @@ const InboxElement = ({ message }) => {
           {message.fullName}
         </td>
         <td
-          className="border-r border-white"
+          className="border-r border-gray-300"
           onClick={() => {
             handleItemClick(message.seen, message.$id);
           }}

@@ -33,10 +33,10 @@ const NoticeListElement = ({ data: notice, role }) => {
     showErrorToast("Error deleting message !");
   };
   return (
-    <tbody className="bg-gray-200 border-2 border-white ">
+    <tbody className="bg-white border-t  border-gray-300  ">
       <tr>
         <td
-          className="border-r border-white"
+          className="border-r border-gray-300"
           onClick={() => {
             handleItemClick(notice.seen, notice.$id);
           }}
@@ -44,7 +44,7 @@ const NoticeListElement = ({ data: notice, role }) => {
           {notice.$createdAt.slice(0, 10)}
         </td>
         <td
-          className="border-r border-white"
+          className="border-r border-gray-300"
           onClick={() => {
             handleItemClick(notice.seen, notice.$id);
           }}
@@ -53,7 +53,7 @@ const NoticeListElement = ({ data: notice, role }) => {
           {notice.author}
         </td>
         <td
-          className="border-r border-white"
+          className="border-r border-gray-300"
           onClick={() => {
             handleItemClick(notice.seen, notice.$id);
           }}
