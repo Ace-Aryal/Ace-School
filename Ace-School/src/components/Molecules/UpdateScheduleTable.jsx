@@ -22,25 +22,142 @@ const gradeArray = Array.from(
   { length: 9 },
   (_, index) => `Grade ${index + 1}`
 );
-export function UpdateScheduleTable() {
+const UpdateScheduleTable = React.memo(() => {
   const {
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
   } = useForm();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["scheduleData"],
     queryFn: async () => {
       return await databaseService.getClassSchedule();
     },
   });
   const handleUpdate = async (data) => {
-    console.log(data);
-    // const updatedData = ""
-    //     await databaseService.updateClassSchedule(updatedData)
+    try {
+      let updatedData = [];
+      let period1 = {
+        period: "Period 1",
+      };
+      let period2 = {
+        period: "Period 2",
+      };
+      let period3 = {
+        period: "Period 3",
+      };
+      let period4 = {
+        period: "Period 4",
+      };
+      let period5 = {
+        period: "Period 5",
+      };
+      let period6 = {
+        period: "Period 6",
+      };
+      let period7 = {
+        period: "Period 7",
+      };
+
+      for (const element in data) {
+        // formats our formdata into tabular data to store into database
+        const splittedKey = element.split("-");
+
+        const [grade, period] = splittedKey;
+        const key = grade.toLowerCase().replaceAll(" ", "");
+        switch (period) {
+          case "1":
+            {
+              console.log(key, data[element]);
+
+              const subjectArray = data[element];
+              period1 = {
+                ...period1,
+                [key]: subjectArray.map((subject) => subject.label) || [],
+              };
+            }
+
+            break;
+          case "2":
+            {
+              const subjectArray = data[element];
+              period2 = {
+                ...period2,
+                [key]: subjectArray.map((subject) => subject.label) || [],
+              };
+            }
+
+            break;
+          case "3":
+            {
+              const subjectArray = data[element];
+              period3 = {
+                ...period3,
+                [key]: subjectArray.map((subject) => subject.label) || [],
+              };
+            }
+
+            break;
+          case "4":
+            {
+              const subjectArray = data[element];
+              period4 = {
+                ...period4,
+                [key]: subjectArray.map((subject) => subject.label) || [],
+              };
+            }
+
+            break;
+          case "5":
+            {
+              const subjectArray = data[element];
+              period5 = {
+                ...period5,
+                [key]: subjectArray.map((subject) => subject.label) || [],
+              };
+            }
+
+            break;
+          case "6": {
+            const subjectArray = data[element];
+            period6 = {
+              ...period6,
+              [key]: subjectArray.map((subject) => subject.label) || [],
+            };
+          }
+          case "7":
+            {
+              const subjectArray = data[element];
+              period7 = {
+                ...period7,
+                [key]: subjectArray.map((subject) => subject.label) || [],
+              };
+            }
+
+            break;
+
+          default:
+            break;
+        }
+      }
+      updatedData = [
+        period1,
+        period2,
+        period3,
+        period4,
+        period5,
+        period6,
+        period7,
+      ];
+      console.log("updated", updatedData);
+
+      await databaseService.updateClassSchedule(updatedData);
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const year = new Date().getFullYear();
+
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -77,9 +194,9 @@ export function UpdateScheduleTable() {
                 <Controller
                   name={`nursery-${index + 1}`}
                   control={control}
-                  defaultValue={period?.nursery?.map((subject) => ({
+                  defaultValue={period?.nursery?.map((subject, index) => ({
                     value: subject?.toLowerCase(),
-                    label: period?.nursery,
+                    label: period?.nursery[index],
                   }))}
                   render={({ field }) => (
                     <Select
@@ -97,9 +214,9 @@ export function UpdateScheduleTable() {
                 <Controller
                   name={`LKG-${index + 1}`}
                   control={control}
-                  defaultValue={period?.lkg?.map((subject) => ({
+                  defaultValue={period?.lkg?.map((subject, index) => ({
                     value: subject.toLowerCase(),
-                    label: period?.lkg,
+                    label: period?.lkg[index],
                   }))}
                   render={({ field }) => (
                     <Select
@@ -117,9 +234,9 @@ export function UpdateScheduleTable() {
                 <Controller
                   name={`UKG-${index + 1}`}
                   control={control}
-                  defaultValue={period?.ukg?.map((subject) => ({
+                  defaultValue={period?.ukg?.map((subject, index) => ({
                     value: subject?.toLowerCase(),
-                    label: period?.ukg,
+                    label: period?.ukg[index],
                   }))}
                   render={({ field }) => (
                     <Select
@@ -139,9 +256,10 @@ export function UpdateScheduleTable() {
                     control={control}
                     defaultValue={period[
                       grade.toLowerCase().replaceAll(" ", "")
-                    ]?.map((subject) => ({
+                    ]?.map((subject, index) => ({
                       value: subject?.toLowerCase(),
-                      label: period[grade.toLowerCase().replaceAll(" ", "")],
+                      label:
+                        period[grade.toLowerCase().replaceAll(" ", "")][index],
                     }))}
                     render={({ field }) => (
                       <Select
@@ -161,9 +279,9 @@ export function UpdateScheduleTable() {
                 <Controller
                   name={`Grade 10-${index + 1}`}
                   control={control}
-                  defaultValue={period?.grade10?.map((subject) => ({
+                  defaultValue={period?.grade10?.map((subject, index) => ({
                     value: subject?.toLowerCase(),
-                    label: period?.grade10,
+                    label: period?.grade10[index],
                   }))}
                   render={({ field }) => (
                     <Select
@@ -187,8 +305,8 @@ export function UpdateScheduleTable() {
         buttonText="Update Schedule"
         classNames="bg-red-500 w-fit"
         onContinueFn={handleSubmit(handleUpdate)}
-        params={null}
+        refetch={refetch}
       ></AlertDialogComponent>
     </form>
   );
-}
+});

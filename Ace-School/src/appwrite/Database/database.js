@@ -520,12 +520,13 @@ class DatabaseService {
     updateClassSchedule = async (updatedData) => {
 
         try {
-            const response = await this.database.updateDocument(appwriteDatabaseID, appwritreScheduleCollectionID, classScheduleDocumentID, { scheduleJSON: JSON.stringify(updatedData) })
+            await this.database.updateDocument(appwriteDatabaseID, appwritreScheduleCollectionID, classScheduleDocumentID, { scheduleJSON: JSON.stringify(updatedData) })
             showSuccessToast("Sucessfully updated data !")
             return true
 
         } catch (error) {
             console.error(error)
+            showErrorToast("Failed to update schedule")
             return false
         }
     }

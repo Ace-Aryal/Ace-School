@@ -16,19 +16,28 @@ import LoadingPage from "@/pages/LoadingPage";
 import ErrorPage from "@/pages/ErrorPage";
 import AlertDialogComponent from "./AlertDialog";
 import { emptyTableData } from "@/utils/scheduleConstants";
+import { useForm } from "react-hook-form";
 
 const gradeArray = Array.from(
   { length: 9 },
   (_, index) => `Grade ${index + 1}`
 );
 export function SimpleTable() {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["scheduleData"],
     queryFn: async () => {
       return await databaseService.getClassSchedule();
     },
   });
-  const year = new Date().getFullYear();
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm();
+
+  const handleReset = async (data) => {
+    await databaseService.updateClassSchedule(emptyTableData);
+  };
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -82,8 +91,8 @@ export function SimpleTable() {
                 description="This action will permanently reset the timetable "
                 buttonText="Reset Schedule"
                 classNames="bg-red-500"
-                onContinueFn={databaseService.updateClassSchedule}
-                params={emptyTableData}
+                onContinueFn={handleReset}
+                refetch={refetch}
               ></AlertDialogComponent>
             </div>
           </TableCell>
