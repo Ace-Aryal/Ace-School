@@ -36,71 +36,79 @@ import SignupPage from "./pages/SignupPage";
 import UpdateStaffPage from "./pages/UpdateStaff";
 import UpdateTeacherPage from "./pages/UpdateTeacher";
 import UpdateStudentPage from "./pages/updateStudent";
+import PublicAppLayout from "./components/Templates/PublicAppLayout";
+import UpdateTimetable from "./pages/UpdateTimetable";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
 
   return (
     <Routes>
       <Route path="*" element={<ErrorPage />} />
-      <Route path="/" element={<Applayout />}>
-        {!isAuthenticated && (
-          <>
-            <Route index element={<HomePage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="gallary" element={<GallaryPage />} />
-            <Route path="gallary/:id" element={<GallaryItem />} />
 
-            <Route path="services" element={<ServicesPage />} />
-            <Route path="contact" element={<ContactPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="signup" element={<SignupPage />} />
-            <Route path="recover-account" element={<RecoveryPage />} />
-            <Route
-              path="/recover-password-initiation"
-              element={<RecoverInitiationPage />}
-            />
-          </>
-        )}
+      {!isAuthenticated && (
+        <Route path="/" element={<PublicAppLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="gallary" element={<GallaryPage />} />
+          <Route path="gallary/:id" element={<GallaryItem />} />
 
-        {isAuthenticated && (
-          <>
-            <Route index element={<DashBoardPage />} />
+          <Route path="services" element={<ServicesPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
+          <Route path="recover-account" element={<RecoveryPage />} />
+          <Route
+            path="/recover-password-initiation"
+            element={<RecoverInitiationPage />}
+          />
+        </Route>
+      )}
 
-            <Route path="attendance" element={<AttendancePage />} />
-            <Route path="billing" element={<BillingPage />} />
-            <Route path="notice" element={<ViewNoticePage />} />
-            <Route path="notice/:id" element={<NoticeElement />} />
-            <Route path="notice/publish" element={<NoticePage />} />
-            <Route path="notice/update" element={<UpdateNoticePage />} />
-            <Route path="timetable" element={<TimetablePage />} />
-            <Route path="inbox" element={<InboxPage />} />
-            <Route path="inbox/:id" element={<InboxViewPage />} />
-            <Route path="calender" element={<Calenderpage />} />
-            <Route path="change-password" element={<ChangePasswordPage />} />
-            <Route path="view-students" element={<ViewStudents />} />
-            <Route
-              path="view-students/add-student"
-              element={<AddStudentsPage />}
-            />
-            <Route
-              path="view-students/update-student"
-              element={<UpdateStudentPage />}
-            />
-            <Route path="view-staffs" element={<ViewStaffsPage />} />
-            <Route path="view-staffs/add-staff" element={<AddStaffsPage />} />
-            <Route
-              path="view-staffs/update-staff"
-              element={<UpdateStaffPage />}
-            />
-            <Route path="view-teachers" element={<ViewTeachers />} />
-            <Route
-              path="view-teachers/add-teacher"
-              element={<AddTeachersPage />}
-            />
-            <Route path="view-teachers/update-teacher" element={<UpdateTeacherPage />} />
-          </>
-        )}
-      </Route>
+      {isAuthenticated && (
+        <Route path="/" element={<Applayout />}>
+          <Route index element={<DashBoardPage />} />
+
+          <Route path="attendance" element={<AttendancePage />} />
+          <Route path="billing" element={<BillingPage />} />
+          <Route path="notice" element={<ViewNoticePage />} />
+          <Route path="notice/:id" element={<NoticeElement />} />
+          <Route path="notice/publish" element={<NoticePage />} />
+          <Route path="notice/update" element={<UpdateNoticePage />} />
+          <Route path="timetable" element={<TimetablePage />} />
+          <Route
+            path="timetable/modify-timetable"
+            element={<UpdateTimetable />}
+          />
+          <Route path="inbox" element={<InboxPage />} />
+          <Route path="inbox/:id" element={<InboxViewPage />} />
+          <Route path="calender" element={<Calenderpage />} />
+          <Route path="change-password" element={<ChangePasswordPage />} />
+          <Route path="view-students" element={<ViewStudents />} />
+          <Route
+            path="view-students/add-student"
+            element={<AddStudentsPage />}
+          />
+          <Route
+            path="view-students/update-student"
+            element={<UpdateStudentPage />}
+          />
+          <Route path="view-staffs" element={<ViewStaffsPage />} />
+          <Route path="view-staffs/add-staff" element={<AddStaffsPage />} />
+          <Route
+            path="view-staffs/update-staff"
+            element={<UpdateStaffPage />}
+          />
+          <Route path="view-teachers" element={<ViewTeachers />} />
+          <Route
+            path="view-teachers/add-teacher"
+            element={<AddTeachersPage />}
+          />
+          <Route
+            path="view-teachers/update-teacher"
+            element={<UpdateTeacherPage />}
+          />
+        </Route>
+      )}
     </Routes>
   );
 }

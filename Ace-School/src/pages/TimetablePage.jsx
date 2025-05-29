@@ -4,6 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { SimpleTable } from "@/components/Molecules/SimpleTable";
 import AlertDialogComponent from "@/components/Molecules/AlertDialog";
+import { NavLink } from "react-router";
 
 const TimetablePage = () => {
   const roles = useSelector((state) => state?.auth?.user?.roles);
@@ -17,9 +18,11 @@ const TimetablePage = () => {
         </h2>
 
         {roles?.includes("admin") && (
-          <Button className="bg-zinc-800 text-white">
-            Modify Schedule <FilePenLine />
-          </Button>
+          <NavLink to="/timetable/modify-timetable">
+            <Button className="bg-zinc-800 text-white">
+              Modify Schedule <FilePenLine />
+            </Button>
+          </NavLink>
         )}
       </section>
       <section id="bottom" className=" p-0  w-full sm:w-4/5">

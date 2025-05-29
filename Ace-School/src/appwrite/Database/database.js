@@ -521,6 +521,7 @@ class DatabaseService {
 
         try {
             const response = await this.database.updateDocument(appwriteDatabaseID, appwritreScheduleCollectionID, classScheduleDocumentID, { scheduleJSON: JSON.stringify(updatedData) })
+            showSuccessToast("Sucessfully updated data !")
             return true
 
         } catch (error) {

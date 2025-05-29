@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import React from "react";
-
 const AlertDialogComponent = ({
   buttonText,
   title,
@@ -27,7 +26,7 @@ const AlertDialogComponent = ({
       >
         {buttonText}
       </AlertDialogTrigger>
-      <AlertDialogContent className=" bg-white z-50 top-[30vh] w-[500px] left-[calc(50vw-175px)]  sm:left-[calc(50vw-250px)] right-0">
+      <AlertDialogContent className=" bg-white ">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
@@ -37,7 +36,11 @@ const AlertDialogComponent = ({
           <AlertDialogAction
             onClick={(e) => {
               console.log("Hello");
-              //   onContinueFn(params);
+              if (params) {
+                onContinueFn(params);
+                return;
+              }
+              onContinueFn();
             }}
           >
             Continue

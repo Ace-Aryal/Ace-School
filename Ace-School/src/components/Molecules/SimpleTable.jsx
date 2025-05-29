@@ -59,15 +59,17 @@ export function SimpleTable() {
             <TableCell className="font-medium border-r">
               {period.period}
             </TableCell>
-            <TableCell className="border-r">{period.nursery}</TableCell>
-            <TableCell className="border-r">{period.lkg}</TableCell>
-            <TableCell className="border-r">{period.ukg}</TableCell>
+            <TableCell className="border-r">
+              {period.nursery.join(",")}
+            </TableCell>
+            <TableCell className="border-r">{period.lkg.join(",")}</TableCell>
+            <TableCell className="border-r">{period.ukg.join(",")}</TableCell>
             {gradeArray.map((grade) => (
               <TableCell key={grade} className="border-r">
-                {period[grade.toLowerCase().replaceAll(" ", "")]}
+                {period[grade.toLowerCase().replaceAll(" ", "")].join(",")}
               </TableCell>
             ))}
-            <TableCell className="">{period.grade10}</TableCell>
+            <TableCell className="">{period.grade10.join(",")}</TableCell>
           </TableRow>
         ))}
       </TableBody>
