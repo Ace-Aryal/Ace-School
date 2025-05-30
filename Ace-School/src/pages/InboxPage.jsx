@@ -71,9 +71,9 @@ const InboxPage = () => {
 
       <div className="w-9/10 sm:w-[80%]  flex  flex-col">
         <div className="overflow-x-scroll w-full">
-          <table className="min-w-full table-auto border border-gray-500   text-center text-zinc-700  ">
+          <table className="min-w-full table-auto border border-gray-300   text-center text-zinc-700  ">
             <thead className=" text-zinc-800  ">
-              <tr>
+              <tr className="bg-gray-200 border-b  border-gray-300">
                 <th className="px-4 py-2 border-r border-gray-300">
                   Published
                 </th>

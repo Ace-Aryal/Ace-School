@@ -11,24 +11,25 @@ import {
 import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "../ui/button";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import databaseService from "@/appwrite/Database/database";
 import LoadingPage from "@/pages/LoadingPage";
 import ErrorPage from "@/pages/ErrorPage";
 import AlertDialogComponent from "./AlertDialog";
 import { emptyTableData, subjects } from "@/utils/scheduleConstants";
 import Select from "react-select";
+import React from "react";
 const gradeArray = Array.from(
   { length: 9 },
   (_, index) => `Grade ${index + 1}`
 );
-const UpdateScheduleTable = React.memo(() => {
+const UpdateScheduleTable = () => {
   const {
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
   } = useForm();
-
+  const queryClient = useQueryClient();
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["scheduleData"],
     queryFn: async () => {
@@ -305,8 +306,10 @@ const UpdateScheduleTable = React.memo(() => {
         buttonText="Update Schedule"
         classNames="bg-red-500 w-fit"
         onContinueFn={handleSubmit(handleUpdate)}
-        refetch={refetch}
+        invalidate={() => queryClient.invalidateQueries(["scheduleData"])}
       ></AlertDialogComponent>
     </form>
   );
-});
+};
+
+export default UpdateScheduleTable;

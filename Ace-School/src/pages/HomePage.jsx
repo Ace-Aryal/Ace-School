@@ -61,7 +61,7 @@ function HomePage() {
             <CarouselItem className="p-0 m-0" key={image}>
               <div className="p-0 ">
                 <Card className="p-0">
-                  <CardContent className="flex max-h-[90vh]  items-center justify-center p-0 m-0 border-0">
+                  <CardContent className="flex max-h-[91vh]  items-center justify-center p-0 m-0 border-0">
                     <img
                       src={image}
                       alt="school image "

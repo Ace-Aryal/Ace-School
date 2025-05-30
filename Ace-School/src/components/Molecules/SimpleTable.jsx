@@ -10,19 +10,22 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "../ui/button";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import databaseService from "@/appwrite/Database/database";
 import LoadingPage from "@/pages/LoadingPage";
 import ErrorPage from "@/pages/ErrorPage";
 import AlertDialogComponent from "./AlertDialog";
 import { emptyTableData } from "@/utils/scheduleConstants";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 const gradeArray = Array.from(
   { length: 9 },
   (_, index) => `Grade ${index + 1}`
 );
 export function SimpleTable() {
+  const queryClient = useQueryClient();
+  const roles = useSelector((state) => state.auth.user.roles);
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["scheduleData"],
     queryFn: async () => {
@@ -82,22 +85,26 @@ export function SimpleTable() {
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={4}>
-            <div className="w-full flex ">
-              <AlertDialogComponent
-                title="Are you sure you want to reset schedule?"
-                description="This action will permanently reset the timetable "
-                buttonText="Reset Schedule"
-                classNames="bg-red-500"
-                onContinueFn={handleReset}
-                refetch={refetch}
-              ></AlertDialogComponent>
-            </div>
-          </TableCell>
-        </TableRow>
-      </TableFooter>
+      {roles.includes("admin") && (
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={4}>
+              <div className="w-full flex ">
+                <AlertDialogComponent
+                  title="Are you sure you want to reset schedule?"
+                  description="This action will permanently reset the timetable "
+                  buttonText="Reset Schedule"
+                  classNames="bg-red-500"
+                  onContinueFn={handleReset}
+                  invalidate={() =>
+                    queryClient.invalidateQueries(["scheduleData"])
+                  }
+                ></AlertDialogComponent>
+              </div>
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      )}
     </Table>
   );
 }

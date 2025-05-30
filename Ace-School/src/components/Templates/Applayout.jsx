@@ -22,7 +22,7 @@ function Applayout() {
   return (
     <SidebarProvider className="w-full overflow-auto">
       <Navbar />
-      <div className="w-full flex bg-white field-sizing-content">
+      <div className="w-full flex bg-white ">
         <aside
           className={`mt-14  flex ${
             sidebarState.expanded === "expanded" ? "lg:w-64" : "lg:w-0"

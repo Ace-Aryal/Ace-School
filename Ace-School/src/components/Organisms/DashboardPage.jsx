@@ -156,7 +156,7 @@ const DashboardPage = () => {
         <div className="grid grid-cols-2 my-4 mb-16  items-stretch md:grid-cols-3 w-full gap-2 ">
           {statItems.map((item) => (
             <Link
-              className={`shadow-lg hover:bg-gray-100 shadow-black/30 border rounded-xl border-gray-400 flex items-center justify-center sm:justify-between`}
+              className={`shadow-lg hover:bg-gray-100 shadow-black/30 border myshadow  rounded-xl border-gray-200 flex items-center justify-center sm:justify-between`}
               to={
                 item.readers.some((reader) => roles?.includes(reader))
                   ? item.link

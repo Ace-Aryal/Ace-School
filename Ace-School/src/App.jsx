@@ -38,6 +38,7 @@ import UpdateTeacherPage from "./pages/UpdateTeacher";
 import UpdateStudentPage from "./pages/updateStudent";
 import PublicAppLayout from "./components/Templates/PublicAppLayout";
 import UpdateTimetable from "./pages/UpdateTimetable";
+import "./App.css";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
 

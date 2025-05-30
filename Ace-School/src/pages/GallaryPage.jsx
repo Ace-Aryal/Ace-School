@@ -78,7 +78,7 @@ const GallaryPage = () => {
                 >
                   <img
                     key={image.href}
-                    className="aspect-video object-cover rounded shadow-lg shadow-gray-400"
+                    className="aspect-video object-cover rounded shadow"
                     loading="lazy"
                     src={image.href}
                     alt="school photo"

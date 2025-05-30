@@ -40,7 +40,7 @@ const UpdateStudentPage = () => {
   if (
     roles.some(
       (role) =>
-        role.toLowerCase() !== "teacher" && role.toLowerCase() !== "admin"
+        role.toLowerCase() !== "account" && role.toLowerCase() !== "admin"
     )
   ) {
     return <ErrorPage />;

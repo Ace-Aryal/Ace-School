@@ -62,7 +62,7 @@ const AlertDialogComponent = ({
               } finally {
                 setLoading(false);
                 setOpen(false);
-                await rest.refetch?.();
+                await rest.invalidate?.();
               }
             }}
           >

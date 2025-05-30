@@ -28,7 +28,7 @@ const ViewUsers = ({
       return roleObject[role];
     },
   };
-  if (roles.some((role) => role !== "teacher" && role !== "admin")) {
+  if (roles.some((role) => role !== "account" && role !== "admin")) {
     return <ErrorPage />;
   }
   const dataWithContext = data.map((item) => ({

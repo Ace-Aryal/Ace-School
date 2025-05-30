@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { Button } from "../Atoms/button";
 import { Link, useNavigate } from "react-router";
-import { Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import databaseService from "@/appwrite/Database/database";
 import { showErrorToast, showSuccessToast } from "../Templates/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../Atoms/Spinner";
+import { useSelector } from "react-redux";
 const InboxElement = ({ message }) => {
   const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const roles = useSelector((state) => state.auth.user.roles);
   const handleItemClick = async (seenStatus, messageID) => {
     navigate(`/inbox/${message.$id}`);
     if (seenStatus === true) {
       return;
     }
+
     await databaseService.updateMessages({
       adjustObject: { seen: true },
       documentID: messageID,
@@ -35,7 +38,13 @@ const InboxElement = ({ message }) => {
   };
   return (
     <tbody className=" border-t border-gray-300">
-      <tr>
+      <tr
+        className={
+          message.seen
+            ? "bg-gray-100 border-t border-gray-300"
+            : "border-t border-gray-300"
+        }
+      >
         <td
           className="border-r border-gray-300"
           onClick={() => {
@@ -61,21 +70,34 @@ const InboxElement = ({ message }) => {
         >
           {message.message}
         </td>
-        <td>
-          {" "}
-          {deleting ? (
-            <Button className="bg-red-500 text-white">
-              <Spinner />
-            </Button>
-          ) : (
+        {roles.includes("admin") ? (
+          <td>
+            {" "}
+            {deleting ? (
+              <Button className="bg-red-500 text-white">
+                <Spinner />
+              </Button>
+            ) : (
+              <button
+                onClick={() => handleItemDelete(message.$id)}
+                className="bg-red-500 text-white px-2 py-1 rounded text-xs"
+              >
+                <Trash2 />
+              </button>
+            )}
+          </td>
+        ) : (
+          <td>
             <button
-              onClick={() => handleItemDelete(message.$id)}
-              className="bg-red-500 text-white px-2 py-1 rounded text-xs"
+              onClick={() => {
+                handleItemClick(message.seen, message.$id);
+              }}
+              className="bg-zinc-800 text-white px-2 py-1 rounded text-xs"
             >
-              <Trash2 />
+              <Eye />
             </button>
-          )}
-        </td>
+          </td>
+        )}
       </tr>
     </tbody>
 

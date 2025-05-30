@@ -12,7 +12,7 @@ const TimetablePage = () => {
 
   return (
     <div className="w-full mt-14 flex flex-col gap-8 items-center px-2">
-      <section id="top" className="flex w-full sm:w-4/5">
+      <section id="top" className="flex w-full sm:w-9/10">
         <h2 className="w-full text-2xl sm:text-3xl font-semibold text-zinc-800">
           Class Schedule
         </h2>
@@ -25,7 +25,7 @@ const TimetablePage = () => {
           </NavLink>
         )}
       </section>
-      <section id="bottom" className=" p-0  w-full sm:w-4/5">
+      <section id="bottom" className=" p-0  w-full sm:w-9/10">
         <SimpleTable />
       </section>
     </div>
