@@ -5,11 +5,11 @@ import { NavLink } from "react-router";
 
 const AttendenceViewCard = ({ userRole, ...className }) => {
   return (
-    <div className=" myshadow-sm border w-fit border-gray-200 p-6 hover:bg-gray-100  rounded-xl  ">
-      <div className=" min-w-48  lg:min-w-64">
+    <div className=" entryAnimation  myshadow-sm border w-fit border-gray-200 p-6 hover:bg-gray-100  rounded-xl  ">
+      <div className=" min-w-40  lg:min-w-64">
         <h2 className="text-2xl font-semibold"> {userRole} Attendence</h2>
         <p className="text-sm text-gray-500">
-          Check attendence of {userRole.toLowerCase()}s
+          Manage attendence of {userRole.toLowerCase()}s
         </p>
       </div>
       <div className="flex flex-col my-1.5 px-1 text font-medium">

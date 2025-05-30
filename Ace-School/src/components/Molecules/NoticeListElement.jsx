@@ -33,7 +33,7 @@ const NoticeListElement = ({ data: notice, role }) => {
     showErrorToast("Error deleting message !");
   };
   return (
-    <tbody className="bg-white border-t  border-gray-300  ">
+    <tbody className="bg-white border-t statEntry  border-gray-300  ">
       <tr>
         <td
           className="border-r border-gray-300"

@@ -16,10 +16,10 @@ const AdminAttendencePanel = () => {
   }
   if (roles.includes("account") || roles.includes("teacher")) {
     return (
-      <div className="flex w-fit flex-col space-y-5 md:space-y-0 md:flex-row justify-center gap-5 p-2  ">
+      <div className="flex w-full flex-col space-y-5 md:space-y-0 md:flex-row justify-center gap-2 p-2  ">
         <AttendenceViewCard userRole="Student" />
-        <section id="user-own-attendence">
-          <SelfAttendenceView />
+        <section className="w-full " id="user-own-attendence">
+          <SelfAttendenceView isNotPriviligedUser={false} />
         </section>
       </div>
     );
@@ -27,7 +27,7 @@ const AdminAttendencePanel = () => {
   return (
     <div className="flex w-fit flex-col space-y-5 md:space-y-0 md:flex-row justify-center gap-5 p-2  ">
       <section id="user-own-attendence">
-        <SelfAttendenceView />
+        <SelfAttendenceView isNotPriviligedUser={true} className="lg:px-10" />
       </section>
     </div>
   );

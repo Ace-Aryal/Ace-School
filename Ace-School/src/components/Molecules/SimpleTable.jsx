@@ -49,7 +49,7 @@ export function SimpleTable() {
   }
   console.log(data);
   return (
-    <Table className="border w-full border-gray-500 ">
+    <Table className="border statEntry w-full border-gray-500 ">
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px] border-r"></TableHead>

@@ -37,7 +37,7 @@ const InboxElement = ({ message }) => {
     showErrorToast("Error deleting message !");
   };
   return (
-    <tbody className=" border-t border-gray-300">
+    <tbody className="statEntry border-t border-gray-300">
       <tr
         className={
           message.seen

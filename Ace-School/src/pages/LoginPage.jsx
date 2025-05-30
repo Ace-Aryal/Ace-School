@@ -65,7 +65,6 @@ function LoginPage(props) {
         navigate("/");
         return;
       }
-      showErrorToast("Error logging in");
     } catch (error) {
       console.error(error);
       showErrorToast("Error logging in");

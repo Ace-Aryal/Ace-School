@@ -151,11 +151,11 @@ export default function AppSidebar({ getSidebarState }) {
   }, [state]);
   return (
     <Sidebar
-      className="mt-10 pt-10 z-1 sm:z-0 border-r border-gray-300"
+      className="mt-10 pt-10 z-1 sm:z-0 border-r border-gray-300 sideBarTransition "
       variant="sidebar"
       collapsible="offcanvas"
     >
-      <SidebarContent className="bg-white">
+      <SidebarContent className="bg-white ">
         <SidebarGroup>
           <SidebarGroupLabel className="text-md flex gap-1 font-semibold ">
             <User size={64} />

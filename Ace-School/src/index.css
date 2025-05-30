@@ -61,3 +61,72 @@
     background-color: #9ca3af; 
     border-radius: 4px;
   }
+
+
+  .entryAnimation {
+    animation: entry 0.5s ease-in 0s 1 ;
+  }
+  
+  @keyframes entry {
+     0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  }
+
+  .statEntry {
+    animation: dashboardEntry 0.4s ease-in 0s 1;
+  }
+  @keyframes dashboardEntry {
+    0%{
+     
+      
+      transform: translateY(-5px);
+      opacity: 0;
+    }
+    100%{
+      transform: translateZ(0);
+      
+        
+      opacity: 1;
+    }
+  }
+  
+  
+  .sideBarTransition{
+      animation: sideBarTransition 0.4s ease-in 0s 1  ;
+  }
+  .backgroundTransition{
+      animation: backgroundTransition 0.4s ease-in 0s 1  ;
+  }
+
+
+  @keyframes  sideBarTransition {
+    0%{
+      transform: translateX(-100px);
+      
+      
+      
+    }
+    100%{
+       transform: translateX(0px);
+      
+    }
+  }
+  @keyframes  backgroundTransition {
+    0%{
+      background-color: #E6E6FA;
+      
+      
+      
+    }
+    100%{
+       background-color: white;
+      
+    }
+  }
+
