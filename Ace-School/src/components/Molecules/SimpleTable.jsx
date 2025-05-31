@@ -49,14 +49,14 @@ export function SimpleTable() {
   }
   console.log(data);
   return (
-    <Table className="border statEntry w-full border-gray-500 ">
+    <Table className="border  w-full border-gray-500 ">
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px] border-r"></TableHead>
+          <TableHead className="w-[100px] border-r "></TableHead>
 
-          <TableHead className="border-r">Nursery</TableHead>
-          <TableHead className="border-r">LKG</TableHead>
-          <TableHead className="border-r">UKG</TableHead>
+          <TableHead className="border-r ">Nursery</TableHead>
+          <TableHead className="border-r ">LKG</TableHead>
+          <TableHead className="border-r ">UKG</TableHead>
           {gradeArray.map((grade) => (
             <TableHead key={grade} className="border-r">
               {grade}
@@ -68,20 +68,26 @@ export function SimpleTable() {
       <TableBody>
         {data.map((period) => (
           <TableRow key={period.period}>
-            <TableCell className="font-medium border-r">
+            <TableCell className="font-medium border-r ">
               {period.period}
             </TableCell>
-            <TableCell className="border-r">
+            <TableCell className="border-r statEntry">
               {period.nursery.join(",")}
             </TableCell>
-            <TableCell className="border-r">{period.lkg.join(",")}</TableCell>
-            <TableCell className="border-r">{period.ukg.join(",")}</TableCell>
+            <TableCell className="border-r statEntry">
+              {period.lkg.join(",")}
+            </TableCell>
+            <TableCell className="border-r statEntry">
+              {period.ukg.join(",")}
+            </TableCell>
             {gradeArray.map((grade) => (
-              <TableCell key={grade} className="border-r">
+              <TableCell key={grade} className="border-r statEntry">
                 {period[grade.toLowerCase().replaceAll(" ", "")].join(",")}
               </TableCell>
             ))}
-            <TableCell className="">{period.grade10.join(",")}</TableCell>
+            <TableCell className="statEntry">
+              {period.grade10.join(",")}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

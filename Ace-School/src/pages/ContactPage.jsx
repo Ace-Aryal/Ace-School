@@ -28,7 +28,7 @@ function ContactPage() {
     showErrorToast("Error sending message");
   };
   return (
-    <main className=" pt-18 sm:pt-24 flex justify-center mb-20 w-full">
+    <main className=" pt-18 sm:pt-24 flex justify-center mb-20 w-full slideIn">
       <div className="container grid grid-cols-1 gap-5 sm:gap-1 w-full sm:w-[80vw] md:w-[70vw] sm:grid-cols-2">
         <div className="flex justify-center gap-2 row-span-1 text-yellow-400 text-3xl">
           <h1 className="text-2xl text-blue-500 font-bold">CONTACT US</h1>

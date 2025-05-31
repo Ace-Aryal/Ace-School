@@ -130,3 +130,35 @@
     }
   }
 
+  .slideIn {
+    animation: slideIn 0.4s ease-in 0s 1;
+  }
+@keyframes slideIn {
+    0%{
+      transform: translateX(-3rem);
+      opacity: 0;
+      
+      
+    }
+    100%{
+       transform: translateX(0px);
+      opacity: 1;
+    }
+  
+}
+  .slideInLeft {
+    animation: slideInLeft 0.4s ease-in 0s 1;
+  }
+@keyframes slideInLeft {
+    0%{
+      transform: translateX(3rem);
+      opacity: 0;
+      
+      
+    }
+    100%{
+       transform: translateX(0px);
+      opacity: 1;
+    }
+  
+}

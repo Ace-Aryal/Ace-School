@@ -56,7 +56,7 @@ function HomePage() {
         }}
         className="w-full p-0 m-0 relative"
       >
-        <CarouselContent className="p-0 m-0">
+        <CarouselContent className="p-0 m-0  statEntry">
           {schoolImageArray.map((image) => (
             <CarouselItem className="p-0 m-0" key={image}>
               <div className="p-0 ">
@@ -85,11 +85,11 @@ function HomePage() {
         />
       </Carousel>
 
-      <h1 className=" text-5xl py-4 text-indigo-500 font-bold text-center">
+      <h1 className=" slideIn statEntry text-5xl py-4 text-indigo-500 font-bold text-center">
         Creating Curious Minds <span className="text-yellow-400">.</span>
       </h1>
       <div id="intro" className="flex w-full justify-center my-16">
-        <div className="flex flex-col mx-2 sm:w-full lg:w-[50vw] md:w-[70vw]">
+        <div className="flex flex-col mx-2 sm:w-full lg:w-[50vw] md:w-[70vw] slideIn">
           <h2 className="text-3xl text-red-500 font-semibold ">
             Birendra Secondary School <span className="text-yellow-400">|</span>
           </h2>
@@ -156,11 +156,13 @@ function HomePage() {
           Executives Messages <span className="text-yellow-400">|</span>
         </h2>
         <Message
+          order="order-0"
           imageURL="https://aryaldipesh.com.np/assets/aboutPhoto.png"
           role="Principal"
           message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
         />
         <Message
+          order="order-1"
           imageURL="https://aryaldipesh.com.np/assets/aboutPhoto.png"
           role="Chairman"
           message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."

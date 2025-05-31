@@ -70,7 +70,7 @@ const GallaryPage = () => {
             const pathSegments = image.href.split("/");
             const fileID = pathSegments[8];
             return (
-              <div key={image.href} className="m-0 p-0 inline-block ">
+              <div key={image.href} className="m-0 p-0 inline-block  ">
                 <Link
                   to={`/gallary/${fileID}`}
                   key={image.href}
@@ -78,7 +78,7 @@ const GallaryPage = () => {
                 >
                   <img
                     key={image.href}
-                    className="aspect-video object-cover rounded shadow"
+                    className="aspect-video object-cover rounded myshadow-md statEntry"
                     loading="lazy"
                     src={image.href}
                     alt="school photo"

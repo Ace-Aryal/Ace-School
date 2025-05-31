@@ -8,7 +8,7 @@ import ErrorPage from "./ErrorPage";
 const ViewStudents = () => {
   const [grade, setGrade] = useState(null);
   const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ["students"],
+    queryKey: ["students", grade],
     queryFn: async () => {
       try {
         return await databaseService.getAllStudentsDocs(grade);
@@ -17,9 +17,7 @@ const ViewStudents = () => {
       }
     },
   });
-  useEffect(() => {
-    refetch();
-  }, [grade]);
+
   if (isLoading) {
     return <LoadingPage />;
   }

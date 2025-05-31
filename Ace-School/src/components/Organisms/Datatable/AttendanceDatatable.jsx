@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { useState, useEffect } from "react";
 import {
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -11,7 +13,6 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -30,6 +31,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useSelector } from "react-redux";
 
 const data = [
   {
@@ -64,100 +74,162 @@ const data = [
   },
 ];
 
-export const columns = [
+export const studentColumns = [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
+    header: "Attendence",
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <Select>
+        <SelectTrigger className="w-[130px]">
+          <SelectValue placeholder="Attendence " />
+        </SelectTrigger>
+        <SelectContent className="bg-white">
+          <SelectItem value="light">Present</SelectItem>
+          <SelectItem value="dark">Absent</SelectItem>
+          <SelectItem value="system">On leave</SelectItem>
+        </SelectContent>
+      </Select>
     ),
   },
   {
-    accessorKey: "email",
+    accessorKey: "rollNo",
+    header: "Roll No",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("rollNo")}</div>
+    ),
+  },
+  {
+    accessorKey: "grade",
+    header: () => <div className="text-right">Grade</div>,
+    cell: ({ row }) => {
+      const grade = parseFloat(row.getValue("grade"));
+
+      // Format the amount as a dollar amount
+
+      return <div className="text-right font-medium">1</div>;
+    },
+  },
+  {
+    accessorKey: "studentName",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Name
           <ArrowUpDown />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("studentName")}</div>
+    ),
+  },
+];
+export const teacherColumns = [
+  {
+    id: "select",
+    header: "Attendence",
+    cell: ({ row }) => (
+      <Select>
+        <SelectTrigger className="w-[130px]">
+          <SelectValue placeholder="Attendence " />
+        </SelectTrigger>
+        <SelectContent className="bg-white">
+          <SelectItem value="light">Present</SelectItem>
+          <SelectItem value="dark">Absent</SelectItem>
+          <SelectItem value="system">On leave</SelectItem>
+        </SelectContent>
+      </Select>
+    ),
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
+    accessorKey: "teacherId",
+    header: "Teacher ID",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("teacherId")}</div>
+    ),
   },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
 
+  {
+    accessorKey: "teacherName",
+    header: ({ column }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown />
+        </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("teacherName")}</div>
+    ),
+  },
+];
+export const staffColumns = [
+  {
+    id: "select",
+    header: "Attendence",
+    cell: ({ row }) => (
+      <Select>
+        <SelectTrigger className="w-[130px]">
+          <SelectValue placeholder="Attendence " />
+        </SelectTrigger>
+        <SelectContent className="bg-white">
+          <SelectItem value="light">Present</SelectItem>
+          <SelectItem value="dark">Absent</SelectItem>
+          <SelectItem value="system">On leave</SelectItem>
+        </SelectContent>
+      </Select>
+    ),
+  },
+  {
+    accessorKey: "staffID",
+    header: "Staff ID",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("staffID")}</div>
+    ),
+  },
+
+  {
+    accessorKey: "fullName",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("fullName")}</div>
+    ),
   },
 ];
 
-export function DataTableDemo() {
+export function AttendanceDatatable({ attendeesRole, setGrade, data }) {
+  const attenderRoles = useSelector((state) => state.auth.user.roles);
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+  let columns;
+  if (attendeesRole.toLowerCase() === "student") {
+    columns = studentColumns;
+  }
+  if (attendeesRole.toLowerCase() === "teacher") {
+    columns = teacherColumns;
+  }
+  if (attendeesRole.toLowerCase() === "staff") {
+    columns = staffColumns;
+  }
 
   const table = useReactTable({
     data,
@@ -177,18 +249,32 @@ export function DataTableDemo() {
       rowSelection,
     },
   });
+  const grades = Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`);
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        {attendeesRole.toLowerCase() === "student" && (
+          <select
+            value={table.getColumn("grade")?.getFilterValue() ?? ""}
+            onChange={(event) => {
+              table.getColumn("grade")?.setFilterValue(event.target.value);
+              setGrade(event.target.value);
+            }}
+            className="max-w-sm border-zinc-800 border p-2 rounded-lg"
+          >
+            <option value="nursery">Nursery</option>
+            <option value="lkg">LKG</option>
+            <option value="ukg">UKG</option>
+            {grades.map((grade) => {
+              return (
+                <option key={grade} value={grade.substring(6)}>
+                  {grade}
+                </option>
+              );
+            })}
+          </select>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -244,7 +330,7 @@ export function DataTableDemo() {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="statEntry">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -267,7 +353,7 @@ export function DataTableDemo() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>

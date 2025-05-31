@@ -39,6 +39,7 @@ import UpdateStudentPage from "./pages/updateStudent";
 import PublicAppLayout from "./components/Templates/PublicAppLayout";
 import UpdateTimetable from "./pages/UpdateTimetable";
 import "./App.css";
+import AddAttendencePage from "./pages/AddAttendencePage";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
 
@@ -70,6 +71,10 @@ function App() {
           <Route index element={<DashBoardPage />} />
 
           <Route path="attendance" element={<AttendancePage />} />
+          <Route
+            path="attendance/add-attendance"
+            element={<AddAttendencePage />}
+          />
           <Route path="billing" element={<BillingPage />} />
           <Route path="notice" element={<ViewNoticePage />} />
           <Route path="notice/:id" element={<NoticeElement />} />

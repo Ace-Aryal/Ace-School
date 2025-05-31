@@ -25,9 +25,12 @@ const AttendenceViewCard = ({ userRole, ...className }) => {
         </NavLink>
       </div>
       <div className="my-2">
-        <Button className="bg-zinc-800 text-white cursor-pointer">
-          Add new Attendence <Plus />
-        </Button>
+        <NavLink state={{ userRole }} to="/attendance/add-attendance">
+          {" "}
+          <Button className="bg-zinc-800 text-white cursor-pointer">
+            Add new Attendence <Plus />
+          </Button>
+        </NavLink>
       </div>
       <div className="my-1.5">
         <Button className="text-zinc-800 cursor-pointer" variant="outline">

@@ -47,7 +47,7 @@ function Navbar() {
       className={`antialiased w-[100vw] ${
         isAuthenticated
           ? "border-b navBarTransition border-gray-300 backdrop-blur-md bg-white"
-          : "  bg-indigo-900"
+          : "  bg-indigo-900  lg:h-[10vh]"
       } shadow-lg fixed top-0 z-1  `}
     >
       <nav
