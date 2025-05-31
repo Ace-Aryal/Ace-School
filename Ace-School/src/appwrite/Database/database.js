@@ -399,7 +399,7 @@ class DatabaseService {
 
     }
 
-    getAllTeachersDocument = async (email) => {
+    getAllTeachersDocument = async () => {
 
         try {
             const response = await this.database.listDocuments(
@@ -422,7 +422,7 @@ class DatabaseService {
 
         }
     }
-    getAllStaffsDocument = async (email) => {
+    getAllStaffsDocument = async () => {
 
         try {
             const response = await this.database.listDocuments(
@@ -530,6 +530,26 @@ class DatabaseService {
             return false
         }
     }
+    batchUpdateDocumet = async (collectionId, documentId, updatedData) => {
+
+        return this.database.updateDocument(appwriteDatabaseID, collectionId, documentId, updatedData)
+
+
+
+    }
+
+    getDocument = async (collectionID, documentId) => {
+        console.log(collectionID, documentId)
+        try {
+            const response = await this.database.getDocument(appwriteDatabaseID, collectionID, documentId)
+            return response
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
+
 }
 const databaseService = new DatabaseService()
 export default databaseService

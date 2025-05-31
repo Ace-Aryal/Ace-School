@@ -28,7 +28,7 @@ const AlertDialogComponent = ({
         onClick={() => {
           setOpen(true);
         }}
-        className={` g-zinc-800 text-white rounded-lg px-4 py-2 ${classNames}`}
+        className={` bg-zinc-800 text-white rounded-lg px-4 py-2 ${classNames}`}
       >
         {buttonText}
       </AlertDialogTrigger>
@@ -62,7 +62,7 @@ const AlertDialogComponent = ({
               } finally {
                 setLoading(false);
                 setOpen(false);
-                await rest.invalidate?.();
+                await rest?.invalidate?.();
               }
             }}
           >

@@ -15,7 +15,12 @@ const config = {
     userMetaDataCollectionID: String(import.meta.env.VITE_USER_COLLECTION_ID),
     deleteUserFunctionID: String(import.meta.env.VITE_DELETE_USER_FUNCTION_ID),
     classScheduleDocumentID: String(import.meta.env.VITE_CLASS_SCHEDULE_DOCUMEMT_ID),
-
+    studentAttendenceDocummentId: String(import.meta.env.VITE_STUDENT_ATTENDANCE_DOCUMEMT_ID),
+    teacherAttendenceDocummentId: String(import.meta.env.VITE_TEACHER_ATTENDANCE_DOCUMEMT_ID),
+    staffAttendenceDocummentId: String(import.meta.env.VITE_STAFF_ATTENDANCE_DOCUMEMT_ID),
+    studentAttendenceCollectionId: String(import.meta.env.VITE_STUDENT_ATTENDANCE_COLLECTION_ID),
+    teacherAttendenceCollectionId: String(import.meta.env.VITE_TEACHER_ATTENDANCE_COLLECTION_ID),
+    staffAttendenceCollectionId: String(import.meta.env.VITE_STAFF_ATTENDANCE_COLLECTION_ID),
 }
 export default config
 

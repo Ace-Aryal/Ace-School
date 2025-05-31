@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Dot, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -40,181 +40,271 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSelector } from "react-redux";
+import { Controller, useForm } from "react-hook-form";
+import AlertDialogComponent from "@/components/Molecules/AlertDialog";
+import databaseService from "@/appwrite/Database/database";
+import NepaliDate from "nepali-datetime";
+import { showErrorToast } from "@/components/Templates/toast";
 
-const data = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-  },
-];
+export function AttendanceDatatable({
+  attendeesRole,
+  setGrade,
+  data,
+  grade,
+  reportData,
+}) {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { isSubmitting, errors },
+  } = useForm();
+  const [userData, setUserData] = useState([]);
+  const studentColumns = [
+    {
+      id: "select",
+      header: "Attendence",
+      cell: ({ row }) => {
+        const {
+          $id,
+          studentName,
+          grade,
+          rollNo,
+          $collectionId,
+          attendanceRecord,
+        } = row?.original;
+        console.log(row.original);
+        return (
+          <div className="flex justify-center flex-col items-center">
+            <Controller
+              name={$id}
+              control={control}
+              rules={{
+                required: "Attendence id required for every student",
+              }}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(data) => {
+                    field.onChange(data);
+                    setUserData((prevData) => {
+                      if (
+                        prevData.some((student) => student.documentId === $id)
+                      ) {
+                        return prevData;
+                      }
 
-export const studentColumns = [
-  {
-    id: "select",
-    header: "Attendence",
-    cell: ({ row }) => (
-      <Select>
-        <SelectTrigger className="w-[130px]">
-          <SelectValue placeholder="Attendence " />
-        </SelectTrigger>
-        <SelectContent className="bg-white">
-          <SelectItem value="light">Present</SelectItem>
-          <SelectItem value="dark">Absent</SelectItem>
-          <SelectItem value="system">On leave</SelectItem>
-        </SelectContent>
-      </Select>
-    ),
-  },
-  {
-    accessorKey: "rollNo",
-    header: "Roll No",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("rollNo")}</div>
-    ),
-  },
-  {
-    accessorKey: "grade",
-    header: () => <div className="text-right">Grade</div>,
-    cell: ({ row }) => {
-      const grade = parseFloat(row.getValue("grade"));
-
-      // Format the amount as a dollar amount
-
-      return <div className="text-right font-medium">1</div>;
+                      return [
+                        ...prevData,
+                        {
+                          documentId: $id,
+                          studentName,
+                          grade,
+                          rollNo,
+                          $collectionId,
+                          attendanceRecord,
+                        },
+                      ];
+                    });
+                  }}
+                  className="w-[130px]"
+                >
+                  <SelectTrigger className="w-[130px]">
+                    <SelectValue placeholder="Attendence " />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white ">
+                    <SelectItem
+                      className="bg-green-500 text-white my-1"
+                      value="present"
+                    >
+                      <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
+                      Present
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-red-500 text-white"
+                      value="absent"
+                    >
+                      {" "}
+                      <Dot className="bg-red-500 text-red-500 rounded-full" />{" "}
+                      Absent
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-blue-500 text-white my-1"
+                      value="onLeave"
+                    >
+                      {" "}
+                      <Dot className="bg-blue-500 text-blue-500 rounded-full" />{" "}
+                      On Leave
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors[$id] && (
+              <p className="text-sm text-red-500 ">{errors[$id].message}</p>
+            )}
+          </div>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "studentName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown />
-        </Button>
-      );
+    {
+      accessorKey: "rollNo",
+      header: "Roll No",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("rollNo")}</div>
+      ),
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("studentName")}</div>
-    ),
-  },
-];
-export const teacherColumns = [
-  {
-    id: "select",
-    header: "Attendence",
-    cell: ({ row }) => (
-      <Select>
-        <SelectTrigger className="w-[130px]">
-          <SelectValue placeholder="Attendence " />
-        </SelectTrigger>
-        <SelectContent className="bg-white">
-          <SelectItem value="light">Present</SelectItem>
-          <SelectItem value="dark">Absent</SelectItem>
-          <SelectItem value="system">On leave</SelectItem>
-        </SelectContent>
-      </Select>
-    ),
-  },
-  {
-    accessorKey: "teacherId",
-    header: "Teacher ID",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("teacherId")}</div>
-    ),
-  },
+    {
+      accessorKey: "grade",
+      header: () => <div className="t">Grade</div>,
+      cell: ({ row }) => {
+        const grade = parseFloat(row.getValue("grade"));
 
-  {
-    accessorKey: "teacherName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown />
-        </Button>
-      );
+        // Format the amount as a dollar amount
+
+        return <div className="">{row.getValue("grade")}</div>;
+      },
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("teacherName")}</div>
-    ),
-  },
-];
-export const staffColumns = [
-  {
-    id: "select",
-    header: "Attendence",
-    cell: ({ row }) => (
-      <Select>
-        <SelectTrigger className="w-[130px]">
-          <SelectValue placeholder="Attendence " />
-        </SelectTrigger>
-        <SelectContent className="bg-white">
-          <SelectItem value="light">Present</SelectItem>
-          <SelectItem value="dark">Absent</SelectItem>
-          <SelectItem value="system">On leave</SelectItem>
-        </SelectContent>
-      </Select>
-    ),
-  },
-  {
-    accessorKey: "staffID",
-    header: "Staff ID",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("staffID")}</div>
-    ),
-  },
-
-  {
-    accessorKey: "fullName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown />
-        </Button>
-      );
+    {
+      accessorKey: "studentName",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("studentName")}</div>
+      ),
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("fullName")}</div>
-    ),
-  },
-];
+  ];
+  const teacherColumns = [
+    {
+      id: "select",
+      header: "Attendence",
+      cell: ({ row }) => (
+        <div className="flex justify-center items-center">
+          <Select className="w-[130px]">
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Attendence " />
+            </SelectTrigger>
+            <SelectContent className="bg-white ">
+              <SelectItem
+                className="bg-green-500 text-white my-1"
+                value="present"
+              >
+                <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
+                Present
+              </SelectItem>
+              <SelectItem className="bg-red-500 text-white" value="absent">
+                {" "}
+                <Dot className="bg-red-500 text-red-500 rounded-full" /> Absent
+              </SelectItem>
+              <SelectItem
+                className="bg-blue-500 text-white my-1"
+                value="onLeave"
+              >
+                {" "}
+                <Dot className="bg-blue-500 text-blue-500 rounded-full" /> On
+                Leave
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "teacherId",
+      header: "Teacher ID",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("teacherId")}</div>
+      ),
+    },
 
-export function AttendanceDatatable({ attendeesRole, setGrade, data }) {
+    {
+      accessorKey: "teacherName",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("teacherName")}</div>
+      ),
+    },
+  ];
+  const staffColumns = [
+    {
+      id: "select",
+      header: "Attendence",
+      cell: ({ row }) => (
+        <div className="flex justify-center items-center">
+          <Select className="w-[130px]">
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Attendence " />
+            </SelectTrigger>
+            <SelectContent className="bg-white ">
+              <SelectItem
+                className="bg-green-500 text-white my-1"
+                value="present"
+              >
+                <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
+                Present
+              </SelectItem>
+              <SelectItem className="bg-red-500 text-white" value="absent">
+                {" "}
+                <Dot className="bg-red-500 text-red-500 rounded-full" /> Absent
+              </SelectItem>
+              <SelectItem
+                className="bg-blue-500 text-white my-1"
+                value="onLeave"
+              >
+                {" "}
+                <Dot className="bg-blue-500 text-blue-500 rounded-full" /> On
+                Leave
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "staffId",
+      header: "Staff ID",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("staffId")}</div>
+      ),
+    },
+
+    {
+      accessorKey: "fullName",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("fullName")}</div>
+      ),
+    },
+  ];
   const attenderRoles = useSelector((state) => state.auth.user.roles);
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -230,7 +320,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data }) {
   if (attendeesRole.toLowerCase() === "staff") {
     columns = staffColumns;
   }
-
+  console.log(columns);
   const table = useReactTable({
     data,
     columns,
@@ -248,8 +338,68 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data }) {
       columnVisibility,
       rowSelection,
     },
+    initialState: {
+      pagination: {
+        pageSize: 50, // ✅ Default rows per page
+      },
+    },
   });
   const grades = Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`);
+  const handleAttendence = async (data) => {
+    console.log(data, userData);
+    const now = new NepaliDate().toString().trim().slice(0, 10);
+    let attendanceReport = reportData;
+    let attendanceReportKey = now;
+    if (attendeesRole.toLowerCase() === "student") {
+      attendanceReportKey = `${now}-${grade.toLowerCase().replaceAll(" ", "")}`;
+      attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
+    }
+
+    if (attendeesRole.toLowerCase() === "staff") {
+      attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
+    }
+    if (attendeesRole.toLowerCase() === "teacher") {
+      attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
+    }
+
+    const promises = userData.map((user) => {
+      const { documentId, attendanceRecord, $collectionId } = data;
+      const adjustDocument = {
+        attendance: data[documentId],
+        attendanceRecord: { ...attendanceRecord, [now]: data[documentId] },
+      };
+
+      if (attendeesRole.toLowerCase() === "student") {
+        attendanceReport[attendanceReportKey].push({
+          studentName: user.studentName,
+          rollNo: user.rollNo,
+          attendence: data[documentId],
+        });
+      }
+      if (attendeesRole.toLowerCase() === "staff") {
+        attendanceReport[attendanceReportKey].push({
+          staffId: user.staffId,
+          attendence: data[documentId],
+        });
+      }
+      if (attendeesRole.toLowerCase() === "teacher") {
+        attendanceReport[attendanceReportKey].push({
+          teacherId: user.teacherId,
+          attendence: data[documentId],
+        });
+      }
+      return databaseService.batchUpdateDocumet(
+        $collectionId,
+        documentId,
+        adjustDocument
+      );
+    });
+    try {
+      const response = await Promise.allSettled(promises);
+    } catch (error) {
+      showErrorToast("Error submitting attendence ", error.message);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -306,10 +456,10 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data }) {
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow className="text-center" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead className="text-center" key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -322,15 +472,17 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data }) {
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className="h-8 text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="statEntry">
+                    <TableCell key={cell.id} className="statEntry text-sm p-1">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -352,10 +504,16 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data }) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <div className="">
+          <AlertDialogComponent
+            buttonText="Submit"
+            title="Sure want to submit the attendence ?"
+            description="This will submit today attendence , it may take a few seconds to submit into database"
+            classNames="bg-red-500 w-fit"
+            onContinueFn={handleSubmit(handleAttendence)}
+          />
         </div>
         <div className="space-x-2">
           <Button

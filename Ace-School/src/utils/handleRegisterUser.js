@@ -21,7 +21,7 @@ export const registerUser = async (data, { reset, getUserDocumentFn, createUserD
             scholarship: Number(data.scholarship.trim()),
             DOB: formattedDOB,
             attendance: false,
-            attendanceRecord: JSON.stringify([]),
+            attendanceRecord: JSON.stringify({}),
         };
     }
     if (userRole === "Teacher") {
