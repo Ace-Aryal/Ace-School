@@ -15,7 +15,7 @@ class FunctionService {
     deleteUser = async (email) => {
         try {
             const response = await this.functions.createExecution(config.deleteUserFunctionID, JSON.stringify({ email: email }))
-            console.log(response);
+                ;
             console.log("Function executed successfully", response);
             return response
         } catch (error) {

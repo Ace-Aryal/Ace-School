@@ -12,7 +12,7 @@ const AddAttendencePage = () => {
   const userRole = location.state?.userRole.toLowerCase() || null;
   const { data, isLoading, isError } = useAttendenceQuery(userRole, grade);
   const { reportData, isReportLoading, isReportError } =
-    useAttendenceReportQuery(userRole, grade);
+    useAttendenceReportQuery(userRole);
   if (!userRole) {
     return (
       <div className="w-full h-[90vh] flex justify-center items-center">
@@ -22,10 +22,12 @@ const AddAttendencePage = () => {
   }
 
   if (isError || isReportError) {
-    return <Error />;
+    return (
+      <div className="h-[90vh w-full grid place-items-center">
+        <p>Error Fetching data from database, try refreshing</p>
+      </div>
+    );
   }
-
-  console.log(data);
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
@@ -44,72 +46,78 @@ const AddAttendencePage = () => {
 };
 
 export function useAttendenceReportQuery(attendeesRole) {
-  if (attendeesRole.toLowerCase() === "staff") {
+  // to update report
+
+  if (attendeesRole?.toLowerCase() === "staff") {
     const { data, isLoading, isError } = useQuery({
-      queryKey: ["studentAttendenceReportData", grade],
+      queryKey: ["studentAtt", "studentAttendenceReportData", grade],
       queryFn: async () => await databaseService.getAllStudentsDocs(grade),
     });
     const formattedData = data?.sort((a, b) => a.rollNo - b.rollNo);
     return { data: formattedData, isLoading, isError };
   }
 
-  if (attendeesRole.toLowerCase() === "student") {
+  if (attendeesRole?.toLowerCase() === "student") {
     {
       const { data, isLoading, isError } = useQuery({
-        queryKey: ["staffAttendenceReportData"],
+        queryKey: ["staffAtt", "staffAttendenceReportData"],
         queryFn: async () =>
           await databaseService.getDocument(
             config.studentAttendenceCollectionId,
             config.studentAttendenceDocummentId
           ),
       });
-      // console.log(data);
+      console.log(data);
       // const formattedData = data?.sort((a, b) => a.staffId - b.staffId);
       return {
-        reportData: data?.Report,
+        reportData: data,
         isReportLoading: isLoading,
         isReportError: isError,
       };
     }
   }
-  if (attendeesRole.toLowerCase() === "teacher") {
+  if (attendeesRole?.toLowerCase() === "teacher") {
     {
       const { data, isLoading, isError } = useQuery({
-        queryKey: ["teacherAttendenceReportData"],
+        queryKey: ["teacherAtt", "teacherAttendenceReportData"],
         queryFn: async () => await databaseService.getAllTeachersDocument(),
       });
       const formattedData = data?.sort((a, b) => a.teacherId - b.teacherId);
-      console.log(formattedData);
       return { data: formattedData, isLoading, isError };
     }
   }
+  return {
+    reportData: false,
+    isReportLoading: false,
+    isReportError: true,
+  };
 }
+
 export function useAttendenceQuery(attendeesRole, grade) {
-  if (attendeesRole.toLowerCase() === "student") {
+  if (attendeesRole?.toLowerCase() === "student") {
     {
       const { data, isLoading, isError } = useQuery({
-        queryKey: ["studentAttendenceData", grade],
+        queryKey: ["studentAtt", "studentAttendenceData", grade],
         queryFn: async () => await databaseService.getAllStudentsDocs(grade),
       });
       const formattedData = data?.sort((a, b) => a.rollNo - b.rollNo);
       return { data: formattedData, isLoading, isError };
     }
   }
-  if (attendeesRole.toLowerCase() === "staff") {
+  if (attendeesRole?.toLowerCase() === "staff") {
     {
       const { data, isLoading, isError } = useQuery({
-        queryKey: ["staffAttendenceData"],
+        queryKey: ["staffAtt", "staffAttendenceData"],
         queryFn: async () => await databaseService.getAllStaffsDocument(),
       });
-      console.log(data);
       const formattedData = data?.sort((a, b) => a.staffId - b.staffId);
       return { data: formattedData, isLoading, isError };
     }
   }
-  if (attendeesRole.toLowerCase() === "teacher") {
+  if (attendeesRole?.toLowerCase() === "teacher") {
     {
       const { data, isLoading, isError } = useQuery({
-        queryKey: ["teacherAttendenceData"],
+        queryKey: ["teacherAtt", "teacherAttendenceData"],
         queryFn: async () => await databaseService.getAllTeachersDocument(),
       });
       const formattedData = data?.sort((a, b) => a.teacherId - b.teacherId);
@@ -117,6 +125,7 @@ export function useAttendenceQuery(attendeesRole, grade) {
       return { data: formattedData, isLoading, isError };
     }
   }
+  return { data: false, isLoading: false, isError: true };
 }
 
 export default AddAttendencePage;

@@ -16,8 +16,6 @@ const GallaryPage = () => {
         return await getImagesPreview(pageParam);
       },
       getNextPageParam: (lastpage, allpages) => {
-        console.log(allpages, "ap");
-
         const lastDataArray = allpages[allpages.length - 1];
         if (lastDataArray.length === 0) {
           return undefined;
@@ -33,7 +31,6 @@ const GallaryPage = () => {
   const { ref, inView } = useInView({
     threshold: 1,
   });
-  console.log("data", data);
 
   useEffect(() => {
     if (inView && hasNextPage) {

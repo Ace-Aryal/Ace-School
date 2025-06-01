@@ -61,7 +61,7 @@ class DatabaseService {
         }
     }
     fetchMessages = async ({ pageParam = undefined, dashboardFetch = false }) => {
-        console.log("doing sth");
+
 
         let queries = [
             Query.limit(20),
@@ -85,7 +85,6 @@ class DatabaseService {
                 emailCollectionID,
                 queries
             );
-            console.log("res", response.documents);
             return response.documents
 
         } catch (error) {
@@ -148,7 +147,6 @@ class DatabaseService {
     }
 
     fetchNotices = async ({ pageParam = undefined, dashboardFetch = false }) => {
-        console.log("last id", pageParam);
 
         let queries = [
             Query.limit(20),
@@ -174,7 +172,6 @@ class DatabaseService {
                 noticeCollectionID,
                 queries
             );
-            console.log("res", response.documents);
             return response.documents
 
         } catch (error) {
@@ -183,7 +180,6 @@ class DatabaseService {
     }
     updateNotice = async ({ adjustObject, documentID }) => {
         try {
-            console.log(documentID);
 
             const result = await this.database.updateDocument(
                 appwriteDatabaseID, // databaseId
@@ -242,7 +238,7 @@ class DatabaseService {
                 ]
             )
             if (response) {
-                console.log(response);
+                ;
                 return response
 
 
@@ -285,7 +281,7 @@ class DatabaseService {
 
             )
             if (response) {
-                console.log(response);
+                ;
                 return response
 
 
@@ -321,7 +317,7 @@ class DatabaseService {
                 ]
             )
             if (response) {
-                console.log(response);
+                ;
 
                 return response
             }
@@ -357,7 +353,7 @@ class DatabaseService {
                 ]
             )
             if (response) {
-                console.log(response);
+                ;
                 return response
 
 
@@ -369,7 +365,6 @@ class DatabaseService {
     }
 
     getAllStudentsDocs = async (grade) => {
-        console.log(grade)
         let queries = [
             Query.orderAsc("studentName"),
             Query.limit(70),
@@ -387,7 +382,7 @@ class DatabaseService {
                 queries
             )
             if (response) {
-                console.log(response);
+                ;
 
             }
             return response.documents
@@ -412,7 +407,7 @@ class DatabaseService {
 
             )
             if (response) {
-                console.log(response);
+                ;
 
 
             }
@@ -433,7 +428,7 @@ class DatabaseService {
                 ]
             )
             if (response) {
-                console.log(response);
+                ;
 
 
             }
@@ -530,19 +525,39 @@ class DatabaseService {
             return false
         }
     }
-    batchUpdateDocumet = async (collectionId, documentId, updatedData) => {
-
-        return this.database.updateDocument(appwriteDatabaseID, collectionId, documentId, updatedData)
-
-
-
+    batchUpdateDocument = async (collectionId, documentId, updatedData, userIdentifier) => {
+        try {
+            const response = await this.database.updateDocument(appwriteDatabaseID, collectionId, documentId, updatedData);
+            return {
+                status: "fulfilled",
+                value: response,
+                sentData: { collectionId, documentId, updatedData, userIdentifier }
+            };
+        } catch (error) {
+            console.error(error)
+            return {
+                status: "rejected",
+                reason: error,
+                sentData: { collectionId, documentId, updatedData, userIdentifier }
+            };
+        }
     }
+
 
     getDocument = async (collectionID, documentId) => {
         console.log(collectionID, documentId)
         try {
             const response = await this.database.getDocument(appwriteDatabaseID, collectionID, documentId)
             return response
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    updateAttendenceRecords = async (collectionId, documentId, updatedDocument) => {
+        try {
+            const response = await this.database.updateDocument(appwriteDatabaseID, collectionId, documentId, updatedDocument)
+            console.log(response)
         } catch (error) {
             console.error(error)
         }

@@ -44,7 +44,8 @@ import { Controller, useForm } from "react-hook-form";
 import AlertDialogComponent from "@/components/Molecules/AlertDialog";
 import databaseService from "@/appwrite/Database/database";
 import NepaliDate from "nepali-datetime";
-import { showErrorToast } from "@/components/Templates/toast";
+import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function AttendanceDatatable({
   attendeesRole,
@@ -59,6 +60,7 @@ export function AttendanceDatatable({
     control,
     formState: { isSubmitting, errors },
   } = useForm();
+  const queryClient = useQueryClient();
   const [userData, setUserData] = useState([]);
   const studentColumns = [
     {
@@ -73,14 +75,28 @@ export function AttendanceDatatable({
           $collectionId,
           attendanceRecord,
         } = row?.original;
-        console.log(row.original);
+        let attendance = row?.original?.attendance
+          ?.toLowerCase()
+          .replaceAll(" ", "");
+        if (
+          attendance !== "present" &&
+          attendance !== "absent" &&
+          attendance !== "onleave"
+        ) {
+          attendance = "noattendance";
+        }
+
         return (
           <div className="flex justify-center flex-col items-center">
             <Controller
               name={$id}
               control={control}
+              defaultValue={attendance}
               rules={{
                 required: "Attendence id required for every student",
+
+                validate: (value) =>
+                  value !== "noattendance" || "Attendence Missed",
               }}
               render={({ field }) => (
                 <Select
@@ -110,7 +126,7 @@ export function AttendanceDatatable({
                   className="w-[130px]"
                 >
                   <SelectTrigger className="w-[130px]">
-                    <SelectValue placeholder="Attendence " />
+                    <SelectValue placeholder="Attendence" />
                   </SelectTrigger>
                   <SelectContent className="bg-white ">
                     <SelectItem
@@ -130,11 +146,20 @@ export function AttendanceDatatable({
                     </SelectItem>
                     <SelectItem
                       className="bg-blue-500 text-white my-1"
-                      value="onLeave"
+                      value="onleave"
                     >
                       {" "}
                       <Dot className="bg-blue-500 text-blue-500 rounded-full" />{" "}
                       On Leave
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-yellow-500 text-white my-1"
+                      value="noattendance"
+                      disabled
+                    >
+                      {" "}
+                      <Dot className="bg-yellow-500 text-yellow-500 rounded-full" />{" "}
+                      No Attendence
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -320,7 +345,6 @@ export function AttendanceDatatable({
   if (attendeesRole.toLowerCase() === "staff") {
     columns = staffColumns;
   }
-  console.log(columns);
   const table = useReactTable({
     data,
     columns,
@@ -344,12 +368,16 @@ export function AttendanceDatatable({
       },
     },
   });
+
   const grades = Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`);
   const handleAttendence = async (data) => {
-    console.log(data, userData);
     const now = new NepaliDate().toString().trim().slice(0, 10);
-    let attendanceReport = reportData;
+    let attendanceReport = JSON.parse(reportData?.Report) || {};
+
+    const { $id: reportDocumentId, $collectionId: reportCollectionId } =
+      reportData;
     let attendanceReportKey = now;
+    let queryKey;
     if (attendeesRole.toLowerCase() === "student") {
       attendanceReportKey = `${now}-${grade.toLowerCase().replaceAll(" ", "")}`;
       attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
@@ -362,42 +390,102 @@ export function AttendanceDatatable({
       attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
     }
 
-    const promises = userData.map((user) => {
-      const { documentId, attendanceRecord, $collectionId } = data;
-      const adjustDocument = {
-        attendance: data[documentId],
-        attendanceRecord: { ...attendanceRecord, [now]: data[documentId] },
-      };
+    async function promiseCreator(userData) {
+      return userData.map((user) => {
+        let { documentId, attendanceRecord, $collectionId } = user;
+        let userIdentifier;
+        attendanceRecord = JSON.parse(attendanceRecord);
 
-      if (attendeesRole.toLowerCase() === "student") {
-        attendanceReport[attendanceReportKey].push({
-          studentName: user.studentName,
-          rollNo: user.rollNo,
-          attendence: data[documentId],
-        });
-      }
-      if (attendeesRole.toLowerCase() === "staff") {
-        attendanceReport[attendanceReportKey].push({
-          staffId: user.staffId,
-          attendence: data[documentId],
-        });
-      }
-      if (attendeesRole.toLowerCase() === "teacher") {
-        attendanceReport[attendanceReportKey].push({
-          teacherId: user.teacherId,
-          attendence: data[documentId],
-        });
-      }
-      return databaseService.batchUpdateDocumet(
-        $collectionId,
-        documentId,
-        adjustDocument
-      );
-    });
+        const adjustDocument = {
+          attendance: data[documentId],
+          attendanceRecord: JSON.stringify({
+            ...attendanceRecord,
+            [now]: data[documentId],
+          }),
+        };
+
+        if (attendeesRole.toLowerCase() === "student") {
+          userIdentifier = `Roll ${user.rollNo}`;
+          attendanceReport[attendanceReportKey].push({
+            studentName: user.studentName,
+            rollNo: user.rollNo,
+            attendence: data[documentId],
+          });
+          queryKey = ["studentAtt"];
+        }
+        if (attendeesRole.toLowerCase() === "staff") {
+          userIdentifier = `Roll ${user.staffId}`;
+          attendanceReport[attendanceReportKey].push({
+            staffId: user.staffId,
+            attendence: data[documentId],
+          });
+          queryKey = ["staffAtt"];
+        }
+        if (attendeesRole.toLowerCase() === "teacher") {
+          userIdentifier = `Roll ${user.teacherId}`;
+          attendanceReport[attendanceReportKey].push({
+            teacherId: user.teacherId,
+            attendence: data[documentId],
+          });
+          queryKey = ["teacherAtt"];
+        }
+        return databaseService.batchUpdateDocument(
+          $collectionId,
+          documentId,
+          adjustDocument,
+          userIdentifier
+        );
+      });
+    }
+
     try {
-      const response = await Promise.allSettled(promises);
+      let promises = await promiseCreator(userData); // also creates promise framework for AttendenceReport
+      let failedTimes = 0;
+      let iterationCount = 0;
+      let failedUsers = [];
+      do {
+        const response = await Promise.all(promises);
+        failedUsers = [];
+        let failedResult = response.filter(
+          (result) => result.status === "rejected"
+        );
+        console.log(failedResult);
+
+        promises = failedResult.map((result) => {
+          const { collectionId, documentId, adjustDocument, userIdentifier } =
+            result.sentData;
+          failedUsers.push(userIdentifier);
+          return databaseService.batchUpdateDocument(
+            collectionId,
+            documentId,
+            adjustDocument,
+            userIdentifier
+          );
+        });
+        failedTimes = failedResult.length;
+        iterationCount++;
+      } while (failedTimes > 0 && iterationCount < 5);
+      if (failedTimes > 0) {
+        showErrorToast(
+          `Couldn't register all attendence retry for ${failedUsers.join(",")}`
+        );
+      }
+      console.log(attendanceReport, "att rep");
+      const updatedReport = JSON.stringify(attendanceReport);
+      console.log(reportCollectionId, reportDocumentId);
+      const reportResult = await databaseService.updateAttendenceRecords(
+        reportCollectionId,
+        reportDocumentId,
+        { Report: updatedReport }
+      );
+      if (reportResult) {
+        showSuccessToast("Attendence Sucessful");
+      }
     } catch (error) {
-      showErrorToast("Error submitting attendence ", error.message);
+      console.error(error);
+      showErrorToast("Error submitting attendence ");
+    } finally {
+      queryClient.invalidateQueries({ queryKey: queryKey });
     }
   };
 

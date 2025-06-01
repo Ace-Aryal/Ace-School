@@ -178,14 +178,24 @@ export const studentColumns = [
     accessorKey: "attendance",
     header: "Attendance",
     cell: ({ row }) => {
-      const attendance = row.getValue("attendance");
+      console.log(row.original);
+      const attendance = row
+        .getValue("attendance")
+        ?.toLowerCase()
+        .trim()
+        .replaceAll(" ", "");
+      const classNames =
+        attendance === "present"
+          ? "text-green-600"
+          : attendance === "absent"
+          ? "text-red-600"
+          : attendance === "onleave"
+          ? "text-blue-600"
+          : "text-gray-700";
+      const FormattedAttendence = row.getValue("attendance");
       return (
         <div>
-          {attendance ? (
-            <span className="text-green-500"> Present </span>
-          ) : (
-            <span className="text-red-500">Absent</span>
-          )}
+          <span className={classNames}>{FormattedAttendence}</span>
         </div>
       ); // attendanceRecordRequired (Link to detailed table)
     },

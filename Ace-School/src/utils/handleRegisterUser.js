@@ -20,7 +20,7 @@ export const registerUser = async (data, { reset, getUserDocumentFn, createUserD
             discount: Number(data.discount.trim()),
             scholarship: Number(data.scholarship.trim()),
             DOB: formattedDOB,
-            attendance: false,
+            attendance: "Not Added",
             attendanceRecord: JSON.stringify({}),
         };
     }
@@ -34,9 +34,9 @@ export const registerUser = async (data, { reset, getUserDocumentFn, createUserD
             joiningDate: formattedJoiningDate,
             DOB: formattedDOB,
             classes: JSON.stringify(data.classes),
-            attendance: false,
+            attendance: "Not Added",
             subjectsTaught: JSON.stringify(data.subjectsTaught),
-            attendanceRecord: JSON.stringify([]),
+            attendanceRecord: JSON.stringify({}),
         };
     }
     if (userRole === "Staff") {
@@ -49,9 +49,9 @@ export const registerUser = async (data, { reset, getUserDocumentFn, createUserD
             joiningDate: formattedJoiningDate,
             DOB: formattedDOB,
 
-            attendance: false,
+            attendance: "No Attendence",
 
-            attendanceRecord: JSON.stringify([]),
+            attendanceRecord: JSON.stringify({}),
         };
         console.log(documentData);
 
