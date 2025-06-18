@@ -483,6 +483,7 @@ class DatabaseService {
         sentData: { [documentId]: attendance },
       };
     } catch (error) {
+      console.error(error);
       return {
         status: "rejected",
         reason: error,
@@ -492,13 +493,13 @@ class DatabaseService {
   };
 
   getDocument = async (collectionID, documentId) => {
-    console.log(collectionID, documentId);
     try {
       const response = await this.database.getDocument(
         appwriteDatabaseID,
         collectionID,
         documentId
       );
+      console.log(response);
       return response;
     } catch (error) {
       console.error(error);
@@ -531,6 +532,41 @@ class DatabaseService {
       return response;
     } catch (error) {
       console.error(error);
+    }
+  };
+  getAttendanceStats = async (collectionID, documentId) => {
+    console.log(documentId);
+    try {
+      const response = await this.database.getDocument(
+        appwriteDatabaseID,
+        collectionID,
+        documentId
+      );
+      const parsedReport = JSON.parse(response.Report);
+      let attendanceDataReport = {
+        present: 0,
+        absent: 0,
+        onleave: 0,
+      };
+      parsedReport.forEach((attendee) => {
+        if (attendee.att === "present") {
+          attendanceDataReport.present++;
+          return;
+        }
+        if (attendee.att === "onleave") {
+          attendanceDataReport.onleave++;
+          return;
+        }
+        attendanceDataReport.absent++;
+      });
+      return attendanceDataReport;
+    } catch (error) {
+      console.error(error);
+      return {
+        present: 0,
+        absent: 0,
+        onleave: 0,
+      };
     }
   };
 }

@@ -65,6 +65,7 @@ export function AttendanceDatatable({
   } = useForm();
   const queryClient = useQueryClient();
   const [userData, setUserData] = useState([]);
+
   const studentColumns = [
     {
       id: "select",
@@ -107,6 +108,7 @@ export function AttendanceDatatable({
                   onValueChange={(data) => {
                     field.onChange(data);
                     setUserData((prevData) => {
+                      // this code has no work
                       if (
                         prevData.some((student) => student.documentId === $id)
                       ) {
@@ -214,37 +216,84 @@ export function AttendanceDatatable({
   const teacherColumns = [
     {
       id: "select",
-      header: "Attendence",
-      cell: ({ row }) => (
-        <div className="flex justify-center items-center">
-          <Select className="w-[130px]">
-            <SelectTrigger className="w-[130px]">
-              <SelectValue placeholder="Attendence " />
-            </SelectTrigger>
-            <SelectContent className="bg-white ">
-              <SelectItem
-                className="bg-green-500 text-white my-1"
-                value="present"
-              >
-                <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
-                Present
-              </SelectItem>
-              <SelectItem className="bg-red-500 text-white" value="absent">
-                {" "}
-                <Dot className="bg-red-500 text-red-500 rounded-full" /> Absent
-              </SelectItem>
-              <SelectItem
-                className="bg-blue-500 text-white my-1"
-                value="onLeave"
-              >
-                {" "}
-                <Dot className="bg-blue-500 text-blue-500 rounded-full" /> On
-                Leave
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      ),
+      header: "Attendance",
+      cell: ({ row }) => {
+        const { $id, teacherName, teacherId, $collectionId, attendanceRecord } =
+          row?.original;
+        let attendance = row?.original?.attendance
+          ?.toLowerCase()
+          .replaceAll(" ", "");
+        if (
+          attendance !== "present" &&
+          attendance !== "absent" &&
+          attendance !== "onleave"
+        ) {
+          attendance = "noattendance";
+        }
+
+        return (
+          <div className="flex justify-center flex-col items-center">
+            <Controller
+              name={$id}
+              control={control}
+              defaultValue={attendance}
+              rules={{
+                required: "Attendence id required for every teacher",
+
+                validate: (value) =>
+                  value !== "noattendance" || "Attendence Missed",
+              }}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(data) => {
+                    field.onChange(data);
+                  }}
+                  className="w-[130px]"
+                >
+                  <SelectTrigger className="w-[130px]">
+                    <SelectValue placeholder="Attendence" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white ">
+                    <SelectItem
+                      className="bg-green-500 text-white my-1"
+                      value="present"
+                    >
+                      <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
+                      Present
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-red-500 text-white"
+                      value="absent"
+                    >
+                      {" "}
+                      <Dot className="bg-red-500 text-red-500 rounded-full" />{" "}
+                      Absent
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-blue-500 text-white my-1"
+                      value="onleave"
+                    >
+                      {" "}
+                      <Dot className="bg-blue-500 text-blue-500 rounded-full" />{" "}
+                      On Leave
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-yellow-500 text-white my-1"
+                      value="noattendance"
+                      disabled
+                    >
+                      {" "}
+                      <Dot className="bg-yellow-500 text-yellow-500 rounded-full" />{" "}
+                      No Attendence
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+        );
+      },
     },
     {
       accessorKey: "teacherId",
@@ -275,37 +324,82 @@ export function AttendanceDatatable({
   const staffColumns = [
     {
       id: "select",
-      header: "Attendence",
-      cell: ({ row }) => (
-        <div className="flex justify-center items-center">
-          <Select className="w-[130px]">
-            <SelectTrigger className="w-[130px]">
-              <SelectValue placeholder="Attendence " />
-            </SelectTrigger>
-            <SelectContent className="bg-white ">
-              <SelectItem
-                className="bg-green-500 text-white my-1"
-                value="present"
-              >
-                <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
-                Present
-              </SelectItem>
-              <SelectItem className="bg-red-500 text-white" value="absent">
-                {" "}
-                <Dot className="bg-red-500 text-red-500 rounded-full" /> Absent
-              </SelectItem>
-              <SelectItem
-                className="bg-blue-500 text-white my-1"
-                value="onLeave"
-              >
-                {" "}
-                <Dot className="bg-blue-500 text-blue-500 rounded-full" /> On
-                Leave
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      ),
+      header: "Attendance",
+      cell: ({ row }) => {
+        const { $id } = row?.original;
+        let attendance = row?.original?.attendance
+          ?.toLowerCase()
+          .replaceAll(" ", "");
+        if (
+          attendance !== "present" &&
+          attendance !== "absent" &&
+          attendance !== "onleave"
+        ) {
+          attendance = "noattendance";
+        }
+        return (
+          <div className="flex justify-center flex-col items-center">
+            <Controller
+              name={$id}
+              control={control}
+              defaultValue={attendance}
+              rules={{
+                required: "Attendence id required for every staff",
+
+                validate: (value) =>
+                  value !== "noattendance" || "Attendence Missed",
+              }}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(data) => {
+                    field.onChange(data);
+                  }}
+                  className="w-[130px]"
+                >
+                  <SelectTrigger className="w-[130px]">
+                    <SelectValue placeholder="Attendence" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white ">
+                    <SelectItem
+                      className="bg-green-500 text-white my-1"
+                      value="present"
+                    >
+                      <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
+                      Present
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-red-500 text-white"
+                      value="absent"
+                    >
+                      {" "}
+                      <Dot className="bg-red-500 text-red-500 rounded-full" />{" "}
+                      Absent
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-blue-500 text-white my-1"
+                      value="onleave"
+                    >
+                      {" "}
+                      <Dot className="bg-blue-500 text-blue-500 rounded-full" />{" "}
+                      On Leave
+                    </SelectItem>
+                    <SelectItem
+                      className="bg-yellow-500 text-white my-1"
+                      value="noattendance"
+                      disabled
+                    >
+                      {" "}
+                      <Dot className="bg-yellow-500 text-yellow-500 rounded-full" />{" "}
+                      No Attendence
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+        );
+      },
     },
     {
       accessorKey: "staffId",
@@ -374,6 +468,7 @@ export function AttendanceDatatable({
 
   const grades = Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`);
   const handleAttendence = async (data) => {
+    console.log("attendance data", data);
     const now = new NepaliDate().toString().trim().slice(0, 10);
     //handle attendances
     function createBatchAttendencePromise(data) {
@@ -460,11 +555,35 @@ export function AttendanceDatatable({
         const { response, error } = await catchError(
           databaseService.getAllStaffsDocument
         );
+        if (error || !response?.length) {
+          showErrorToast("Error ferching data");
+          return;
+        }
+        const classAttendenceRecordArray = response.map((staffRecord) => ({
+          name: staffRecord.fullName,
+          id: staffRecord.id,
+          att: staffRecord.attendance,
+        }));
+        console.log(classAttendenceRecordArray);
+        const collectionId = config.staffAttendenceCollectionId;
+        getOrCreateAttendenceDocument(collectionId, classAttendenceRecordArray);
       }
       if (attendeesRole.toLowerCase() === "teacher") {
         const { response, error } = await catchError(
           databaseService.getAllTeachersDocument
         );
+        if (error || !response?.length) {
+          showErrorToast("Error ferching data");
+          return;
+        }
+        const classAttendenceRecordArray = response.map((teacherRecord) => ({
+          name: teacherRecord.teacherName,
+          id: teacherRecord.id,
+          att: teacherRecord.attendance,
+        }));
+        console.log(classAttendenceRecordArray);
+        const collectionId = config.teacherAttendenceCollectionId;
+        getOrCreateAttendenceDocument(collectionId, classAttendenceRecordArray);
       }
     }
 
@@ -483,7 +602,7 @@ export function AttendanceDatatable({
     if (failedPromises.length > 0) {
       retryPosting(failedPromises);
     } else {
-      showSuccessToast("All student's attendence registered");
+      showSuccessToast("All  attendence registered");
     }
 
     // create attendance record
