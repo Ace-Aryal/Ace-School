@@ -86,7 +86,7 @@ function HomePage() {
       </Carousel>
 
       <h1 className=" slideIn statEntry text-5xl py-4 text-indigo-500 font-bold text-center">
-        Creating Curious Minds <span className="text-yellow-400">.</span>
+        Creating Curious Minds<span className="text-yellow-400">.</span>
       </h1>
       <div id="intro" className="flex w-full justify-center my-16">
         <div className="flex flex-col mx-2 sm:w-full lg:w-[50vw] md:w-[70vw] slideIn">
@@ -150,7 +150,7 @@ function HomePage() {
       </div>
       <section
         id="message-from-principal"
-        className="flex  flex-col justify-center w-full sm:w-[90vw] mt-24 "
+        className="flex  px-2  flex-col justify-center w-full sm:w-[90vw] mt-24 "
       >
         <h2 className="font-bold text-blue-500 monteserrat text-3xl mb-10 text-center">
           Executives Messages <span className="text-yellow-400">|</span>
