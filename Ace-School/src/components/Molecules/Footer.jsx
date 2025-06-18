@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import Logo from "../Atoms/logo";
+import Logo from "../Atoms/Logo";
 function Footer() {
   return (
     <footer className="bg-indigo-900 w-[100vw">
