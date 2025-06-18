@@ -35,7 +35,7 @@ import AddStaffsPage from "./pages/AddStaffsPage";
 import SignupPage from "./pages/SignupPage";
 import UpdateStaffPage from "./pages/UpdateStaff";
 import UpdateTeacherPage from "./pages/UpdateTeacher";
-import UpdateStudentPage from "./pages/updateStudent";
+import UpdateStudentPage from "./pages/UpdateStudent";
 import PublicAppLayout from "./components/Templates/PublicAppLayout";
 import UpdateTimetable from "./pages/UpdateTimetable";
 import "./App.css";
