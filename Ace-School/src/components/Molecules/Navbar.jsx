@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import authService from "@/appwrite/auth/auth";
 import { clearUser } from "@/features/authSlice";
 import { SidebarTrigger } from "../ui/sidebar";
-import Logo from "../Atoms/logo";
+import Logo from "../Atoms/Logo";
 import { LogOut } from "lucide-react";
 function Navbar() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
