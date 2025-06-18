@@ -85,7 +85,7 @@ function HomePage() {
         />
       </Carousel>
 
-      <h1 className=" slideIn statEntry text-5xl py-4 text-indigo-500 font-bold text-center">
+      <h1 className=" slideIn statEntry text-3xl py-4 text-indigo-500 font-bold text-center">
         Creating Curious Minds<span className="text-yellow-400">.</span>
       </h1>
       <div id="intro" className="flex w-full justify-center my-16">
