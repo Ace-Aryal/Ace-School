@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Applayout from "./components/Templates/Applayout";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -11,8 +10,7 @@ import AttendancePage from "./pages/AttendancePage";
 import BillingPage from "./pages/BillingPage";
 import NoticePage from "./pages/NoticePage";
 import TimetablePage from "./pages/TimetablePage";
-import authService from "./appwrite/auth/auth";
-import { setUser } from "./features/authSlice";
+
 import ErrorPage from "./pages/ErrorPage";
 import GallaryPage from "./pages/GallaryPage";
 import GallaryItem from "./components/Organisms/GallaryItem";

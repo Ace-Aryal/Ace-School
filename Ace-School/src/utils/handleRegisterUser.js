@@ -1,6 +1,5 @@
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import databaseService from "@/appwrite/Database/database";
-import { capitalize } from "./capitalize";
 export const registerUser = async (
   data,
   {

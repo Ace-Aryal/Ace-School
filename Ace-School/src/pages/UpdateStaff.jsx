@@ -2,7 +2,7 @@ import AuthenticatedContainer from "@/components/Templates/AuthenticatedContaine
 import NepaliDatePicker from "@sbmdkl/nepali-datepicker-reactjs";
 import "@sbmdkl/nepali-datepicker-reactjs/dist/index.css";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { getStaffFormField } from "@/utils/formFields";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import ErrorPage from "./ErrorPage";
 import { useLocation, useNavigate } from "react-router";
 import { updateUser } from "@/utils/handleUpdateUser";
 import Spinner from "@/components/Atoms/Spinner";
-const UpdateStaffPage = ({}) => {
+const UpdateStaffPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { originalData } = location.state;
