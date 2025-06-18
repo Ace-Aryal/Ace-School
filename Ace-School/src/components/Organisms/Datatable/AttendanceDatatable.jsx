@@ -46,6 +46,8 @@ import databaseService from "@/appwrite/Database/database";
 import NepaliDate from "nepali-datetime";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { catchError } from "@/utils/catchError";
+import config from "@/appwrite";
 
 export function AttendanceDatatable({
   attendeesRole,
@@ -58,6 +60,7 @@ export function AttendanceDatatable({
     register,
     handleSubmit,
     control,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm();
   const queryClient = useQueryClient();
@@ -372,121 +375,238 @@ export function AttendanceDatatable({
   const grades = Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`);
   const handleAttendence = async (data) => {
     const now = new NepaliDate().toString().trim().slice(0, 10);
-    let attendanceReport = JSON.parse(reportData?.Report) || {};
-
-    const { $id: reportDocumentId, $collectionId: reportCollectionId } =
-      reportData;
-    let attendanceReportKey = now;
-    let queryKey;
-    if (attendeesRole.toLowerCase() === "student") {
-      attendanceReportKey = `${now}-${grade.toLowerCase().replaceAll(" ", "")}`;
-      attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
-    }
-
-    if (attendeesRole.toLowerCase() === "staff") {
-      attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
-    }
-    if (attendeesRole.toLowerCase() === "teacher") {
-      attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
-    }
-
-    async function promiseCreator(userData) {
-      return userData.map((user) => {
-        let { documentId, attendanceRecord, $collectionId } = user;
-        let userIdentifier;
-        attendanceRecord = JSON.parse(attendanceRecord);
-
-        const adjustDocument = {
-          attendance: data[documentId],
-          attendanceRecord: JSON.stringify({
-            ...attendanceRecord,
-            [now]: data[documentId],
-          }),
+    //handle attendances
+    function createBatchAttendencePromise(data) {
+      const promises = [];
+      for (const id in data) {
+        const attendanceData = {
+          documentId: id,
+          attendance: data[id],
+          date: now,
         };
-
-        if (attendeesRole.toLowerCase() === "student") {
-          userIdentifier = `Roll ${user.rollNo}`;
-          attendanceReport[attendanceReportKey].push({
-            studentName: user.studentName,
-            rollNo: user.rollNo,
-            attendence: data[documentId],
-          });
-          queryKey = ["studentAtt"];
-        }
-        if (attendeesRole.toLowerCase() === "staff") {
-          userIdentifier = `Roll ${user.staffId}`;
-          attendanceReport[attendanceReportKey].push({
-            staffId: user.staffId,
-            attendence: data[documentId],
-          });
-          queryKey = ["staffAtt"];
-        }
-        if (attendeesRole.toLowerCase() === "teacher") {
-          userIdentifier = `Roll ${user.teacherId}`;
-          attendanceReport[attendanceReportKey].push({
-            teacherId: user.teacherId,
-            attendence: data[documentId],
-          });
-          queryKey = ["teacherAtt"];
-        }
-        return databaseService.batchUpdateDocument(
-          $collectionId,
-          documentId,
-          adjustDocument,
-          userIdentifier
+        promises.push(
+          databaseService.batchUpdateDocument(attendanceData, attendeesRole)
         );
-      });
+      }
+      return promises;
     }
-
-    try {
-      let promises = await promiseCreator(userData); // also creates promise framework for AttendenceReport
-      let failedTimes = 0;
-      let iterationCount = 0;
-      let failedUsers = [];
-      do {
-        const response = await Promise.all(promises);
-        failedUsers = [];
-        let failedResult = response.filter(
-          (result) => result.status === "rejected"
-        );
-        console.log(failedResult);
-
-        promises = failedResult.map((result) => {
-          const { collectionId, documentId, adjustDocument, userIdentifier } =
-            result.sentData;
-          failedUsers.push(userIdentifier);
-          return databaseService.batchUpdateDocument(
-            collectionId,
-            documentId,
-            adjustDocument,
-            userIdentifier
-          );
+    async function retryPosting(failedPromises) {
+      let isFailed = true;
+      let count = 0;
+      while (count < 5 && isFailed) {
+        console.log(count);
+        let data = {};
+        failedPromises.forEach((promise) => {
+          data = { ...data, ...promise.value?.sentData };
         });
-        failedTimes = failedResult.length;
-        iterationCount++;
-      } while (failedTimes > 0 && iterationCount < 5);
-      if (failedTimes > 0) {
-        showErrorToast(
-          `Couldn't register all attendence retry for ${failedUsers.join(",")}`
+
+        if (Object.keys(data).length === 0) {
+          isFailed = false;
+        }
+        count++;
+      }
+    }
+    async function getOrCreateAttendenceDocument(collectionID, data) {
+      const { response: getResponse, error: getError } = await catchError(() =>
+        databaseService.getDocument(collectionID, now)
+      );
+      if (getResponse) {
+        const Report = JSON.parse(getResponse.Report);
+
+        const { response, error } = await catchError(() =>
+          databaseService.updateAttendenceRecords(collectionID, now, data)
+        );
+        if (!response) {
+          return showErrorToast("Error in database, retry");
+        }
+        showSuccessToast("Attendence record added sucessfully");
+        return;
+      }
+
+      const { response, error } = await catchError(() =>
+        databaseService.createDocument(collectionID, now, {
+          Report: JSON.stringify(data),
+        })
+      );
+      console.log(response, error);
+      if (!response) {
+        return showErrorToast("Couldn't add to today record! Retry");
+      }
+      return showSuccessToast("Attendence record added sucessfully");
+    }
+
+    async function getDataForAttendance() {
+      if (attendeesRole.toLowerCase() === "student" && !grade) {
+        console.error("student without grade");
+      }
+      if (attendeesRole.toLowerCase() === "student" && grade) {
+        const { response, error } = await catchError(() =>
+          databaseService.getAllStudentsDocs(grade)
+        );
+        if (error || !response?.length) {
+          showErrorToast("Error ferching data");
+          return;
+        }
+        const classAttendenceRecordArray = response.map((studentRecord) => ({
+          name: studentRecord.studentName,
+          roll: studentRecord.rollNo,
+          att: studentRecord.attendance,
+        }));
+        console.log(classAttendenceRecordArray);
+        const collectionId = config.studentAttendenceCollectionId;
+        getOrCreateAttendenceDocument(collectionId, classAttendenceRecordArray);
+      }
+      if (attendeesRole.toLowerCase() === "staff") {
+        const { response, error } = await catchError(
+          databaseService.getAllStaffsDocument
         );
       }
-      console.log(attendanceReport, "att rep");
-      const updatedReport = JSON.stringify(attendanceReport);
-      console.log(reportCollectionId, reportDocumentId);
-      const reportResult = await databaseService.updateAttendenceRecords(
-        reportCollectionId,
-        reportDocumentId,
-        { Report: updatedReport }
-      );
-      if (reportResult) {
-        showSuccessToast("Attendence Sucessful");
+      if (attendeesRole.toLowerCase() === "teacher") {
+        const { response, error } = await catchError(
+          databaseService.getAllTeachersDocument
+        );
       }
-    } catch (error) {
-      console.error(error);
-      showErrorToast("Error submitting attendence ");
-    } finally {
-      queryClient.invalidateQueries({ queryKey: queryKey });
     }
+
+    const promises = createBatchAttendencePromise(data);
+    const { response, error } = await catchError(() =>
+      Promise.allSettled(promises)
+    );
+    if (error) {
+      showErrorToast("Error during attendance");
+      return;
+    }
+    const failedPromises = response?.filter(
+      (promise) => promise.value?.status === "rejected"
+    );
+
+    if (failedPromises.length > 0) {
+      retryPosting(failedPromises);
+    } else {
+      showSuccessToast("All student's attendence registered");
+    }
+
+    // create attendance record
+
+    getDataForAttendance();
+
+    // reset();
+
+    // let attendanceReport = JSON.parse(reportData?.Report) || {};
+
+    // // const { $id: reportDocumentId, $collectionId: reportCollectionId } =
+    // //   reportData;
+    // let attendanceReportKey = now;
+    // let queryKey;
+    // if (attendeesRole.toLowerCase() === "student") {
+    //   attendanceReportKey = `${now}-${grade.toLowerCase().replaceAll(" ", "")}`;
+    //   attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
+    // }
+
+    // if (attendeesRole.toLowerCase() === "staff") {
+    //   attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
+    // }
+    // if (attendeesRole.toLowerCase() === "teacher") {
+    //   attendanceReport = { ...attendanceReport, [attendanceReportKey]: [] };
+    // }
+
+    // async function promiseCreator(userData) {
+    //   return userData.map((user) => {
+    //     let { documentId, attendanceRecord, $collectionId } = user;
+    //     let userIdentifier;
+    //     attendanceRecord = JSON.parse(attendanceRecord);
+
+    //     const adjustDocument = {
+    //       attendance: data[documentId],
+    //       attendanceRecord: JSON.stringify({
+    //         ...attendanceRecord,
+    //         [now]: data[documentId],
+    //       }),
+    //     };
+
+    //     if (attendeesRole.toLowerCase() === "student") {
+    //       userIdentifier = `Roll ${user.rollNo}`;
+    //       attendanceReport[attendanceReportKey].push({
+    //         studentName: user.studentName,
+    //         rollNo: user.rollNo,
+    //         attendence: data[documentId],
+    //       });
+    //       queryKey = ["studentAtt"];
+    //     }
+    //     if (attendeesRole.toLowerCase() === "staff") {
+    //       userIdentifier = `Roll ${user.staffId}`;
+    //       attendanceReport[attendanceReportKey].push({
+    //         staffId: user.staffId,
+    //         attendence: data[documentId],
+    //       });
+    //       queryKey = ["staffAtt"];
+    //     }
+    //     if (attendeesRole.toLowerCase() === "teacher") {
+    //       userIdentifier = `Roll ${user.teacherId}`;
+    //       attendanceReport[attendanceReportKey].push({
+    //         teacherId: user.teacherId,
+    //         attendence: data[documentId],
+    //       });
+    //       queryKey = ["teacherAtt"];
+    //     }
+    //     return databaseService.batchUpdateDocument(
+    //       $collectionId,
+    //       documentId,
+    //       adjustDocument,
+    //       userIdentifier
+    //     );
+    //   });
+    // }
+
+    // try {
+    //   let promises = await promiseCreator(userData); // also creates promise framework for AttendenceReport
+    //   let failedTimes = 0;
+    //   let iterationCount = 0;
+    //   let failedUsers = [];
+    //   do {
+    //     const response = await Promise.all(promises);
+    //     failedUsers = [];
+    //     let failedResult = response.filter(
+    //       (result) => result.status === "rejected"
+    //     );
+    //     console.log(failedResult);
+
+    //     promises = failedResult.map((result) => {
+    //       const { collectionId, documentId, adjustDocument, userIdentifier } =
+    //         result.sentData;
+    //       failedUsers.push(userIdentifier);
+    //       return databaseService.batchUpdateDocument(
+    //         collectionId,
+    //         documentId,
+    //         adjustDocument,
+    //         userIdentifier
+    //       );
+    //     });
+    //     failedTimes = failedResult.length;
+    //     iterationCount++;
+    //   } while (failedTimes > 0 && iterationCount < 5);
+    //   if (failedTimes > 0) {
+    //     showErrorToast(
+    //       `Couldn't register all attendence retry for ${failedUsers.join(",")}`
+    //     );
+    //   }
+    // console.log(attendanceReport, "att rep");
+    // const updatedReport = JSON.stringify(attendanceReport);
+    // console.log(reportCollectionId, reportDocumentId);
+    // const reportResult = await databaseService.updateAttendenceRecords(
+    //   reportCollectionId,
+    //   reportDocumentId,
+    //   { Report: updatedReport }
+    // );
+    // if (reportResult) {
+    // }
+    //   showSuccessToast("Attendence Sucessful");
+    // } catch (error) {
+    //   console.error(error);
+    //   showErrorToast("Error submitting attendence ");
+    // } finally {
+    // }
+    // queryClient.invalidateQueries({ queryKey: queryKey });
   };
 
   return (

@@ -1,5 +1,5 @@
-import { Route, Routes } from "react-router";
-import { useSelector } from "react-redux";
+import { Route, Routes, useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 import Applayout from "./components/Templates/Applayout";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -38,9 +38,48 @@ import PublicAppLayout from "./components/Templates/PublicAppLayout";
 import UpdateTimetable from "./pages/UpdateTimetable";
 import "./App.css";
 import AddAttendencePage from "./pages/AddAttendencePage";
+import { useEffect } from "react";
+import { setUser } from "./features/authSlice";
+import authService from "./appwrite/auth/auth";
+import Librarypage from "./pages/Librarypage";
+
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  async function checkAuth() {
+    console.log("checking auth");
+    try {
+      const currentuser = await authService.getCurrentUser();
+      dispatch(
+        setUser({
+          isLoggedIn: true,
+          username: currentuser.name,
+          email: currentuser.email,
+          roles: currentuser.labels,
+          phone: currentuser.phone,
+          createdAt: currentuser.$createdAt,
+        })
+      );
+    } catch (error) {
+      navigate("/login");
+      dispatch(
+        setUser({
+          isLoggedIn: false,
+          username: "",
+          email: "",
+          roles: "",
+          phone: "",
+          createdAt: "",
+        })
+      );
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    checkAuth();
+  }, []);
   return (
     <Routes>
       <Route path="*" element={<ErrorPage />} />
@@ -74,6 +113,7 @@ function App() {
             element={<AddAttendencePage />}
           />
           <Route path="billing" element={<BillingPage />} />
+          <Route path="library" element={<Librarypage />} />
           <Route path="notice" element={<ViewNoticePage />} />
           <Route path="notice/:id" element={<NoticeElement />} />
           <Route path="notice/publish" element={<NoticePage />} />

@@ -48,48 +48,50 @@ const AddAttendencePage = () => {
 export function useAttendenceReportQuery(attendeesRole) {
   // to update report
 
-  if (attendeesRole?.toLowerCase() === "staff") {
-    const { data, isLoading, isError } = useQuery({
-      queryKey: ["studentAtt", "studentAttendenceReportData", grade],
-      queryFn: async () => await databaseService.getAllStudentsDocs(grade),
-    });
-    const formattedData = data?.sort((a, b) => a.rollNo - b.rollNo);
-    return { data: formattedData, isLoading, isError };
-  }
+  // if (attendeesRole?.toLowerCase() === "staff") {
+  //   const { data, isLoading, isError } = useQuery({
+  //     queryKey: ["studentAtt", "studentAttendenceReportData", grade],
+  //     queryFn: async () => await databaseService.getAllStudentsDocs(grade),
+  //   });
+  //   const formattedData = data?.sort((a, b) => a.rollNo - b.rollNo);
+  //   return { data: formattedData, isLoading, isError };
+  // }
 
-  if (attendeesRole?.toLowerCase() === "student") {
-    {
-      const { data, isLoading, isError } = useQuery({
-        queryKey: ["staffAtt", "staffAttendenceReportData"],
-        queryFn: async () =>
-          await databaseService.getDocument(
-            config.studentAttendenceCollectionId,
-            config.studentAttendenceDocummentId
-          ),
-      });
-      console.log(data);
-      // const formattedData = data?.sort((a, b) => a.staffId - b.staffId);
-      return {
-        reportData: data,
-        isReportLoading: isLoading,
-        isReportError: isError,
-      };
-    }
-  }
-  if (attendeesRole?.toLowerCase() === "teacher") {
-    {
-      const { data, isLoading, isError } = useQuery({
-        queryKey: ["teacherAtt", "teacherAttendenceReportData"],
-        queryFn: async () => await databaseService.getAllTeachersDocument(),
-      });
-      const formattedData = data?.sort((a, b) => a.teacherId - b.teacherId);
-      return { data: formattedData, isLoading, isError };
-    }
-  }
+  // if (attendeesRole?.toLowerCase() === "student") {
+  //   {
+  //     const { data, isLoading, isError } = useQuery({
+  //       queryKey: ["staffAtt", "staffAttendenceReportData"],
+  //       queryFn: async () =>
+  //         await databaseService.getDocument(
+  //           config.studentAttendenceCollectionId,
+  //           config.studentAttendenceDocummentId
+  //         ),
+  //     });
+  //     console.log(data);
+  //     // const formattedData = data?.sort((a, b) => a.staffId - b.staffId);
+  //     return {
+  //       reportData: data,
+  //       isReportLoading: isLoading,
+  //       isReportError: isError,
+  //     };
+  //   }
+  // }
+  // if (attendeesRole?.toLowerCase() === "teacher") {
+  //   {
+  //     const { data, isLoading, isError } = useQuery({
+  //       queryKey: ["teacherAtt", "teacherAttendenceReportData"],
+  //       queryFn: async () => await databaseService.getAllTeachersDocument(),
+  //     });
+  //     const formattedData = data?.sort((a, b) => a.teacherId - b.teacherId);
+  //     return { data: formattedData, isLoading, isError };
+  //   }
+  // }
   return {
-    reportData: false,
+    reportData: {
+      report: "ntg",
+    },
     isReportLoading: false,
-    isReportError: true,
+    isReportError: false,
   };
 }
 

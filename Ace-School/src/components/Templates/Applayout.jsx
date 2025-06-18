@@ -15,7 +15,6 @@ function Applayout() {
   const getSidebarState = (state, isMobile) => {
     setSidebarState({ expanded: state, isMobile });
   };
-  console.log(sidebarState);
 
   // expects child routes
 

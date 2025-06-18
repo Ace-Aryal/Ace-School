@@ -5,7 +5,7 @@ import { NavLink } from "react-router";
 
 const AttendenceViewCard = ({ userRole, ...className }) => {
   return (
-    <div className=" entryAnimation  myshadow-sm border w-fit border-gray-200 p-6 hover:bg-gray-100  rounded-xl  ">
+    <div className=" entryAnimation w-full  myshadow-sm border  border-gray-200 p-6 hover:bg-gray-100  rounded-xl  ">
       <div className=" min-w-40  lg:min-w-64">
         <h2 className="text-2xl font-semibold"> {userRole} Attendence</h2>
         <p className="text-sm text-gray-500">

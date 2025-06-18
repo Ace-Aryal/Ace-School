@@ -7,7 +7,7 @@ const AdminAttendencePanel = () => {
   const roles = useSelector((state) => state.auth.user.roles);
   if (roles.includes("admin")) {
     return (
-      <div className="flex w-fit flex-col space-y-5 md:space-y-0 md:flex-row justify-center gap-5 p-2  ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-fit  space-y-5 md:space-y-0 md:flex-row justify-center gap-5 p-2  ">
         <AttendenceViewCard userRole="Teacher" />
         <AttendenceViewCard userRole="Staff" />
         <AttendenceViewCard userRole="Student" />
