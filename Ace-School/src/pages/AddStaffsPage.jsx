@@ -1,5 +1,6 @@
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
-import NepaliDatePicker from "@zener/nepali-datepicker-react";
+import NepaliDatePicker from "@sbmdkl/nepali-datepicker-reactjs";
+import "@sbmdkl/nepali-datepicker-reactjs/dist/index.css";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { getStaffFormField } from "@/utils/formFields";
@@ -117,8 +118,8 @@ const AddStaffsPage = () => {
                   render={({ field }) => {
                     return (
                       <NepaliDatePicker
-                        lang="en"
-                        className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
+                        language="en"
+                        className="px-2 py-1.5 w-full border rounded bg-gray-100 shadow outline-gray-700"
                         value={field.value}
                         onChange={field.onChange}
                       />

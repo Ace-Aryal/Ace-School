@@ -1,13 +1,12 @@
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
-import NepaliDatePicker from "@zener/nepali-datepicker-react";
-import "@zener/nepali-datepicker-react/index.css";
+import NepaliDatePicker from "@sbmdkl/nepali-datepicker-reactjs";
+import "@sbmdkl/nepali-datepicker-reactjs/dist/index.css";
 
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { getStaffFormField } from "@/utils/formFields";
 import { Button } from "@/components/ui/button";
 
-import databaseService from "@/appwrite/Database/database";
 import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
 import { useLocation, useNavigate } from "react-router";
@@ -47,17 +46,16 @@ const UpdateStaffPage = ({}) => {
       </h2>
       <form
         onSubmit={handleSubmit(async (data) => {
-          // await updateUser(data, {
-          //   reset,
-          //   collectionID,
-          //   originalEmail,
-          //   originalDOB,
-          //   originalJoiningDate,
-          //   documentID,
-          //   navigate,
-          //   userRole: "staff",
-          // });
-          console.log(data);
+          await updateUser(data, {
+            reset,
+            collectionID,
+            originalEmail,
+            originalDOB,
+            originalJoiningDate,
+            documentID,
+            navigate,
+            userRole: "staff",
+          });
         })}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >
@@ -138,8 +136,8 @@ const UpdateStaffPage = ({}) => {
                   render={({ field }) => {
                     return (
                       <NepaliDatePicker
-                        lang="en"
-                        className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
+                        language="en"
+                        className="px-2 py-1.5 border rounded w-full bg-gray-100 shadow outline-gray-700"
                         value={field.value}
                         onChange={field.onChange}
                       />

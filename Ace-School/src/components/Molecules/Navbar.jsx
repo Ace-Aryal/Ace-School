@@ -64,6 +64,7 @@ function Navbar() {
         {isAuthenticated ? (
           <SidebarTrigger className="lg:hidden text-zinc-800" />
         ) : (
+          // hamburger
           <>
             <label
               htmlFor="menu-toggle"

@@ -8,7 +8,8 @@ import Select from "react-select";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
-import NepaliDatePicker from "@zener/nepali-datepicker-react";
+import NepaliDatePicker from "@sbmdkl/nepali-datepicker-reactjs";
+import "@sbmdkl/nepali-datepicker-reactjs/dist/index.css";
 import {
   Popover,
   PopoverTrigger,
@@ -308,8 +309,8 @@ export default function AddTeachersPage() {
             render={({ field }) => {
               return (
                 <NepaliDatePicker
-                  lang="en"
-                  className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
+                  language="en"
+                  className="px-2 w-full py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="Select DOB"
@@ -634,8 +635,8 @@ export default function AddTeachersPage() {
             render={({ field }) => {
               return (
                 <NepaliDatePicker
-                  lang="en"
-                  className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
+                  language="en"
+                  className="px-2 w-full py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="Select Joining date"

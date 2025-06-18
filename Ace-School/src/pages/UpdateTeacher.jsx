@@ -3,14 +3,14 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
-import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import Select from "react-select";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
-import NepaliDatePicker from "@zener/nepali-datepicker-react";
+import NepaliDatePicker from "@sbmdkl/nepali-datepicker-reactjs";
+import "@sbmdkl/nepali-datepicker-reactjs/dist/index.css";
 
 import {
   Popover,
@@ -333,8 +333,8 @@ export default function UpdateTeacherPage() {
             render={({ field }) => {
               return (
                 <NepaliDatePicker
-                  lang="en"
-                  className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
+                  language="en"
+                  className="px-2 py-1.5 border w-full rounded bg-gray-100 shadow outline-gray-700"
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="Select DOB"
@@ -655,8 +655,8 @@ export default function UpdateTeacherPage() {
             render={({ field }) => {
               return (
                 <NepaliDatePicker
-                  lang="en"
-                  className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
+                  language="en"
+                  className="px-2 py-1.5 w-full border rounded bg-gray-100 shadow outline-gray-700"
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="Select Joining date"
