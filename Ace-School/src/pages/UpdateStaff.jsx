@@ -1,6 +1,7 @@
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
 import NepaliDatePicker from "@zener/nepali-datepicker-react";
 import "@zener/nepali-datepicker-react/index.css";
+
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { getStaffFormField } from "@/utils/formFields";
@@ -46,16 +47,17 @@ const UpdateStaffPage = ({}) => {
       </h2>
       <form
         onSubmit={handleSubmit(async (data) => {
-          await updateUser(data, {
-            reset,
-            collectionID,
-            originalEmail,
-            originalDOB,
-            originalJoiningDate,
-            documentID,
-            navigate,
-            userRole: "staff",
-          });
+          // await updateUser(data, {
+          //   reset,
+          //   collectionID,
+          //   originalEmail,
+          //   originalDOB,
+          //   originalJoiningDate,
+          //   documentID,
+          //   navigate,
+          //   userRole: "staff",
+          // });
+          console.log(data);
         })}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
       >
@@ -128,6 +130,7 @@ const UpdateStaffPage = ({}) => {
             return (
               <div key={formField.name} className="flex flex-col">
                 <label htmlFor={formField.name}>{formField.label}</label>
+
                 <Controller
                   name={formField.name}
                   control={control}

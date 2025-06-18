@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
@@ -11,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import NepaliDatePicker from "@zener/nepali-datepicker-react";
-import "@zener/nepali-datepicker-react/index.css";
 import {
   Popover,
   PopoverTrigger,

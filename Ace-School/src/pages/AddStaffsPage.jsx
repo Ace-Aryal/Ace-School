@@ -1,6 +1,5 @@
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
 import NepaliDatePicker from "@zener/nepali-datepicker-react";
-import "@zener/nepali-datepicker-react/index.css";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { getStaffFormField } from "@/utils/formFields";
