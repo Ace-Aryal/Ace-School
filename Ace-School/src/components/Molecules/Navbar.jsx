@@ -7,13 +7,16 @@ import { clearUser } from "@/features/authSlice";
 import { SidebarTrigger } from "../ui/sidebar";
 import Logo from "../Atoms/Logo";
 import { LogOut } from "lucide-react";
+
 function Navbar() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
   const roles = useSelector((state) => state.auth.user.roles);
   const [isloading, setIsLoading] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const navElememts = [
     { nav: "Home", requireAuthentication: false },
     { nav: "Services", requireAuthentication: false },
@@ -42,18 +45,17 @@ function Navbar() {
     dispatch(clearUser());
     navigate("/");
   }
+
   return (
     <header
-      className={`antialiased w-[100vw] ${
+      className={`antialiased w-full ${
         isAuthenticated
           ? "border-b navBarTransition border-gray-300 backdrop-blur-md bg-white"
-          : "  bg-indigo-900  lg:h-[10vh]"
-      } shadow-lg fixed top-0 z-1  `}
+          : "bg-indigo-900 lg:h-[10vh]"
+      } shadow-lg fixed top-0 z-10`}
     >
-      <nav
-        className={`lg:px-16 px-6  flex flex-wrap items-center justify-between lg:py-0 py-2`}
-      >
-        <div className="flex-1 flex items-center">
+      <nav className="lg:px-16 px-6 flex flex-wrap items-center justify-between lg:py-0 py-2">
+        <div className="flex items-center flex-1">
           <Link to="/">
             <Logo
               className={isAuthenticated ? "text-zinc-800" : "text-gray-50"}
@@ -61,14 +63,12 @@ function Navbar() {
           </Link>
         </div>
 
-        {isAuthenticated ? (
-          <SidebarTrigger className="lg:hidden text-zinc-800" />
-        ) : (
-          // hamburger
-          <>
-            <label
-              htmlFor="menu-toggle"
-              className="pointer-cursor lg:hidden block"
+        {/* Hamburger Toggle */}
+        <div className="lg:hidden">
+          {!isAuthenticated ? (
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 focus:outline-none"
             >
               <svg
                 className="fill-current text-gray-50"
@@ -80,55 +80,60 @@ function Navbar() {
                 <title>menu</title>
                 <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
               </svg>
-            </label>
-            <input className="hidden" type="checkbox" id="menu-toggle" />
-          </>
-        )}
+            </button>
+          ) : (
+            <SidebarTrigger className="text-zinc-800" />
+          )}
+        </div>
+
+        {/* Navigation Items */}
         <div
-          className="hidden lg:flex lg:items-center lg:w-auto w-full"
-          id="menu"
+          className={`${
+            mobileOpen ? "block" : "hidden"
+          } lg:flex lg:items-center lg:w-auto w-full`}
         >
-          <nav>
-            <ul className="lg:flex items-center justify-between gap-1 text-base text-gray-50 pt-4 lg:pt-0">
-              {navElememts.map((element) => {
-                if (element.requireAuthentication && !isAuthenticated) return;
-                if (
-                  element.requireAuthentication &&
-                  element?.readers?.some((reader) => !roles.includes(reader))
-                )
-                  return;
-                if (!element.requireAuthentication && isAuthenticated) return;
+          <ul className="lg:flex items-center justify-between gap-1 text-base text-gray-50 pt-4 lg:pt-0">
+            {navElememts.map((element) => {
+              if (element.requireAuthentication && !isAuthenticated)
+                return null;
+              if (
+                element.requireAuthentication &&
+                element?.readers?.some((reader) => !roles.includes(reader))
+              )
+                return null;
+              if (!element.requireAuthentication && isAuthenticated)
+                return null;
 
-                return (
-                  <li key={element.nav}>
-                    <NavLink
-                      className={({ isActive }) =>
-                        `   block border-b-2 border-transparent hover:text-red-400  rounded-xl ${
-                          isActive ? "text-cyan-300" : ""
-                        } ${!isAuthenticated && "py-4 px-2"} ${
-                          isActive && isAuthenticated
-                            ? "text-zinc-800 font-semibold py-1.5 px-2 bg-gray-100 hover:text-zinc-800"
-                            : isAuthenticated && !isActive
-                            ? "text-zinc-800 py-1.5 px-2 hover:text-zinc-800  hover:bg-gray-100"
-                            : ""
-                        }`
-                      }
-                      to={
-                        element.nav === "Home" || element.nav === "Dashboard"
-                          ? "/"
-                          : element.nav.toLowerCase()
-                      }
-                    >
-                      {element.nav}
-                    </NavLink>
-                  </li>
-                );
-              })}
+              return (
+                <li key={element.nav}>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `block border-b-2 border-transparent hover:text-red-400 rounded-xl ${
+                        isActive ? "text-cyan-300" : ""
+                      } ${!isAuthenticated && "py-4 px-2"} ${
+                        isActive && isAuthenticated
+                          ? "text-zinc-800 font-semibold py-1.5 px-2 bg-gray-100 hover:text-zinc-800"
+                          : isAuthenticated && !isActive
+                          ? "text-zinc-800 py-1.5 px-2 hover:text-zinc-800 hover:bg-gray-100"
+                          : ""
+                      }`
+                    }
+                    to={
+                      element.nav === "Home" || element.nav === "Dashboard"
+                        ? "/"
+                        : element.nav.toLowerCase()
+                    }
+                  >
+                    {element.nav}
+                  </NavLink>
+                </li>
+              );
+            })}
 
+            <li>
               <Button
                 onClick={(e) => {
                   e.preventDefault();
-
                   if (!isAuthenticated) {
                     navigate("/login");
                     return;
@@ -138,19 +143,18 @@ function Navbar() {
                 }}
                 className={`${
                   isAuthenticated ? "text-red-500" : "text-cyan-500"
-                }  hover:bg-zinc-800 hover:text-white cursor-pointer shadow-md `}
+                } hover:bg-zinc-800 hover:text-white cursor-pointer shadow-md`}
                 variant="outline"
               >
-                {isloading && "logging out"
+                {isloading
                   ? "logging out"
                   : isAuthenticated
-                  ? `Logout  `
-                  : `Login `}
-                {isAuthenticated && <LogOut />}
-                {!isAuthenticated && <LogOut />}
+                  ? "Logout"
+                  : "Login"}
+                <LogOut />
               </Button>
-            </ul>
-          </nav>
+            </li>
+          </ul>
         </div>
       </nav>
     </header>
