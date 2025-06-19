@@ -127,22 +127,22 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
                   </SelectTrigger>
                   <SelectContent className="bg-white ">
                     <SelectItem
-                      className="bg-green-500 text-white my-1"
+                      className="bg-green-100 text-green-600 my-1"
                       value="present"
                     >
-                      <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
+                      <Dot className="bg-green-600 text-green-600 rounded-full" />{" "}
                       Present
                     </SelectItem>
                     <SelectItem
-                      className="bg-red-500 text-white"
+                      className="bg-red-100 text-red-600"
                       value="absent"
                     >
                       {" "}
-                      <Dot className="bg-red-500 text-red-500 rounded-full" />{" "}
+                      <Dot className="bg-red-600 text-red-600 rounded-full" />{" "}
                       Absent
                     </SelectItem>
                     <SelectItem
-                      className="bg-blue-500 text-white my-1"
+                      className="bg-blue-100 text-blue-600 my-1"
                       value="onleave"
                     >
                       {" "}
@@ -150,12 +150,12 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
                       On Leave
                     </SelectItem>
                     <SelectItem
-                      className="bg-yellow-500 text-white my-1"
+                      className="bg-yellow-100 text-yellow-600 my-1"
                       value="noattendance"
                       disabled
                     >
                       {" "}
-                      <Dot className="bg-yellow-500 text-yellow-500 rounded-full" />{" "}
+                      <Dot className="bg-yellow-600 text-yellow-700 rounded-full" />{" "}
                       No Attendence
                     </SelectItem>
                   </SelectContent>
@@ -247,22 +247,22 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
                   </SelectTrigger>
                   <SelectContent className="bg-white ">
                     <SelectItem
-                      className="bg-green-500 text-white my-1"
+                      className="bg-green-100 text-green-600 my-1"
                       value="present"
                     >
-                      <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
+                      <Dot className="bg-green-600 text-green-600 rounded-full" />{" "}
                       Present
                     </SelectItem>
                     <SelectItem
-                      className="bg-red-500 text-white"
+                      className="bg-red-100 text-red-600"
                       value="absent"
                     >
                       {" "}
-                      <Dot className="bg-red-500 text-red-500 rounded-full" />{" "}
+                      <Dot className="bg-red-600 text-red-600 rounded-full" />{" "}
                       Absent
                     </SelectItem>
                     <SelectItem
-                      className="bg-blue-500 text-white my-1"
+                      className="bg-blue-100 text-blue-600 my-1"
                       value="onleave"
                     >
                       {" "}
@@ -270,12 +270,12 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
                       On Leave
                     </SelectItem>
                     <SelectItem
-                      className="bg-yellow-500 text-white my-1"
+                      className="bg-yellow-100 text-yellow-600 my-1"
                       value="noattendance"
                       disabled
                     >
                       {" "}
-                      <Dot className="bg-yellow-500 text-yellow-500 rounded-full" />{" "}
+                      <Dot className="bg-yellow-600 text-yellow-700 rounded-full" />{" "}
                       No Attendence
                     </SelectItem>
                   </SelectContent>
@@ -353,22 +353,22 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
                   </SelectTrigger>
                   <SelectContent className="bg-white ">
                     <SelectItem
-                      className="bg-green-500 text-white my-1"
+                      className="bg-green-100 text-green-600 my-1"
                       value="present"
                     >
-                      <Dot className="bg-green-500 text-green-500 rounded-full" />{" "}
+                      <Dot className="bg-green-600 text-green-600 rounded-full" />{" "}
                       Present
                     </SelectItem>
                     <SelectItem
-                      className="bg-red-500 text-white"
+                      className="bg-red-100 text-red-600"
                       value="absent"
                     >
                       {" "}
-                      <Dot className="bg-red-500 text-red-500 rounded-full" />{" "}
+                      <Dot className="bg-red-600 text-red-600 rounded-full" />{" "}
                       Absent
                     </SelectItem>
                     <SelectItem
-                      className="bg-blue-500 text-white my-1"
+                      className="bg-blue-100 text-blue-600 my-1"
                       value="onleave"
                     >
                       {" "}
@@ -376,12 +376,12 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
                       On Leave
                     </SelectItem>
                     <SelectItem
-                      className="bg-yellow-500 text-white my-1"
+                      className="bg-yellow-100 text-yellow-600 my-1"
                       value="noattendance"
                       disabled
                     >
                       {" "}
-                      <Dot className="bg-yellow-500 text-yellow-500 rounded-full" />{" "}
+                      <Dot className="bg-yellow-600 text-yellow-700 rounded-full" />{" "}
                       No Attendence
                     </SelectItem>
                   </SelectContent>
