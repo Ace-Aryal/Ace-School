@@ -59,7 +59,7 @@ const ErrorPage = () => {
           go.
         </p>
         <Link to="/">
-          <button className="w-full lg:w-auto my-4 border rounded-md px-1 sm:px-16 py-5 bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">
+          <button className="w-full lg:w-auto my-4 border rounded-md px-1 sm:px-16 py-5 bg-indigo-100 text-indigo-600 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">
             Go back to Homepage
           </button>
         </Link>

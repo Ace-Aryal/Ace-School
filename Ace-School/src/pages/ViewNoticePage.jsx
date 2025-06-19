@@ -73,7 +73,7 @@ const ViewNoticePage = () => {
               dispatch(clearEditingNotice());
               navigate("/notice/publish");
             }}
-            className="w-fit self-end mr-3 hover:bg-zinc-600 text-gray-50 bg-zinc-800 cursor-pointer my-3"
+            className="w-fit self-end mr-3 bg-blue-100 hover:bg-blue-200 text-blue-600 cursor-pointer my-3"
           >
             Publish New Notice <Pin />
           </Button>

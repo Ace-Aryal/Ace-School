@@ -18,7 +18,6 @@ import {
   User,
   Presentation,
 } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router";
 import databaseService from "@/appwrite/Database/database";
 import { setMessages } from "@/features/inboxSlice";
@@ -27,12 +26,16 @@ import { setNotices } from "@/features/noticeSlice";
 const DashboardPage = () => {
   const dispatch = useDispatch();
   const { roles, username } = useSelector((state) => state.auth.user);
+  const inboxCount = useSelector((state) => state.inbox.noOfInboxes);
+  const noticeCount = useSelector((state) => state.notice.noOfNotices);
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
 
   if (!roles?.includes("admin") && !roles?.includes("account")) {
     return <h1>Hello {roles[0]}</h1>;
   }
-  const inboxCount = useSelector((state) => state.inbox.noOfInboxes);
-  const noticeCount = useSelector((state) => state.notice.noOfNotices);
+
   const fetchDashboardData = async () => {
     const fetchMessages = databaseService.fetchMessages({
       pageParam: null,
@@ -58,9 +61,6 @@ const DashboardPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
   const statItems = [
     {
       statNumber: 20000,
@@ -68,6 +68,7 @@ const DashboardPage = () => {
       readers: ["account", "admin"],
       link: "/billing",
       icon: <Coins size={50} color="#6e6f71" />,
+      color: "yellow",
     },
     {
       statNumber: 20,
@@ -75,71 +76,71 @@ const DashboardPage = () => {
       classNames: "border rounded-xl text-zinc-700",
       readers: ["account", "admin"],
       link: "/view-teachers",
-
       icon: <Users size={50} color="#6e6f71" />,
+      color: "blue",
     },
     {
       statNumber: 300,
       statHeading: "Students",
       classNames: "border rounded-xl text-zinc-700",
       link: "/view-students",
-
       readers: ["account", "admin"],
       icon: <GraduationCap size={50} color="#6e6f71" />,
+      color: "green",
     },
     {
       statNumber: inboxCount > 9 ? "9+" : inboxCount,
       statHeading: "Inbox",
       classNames: "border rounded-xl text-zinc-700",
       link: "/inbox",
-
       icon: <Inbox size={50} color="#6e6f71" />,
       readers: ["account", "admin"],
+      color: "red",
     },
     {
       statNumber: noticeCount > 9 ? "9+" : noticeCount,
       statHeading: "Notices",
       link: "/notice",
-
       classNames: "border rounded-xl text-zinc-700",
       icon: <Bell size={50} color="#6e6f71" />,
       readers: ["account", "admin"],
+      color: "orange",
     },
     {
       statNumber: 200,
       statHeading: "Atendence Today",
       classNames: "border rounded-xl text-zinc-700",
       link: "/attendance",
-
       readers: ["account", "admin"],
       icon: <ChartColumn size={50} color="#6e6f71" />,
+      color: "red",
     },
     {
       statNumber: 10,
       statHeading: "Subjects",
       link: "/subjects",
-
       classNames: "border rounded-xl text-zinc-700",
       readers: ["admin"],
       icon: <Library size={50} color="#6e6f71" />,
+      color: "indigo",
     },
     {
       statNumber: 13,
       statHeading: "Classes",
       link: "/classes",
-
       classNames: "border rounded-xl text-zinc-700",
       readers: ["admin"],
       icon: <Presentation size={50} color="#6e6f71" />,
+      color: "pink",
     },
     {
       statNumber: 20,
       statHeading: "Staffs",
       classNames: "border rounded-xl text-zinc-700",
       link: "/staffs",
-
       readers: ["admin"],
       icon: <Users size={50} color="#6e6f71" />,
+      color: "cyan",
     },
   ];
 
@@ -155,23 +156,14 @@ const DashboardPage = () => {
         <h3 className="text-3xl my-3 font-semibold">Dashboard</h3>
         <div className="grid grid-cols-2 my-4 mb-16  items-stretch md:grid-cols-3 w-full gap-2 ">
           {statItems.map((item) => (
-            <Link
-              className={`shadow-lg statEntry hover:bg-gray-100 shadow-black/30 border myshadow  rounded-xl border-gray-200 flex items-center justify-center sm:justify-between`}
-              to={
-                item.readers.some((reader) => roles?.includes(reader))
-                  ? item.link
-                  : "/"
-              }
+            <StatElement
+              item={item}
               key={item.statHeading}
-            >
-              <StatElement
-                className="h-[100%]"
-                key={item.statHeading}
-                statNumber={item.statNumber}
-                statHeading={item.statHeading}
-                icon={item.icon}
-              />
-            </Link>
+              statNumber={item.statNumber}
+              statHeading={item.statHeading}
+              icon={item.icon}
+              color={item.color}
+            />
           ))}
         </div>
         <div className="calender w-full flex justify-center mt-10 ">

@@ -108,13 +108,17 @@ function Navbar() {
                 <li key={element.nav}>
                   <NavLink
                     className={({ isActive }) =>
-                      `block border-b-2 border-transparent hover:text-red-400 rounded-xl ${
-                        isActive ? "text-cyan-300" : ""
-                      } ${!isAuthenticated && "py-4 px-2"} ${
+                      `block border-b-2 border-transparent  rounded-xl ${
+                        isActive && !isAuthenticated ? "text-cyan-300 " : ""
+                      } ${
+                        !isAuthenticated &&
+                        !isActive &&
+                        "py-4 px-2 hover:text-red-400"
+                      } ${
                         isActive && isAuthenticated
-                          ? "text-zinc-800 font-semibold py-1.5 px-2 bg-gray-100 hover:text-zinc-800"
+                          ? " font-semibold py-1.5 px-2 bg-blue-100 text-blue-600 hover:text-blue-600"
                           : isAuthenticated && !isActive
-                          ? "text-zinc-800 py-1.5 px-2 hover:text-zinc-800 hover:bg-gray-100"
+                          ? "text-zinc-800 py-1.5 px-2 hover:text-zinc-800 hover:bg-blue-100"
                           : ""
                       }`
                     }
@@ -143,7 +147,7 @@ function Navbar() {
                 }}
                 className={`${
                   isAuthenticated ? "text-red-500" : "text-cyan-500"
-                } hover:bg-zinc-800 hover:text-white cursor-pointer shadow-md`}
+                } hover:bg-red-600 hover:text-white cursor-pointer shadow-md`}
                 variant="outline"
               >
                 {isloading

@@ -10,6 +10,11 @@ import {
 } from "../components/Atoms/carousel";
 import { Card, CardContent } from "../components/Atoms/card";
 import Message from "../components/Molecules/Message";
+import {
+  SlideDownWrapper,
+  SlideLeftWrapper,
+  SlideRightWrapper,
+} from "@/components/Templates/SlideInWrapper";
 function HomePage() {
   const schoolImageArray = [
     "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fb47dd0016548b2e1d/view?project=67f8cd5000374c4a813c&mode=admin",
@@ -45,67 +50,73 @@ function HomePage() {
   ];
   return (
     <main className="flex  m-0 flex-col  justify-center items-center w-[100vw] mb-20   ">
-      <Carousel
-        plugins={[
-          Autoplay({
-            delay: 4000,
-          }),
-        ]}
-        opts={{
-          loop: true,
-        }}
-        className="w-full p-0 m-0 relative"
-      >
-        <CarouselContent className="p-0 m-0  statEntry">
-          {schoolImageArray.map((image) => (
-            <CarouselItem className="p-0 m-0" key={image}>
-              <div className="p-0 ">
-                <Card className="p-0">
-                  <CardContent className="flex max-h-[91vh]  items-center justify-center p-0 m-0 border-0">
-                    <img
-                      src={image}
-                      alt="school image "
-                      className="w-screen aspect-video  p-0 m-0  object-cover"
-                    />
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious
-          className="absolute hidden sm:flex left-20 text-white"
-          variant="secoondary"
-          size="icon"
-        />
-        <CarouselNext
-          className="hidden sm:flex  absolute right-20 text-white  "
-          variant="icon"
-          size=""
-        />
-      </Carousel>
-
-      <h1 className=" slideIn statEntry text-3xl py-4 text-indigo-500 font-bold text-center">
-        Creating Curious Minds<span className="text-yellow-400">.</span>
-      </h1>
-      <div id="intro" className="flex w-full justify-center my-16">
-        <div className="flex flex-col mx-2 sm:w-full lg:w-[50vw] md:w-[70vw] slideIn">
-          <h2 className="text-3xl text-red-500 font-semibold ">
-            Birendra Secondary School <span className="text-yellow-400">|</span>
-          </h2>
-          <p className="text-justify">
-            {" "}
-            located in Bidur-6, Nuwakot, Nepal, is a prominent educational
-            institution offering quality education from Early Childhood
-            Development (ECD) to Grade 10. Established in 1981 AD (2038 BS), the
-            school is affiliated with the National Examination Board (NEB),
-            ensuring its curriculum aligns with national educational standards.
-            Renowned as one of the leading schools within Bidur Municipality,
-            Birendra Secondary School is committed to fostering academic
-            excellence and holistic development among its students.
-          </p>
-        </div>
+      <div className="w-full flex flex-col items-center justify-center relative">
+        <Carousel
+          plugins={[
+            Autoplay({
+              delay: 4000,
+            }),
+          ]}
+          opts={{
+            loop: true,
+          }}
+          className="w-full p-0 m-0 relative"
+        >
+          <CarouselContent className="p-0 m-0  statEntry">
+            {schoolImageArray.map((image) => (
+              <CarouselItem className="p-0 m-0" key={image}>
+                <div className="p-0 ">
+                  <Card className="p-0">
+                    <CardContent className="flex max-h-[91vh]  items-center justify-center p-0 m-0 border-0">
+                      <img
+                        src={image}
+                        alt="school image "
+                        className="w-screen aspect-video  p-0 m-0  object-cover"
+                      />
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious
+            className="absolute hidden z-10 sm:flex left-20 bg-blue-100 hover:bg-blue-200 text-blue-600"
+            variant="secoondary"
+            size="icon"
+          />
+          <CarouselNext
+            className="hidden sm:flex z-10 absolute right-20 bg-blue-100 hover:bg-blue-200 text-blue-600 "
+            variant="icon"
+            size=""
+          />
+        </Carousel>
+        <h1 className=" absolute bg-linear-to-r from-blue-100/0  via-blue-200/60 to-blue-100/0  text-outline  w-full  text-3xl sm:text-5xl text-shadow-lg  py-4 text-indigo-500 font-bold text-center">
+          Creating Curious Minds<span className="text-yellow-400">.</span>
+        </h1>{" "}
       </div>
+
+      <SlideDownWrapper>
+        <div id="intro" className="flex w-full justify-center my-16">
+          <div className="flex flex-col mx-2 sm:w-full lg:w-[50vw] md:w-[70vw] slideIn">
+            <h2 className="text-3xl text-red-500 font-semibold ">
+              Birendra Secondary School{" "}
+              <span className="text-yellow-400">|</span>
+            </h2>
+            <p className="text-justify">
+              {" "}
+              located in Bidur-6, Nuwakot, Nepal, is a prominent educational
+              institution offering quality education from Early Childhood
+              Development (ECD) to Grade 10. Established in 1981 AD (2038 BS),
+              the school is affiliated with the National Examination Board
+              (NEB), ensuring its curriculum aligns with national educational
+              standards. Renowned as one of the leading schools within Bidur
+              Municipality, Birendra Secondary School is committed to fostering
+              academic excellence and holistic development among its students.
+            </p>
+          </div>
+        </div>
+      </SlideDownWrapper>
+
       <h2 className="text-3xl text-blue-500 font-semibold text-center mt-16 mb-5">
         Meet Our Alumimi <span className="text-yellow-500 text-5xl">"</span>
       </h2>
@@ -150,23 +161,30 @@ function HomePage() {
       </div>
       <section
         id="message-from-principal"
-        className="flex  px-2  flex-col justify-center w-full sm:w-[90vw] mt-24 "
+        className="flex  px-2  flex-col justify-center w-full max-w-3xl mt-24 "
       >
         <h2 className="font-bold text-blue-500 monteserrat text-3xl mb-10 text-center">
           Executives Messages <span className="text-yellow-400">|</span>
         </h2>
-        <Message
-          order="order-0"
-          imageURL="https://aryaldipesh.com.np/assets/aboutPhoto.png"
-          role="Principal"
-          message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
-        />
-        <Message
-          order="order-1"
-          imageURL="https://aryaldipesh.com.np/assets/aboutPhoto.png"
-          role="Chairman"
-          message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
-        />
+
+        <SlideRightWrapper>
+          {" "}
+          <Message
+            order="order-0"
+            imageURL="https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75"
+            role="Principal"
+            message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
+          />
+        </SlideRightWrapper>
+        <SlideLeftWrapper>
+          {" "}
+          <Message
+            order="order-1"
+            imageURL="https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75"
+            role="Chairman"
+            message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
+          />
+        </SlideLeftWrapper>
       </section>
     </main>
   );

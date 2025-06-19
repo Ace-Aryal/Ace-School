@@ -44,6 +44,7 @@ import authService from "./appwrite/auth/auth";
 import Librarypage from "./pages/Librarypage";
 import databaseService from "./appwrite/Database/database";
 import ViewAttendancePage from "./pages/ViewAttendancePage";
+import ViewIndividualAttendancePage from "./pages/viewIndividualAttendanceRecordPage";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
@@ -126,6 +127,10 @@ function App() {
           <Route
             path="attendance/view-records"
             element={<ViewAttendancePage />}
+          />
+          <Route
+            path="/attendance/view-individual-records"
+            element={<ViewIndividualAttendancePage />}
           />
           <Route path="billing" element={<BillingPage />} />
           <Route path="library" element={<Librarypage />} />

@@ -74,13 +74,13 @@ const InboxElement = ({ message }) => {
           <td>
             {" "}
             {deleting ? (
-              <Button className="bg-red-500 text-white">
+              <Button className="bg-red-100 text-red-600 hover:bg-red-200">
                 <Spinner />
               </Button>
             ) : (
               <button
                 onClick={() => handleItemDelete(message.$id)}
-                className="bg-red-500 text-white px-2 py-1 rounded text-xs"
+                className="bg-red-100 text-red-600 hover:bg-red-200 px-2 py-1 rounded text-xs"
               >
                 <Trash2 />
               </button>
@@ -92,7 +92,7 @@ const InboxElement = ({ message }) => {
               onClick={() => {
                 handleItemClick(message.seen, message.$id);
               }}
-              className="bg-zinc-800 text-white px-2 py-1 rounded text-xs"
+              className="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-xs"
             >
               <Eye />
             </button>

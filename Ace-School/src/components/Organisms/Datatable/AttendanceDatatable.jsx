@@ -46,6 +46,7 @@ import NepaliDate from "nepali-datetime";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import { catchError } from "@/utils/catchError";
 import config from "@/appwrite";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
   const {
@@ -56,7 +57,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
     formState: { _isSubmitting, errors },
   } = useForm();
   const [_userData, setUserData] = useState([]);
-
+  const queryClient = useQueryClient();
   const studentColumns = [
     {
       id: "select",
@@ -450,7 +451,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
     },
     initialState: {
       pagination: {
-        pageSize: 50, // ✅ Default rows per page
+        pageSize: 30, // ✅ Default rows per page
       },
     },
   });
@@ -605,9 +606,16 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
     }
 
     // create attendance record
-
+    const querykey =
+      attendeesRole.toLowerCase() === "student"
+        ? "studentAtt"
+        : attendeesRole.toLowerCase() === "staff"
+        ? "staffAtt"
+        : "teacherAtt";
     await getDataForAttendance();
-
+    queryClient.invalidateQueries({
+      queryKey: [querykey],
+    });
     reset();
 
     // let attendanceReport = JSON.parse(reportData?.Report) || {};
@@ -837,7 +845,8 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
             buttonText="Submit"
             title="Sure want to submit the attendence ?"
             description="This will submit today attendence , it may take a few seconds to submit into database"
-            classNames="bg-red-500 w-fit"
+            continueButtonColor="bg-blue-100 text-blue-600 hover:bg-blue-200"
+            cancelButtonColor="bg-red-100 text-red-600 hover:bg-red-200"
             onContinueFn={handleSubmit(handleAttendence)}
           />
         </div>

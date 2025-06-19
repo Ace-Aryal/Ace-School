@@ -19,7 +19,7 @@ const TimetablePage = () => {
 
         {roles?.includes("admin") && (
           <NavLink to="/timetable/modify-timetable">
-            <Button className="bg-zinc-800 text-white">
+            <Button className="bg-blue-100 hover:bg-blue-200 text-blue-600">
               Modify Schedule <FilePenLine />
             </Button>
           </NavLink>

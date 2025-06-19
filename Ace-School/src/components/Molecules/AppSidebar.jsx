@@ -182,8 +182,10 @@ export default function AppSidebar({ getSidebarState }) {
                           to={item.url}
                           className={({ isActive }) =>
                             `${
-                              isActive ? ` font-semibold bg-gray-100  ` : ""
-                            } flex gap-1 p-2 rounded-xl hover:bg-gray-100 w-full`
+                              isActive
+                                ? ` font-semibold bg-blue-100 text-blue-700 `
+                                : ""
+                            } flex gap-1 p-2 rounded-xl hover:bg-blue-100 w-full`
                           }
                         >
                           <item.icon size={18} />

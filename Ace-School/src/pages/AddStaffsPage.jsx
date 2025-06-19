@@ -139,7 +139,7 @@ const AddStaffsPage = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-20 text-lg bg-zinc-800 text-gray-100"
+            className="w-20 text-lg bg-blue-100 hover:bg-blue-200 text-blue-600"
           >
             {isSubmitting ? <Spinner /> : "Add"}
           </Button>

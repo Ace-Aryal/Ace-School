@@ -53,7 +53,7 @@ const ViewUsers = ({
             onClick={() => {
               navigate(`/view-${role}s/add-${role}`);
             }}
-            className=" self-end hover:bg-zinc-600 text-gray-50 bg-zinc-800 cursor-pointer my-3"
+            className=" self-end bg-blue-100 hover:bg-blue-200 text-blue-600  cursor-pointer my-3"
           >
             Add new {roleObject.getRole(role)}
             <Plus />

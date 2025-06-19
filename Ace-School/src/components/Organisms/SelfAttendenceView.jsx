@@ -27,7 +27,7 @@ const SelfAttendenceView = ({ isNotPriviligedUser, className }) => {
         <div className="text-green-600 font-medium my-1">Days Present : 2</div>
         <div className="text-blue-600 font-medium my-1">Days on leave : 3</div>
         <div>
-          <Button className="bg-zinc-800 text-white my-1.5">
+          <Button className="bg-orange-100 text-orange-600 my-1.5">
             View Attendence Records
           </Button>
         </div>

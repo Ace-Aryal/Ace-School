@@ -157,7 +157,7 @@ const UpdateStaffPage = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className=" w-24 text-lg bg-[#203047] text-gray-100"
+            className=" w-24 text-lg bg-blue-100 hover:bg-blue-200 text-blue-600"
           >
             {isSubmitting ? <Spinner /> : "Update"}
           </Button>

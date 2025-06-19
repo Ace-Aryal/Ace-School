@@ -100,7 +100,6 @@ export function SimpleTable() {
                   title="Are you sure you want to reset schedule?"
                   description="This action will permanently reset the timetable "
                   buttonText="Reset Schedule"
-                  classNames="bg-red-500"
                   onContinueFn={handleReset}
                   invalidate={() =>
                     queryClient.invalidateQueries(["scheduleData"])

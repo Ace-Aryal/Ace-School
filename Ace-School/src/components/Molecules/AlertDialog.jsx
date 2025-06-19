@@ -12,11 +12,14 @@ import {
 
 import React, { useState } from "react";
 import Spinner from "../Atoms/Spinner";
+import { twMerge } from "tailwind-merge";
 const AlertDialogComponent = ({
   buttonText,
   title,
   description,
   classNames,
+  cancelButtonColor,
+  continueButtonColor,
   onContinueFn,
   ...rest
 }) => {
@@ -28,7 +31,10 @@ const AlertDialogComponent = ({
         onClick={() => {
           setOpen(true);
         }}
-        className={` bg-zinc-800 text-white rounded-lg px-4 py-2 ${classNames}`}
+        className={twMerge(
+          `bg-red-100 hover:bg-red-200 text-red-600 rounded-lg px-4 py-2 `,
+          continueButtonColor
+        )}
       >
         {buttonText}
       </AlertDialogTrigger>
@@ -39,6 +45,10 @@ const AlertDialogComponent = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
+            className={twMerge(
+              "bg-blue-100 hover:bg-blue-200 text-blue-600",
+              cancelButtonColor
+            )}
             onClick={() => {
               setOpen(false);
             }}
@@ -46,7 +56,10 @@ const AlertDialogComponent = ({
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            className="bg-zinc-800 text-white"
+            className={twMerge(
+              "bg-red-100 hover:bg-red-200 text-red-600",
+              continueButtonColor
+            )}
             onClick={async (e) => {
               // e.preventDefault();
               setLoading(true);

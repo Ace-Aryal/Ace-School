@@ -193,7 +193,7 @@ export default function RTE(props) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-4 bg-zinc-800 hover:bg-zinc-600 text-white p-2 rounded"
+        className="mt-4 bg-blue-100 hover:bg-blue-200 text-blue-600 p-2 rounded"
       >
         {isSubmitting ? <Spinner /> : "Publish"}
       </button>

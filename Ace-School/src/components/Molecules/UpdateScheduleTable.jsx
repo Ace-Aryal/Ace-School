@@ -304,7 +304,7 @@ const UpdateScheduleTable = () => {
         title="Are you sure you want to update schedule?"
         description="This action will permanently update the timetable "
         buttonText="Update Schedule"
-        classNames="bg-red-500 w-fit"
+        classNames=" w-fit"
         onContinueFn={handleSubmit(handleUpdate)}
         invalidate={() => queryClient.invalidateQueries(["scheduleData"])}
       ></AlertDialogComponent>

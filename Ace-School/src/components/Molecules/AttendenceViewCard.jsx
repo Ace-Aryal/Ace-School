@@ -41,7 +41,11 @@ const AttendenceViewCard = ({ userRole, ...className }) => {
     },
   });
   if (isLoading) {
-    return <LoadingPage />;
+    return (
+      <div className=" entryAnimation w-full  myshadow-sm border  border-gray-200 p-6 bg-gray-300 rounded-xl  ">
+        <div className=" min-w-40 min-h-60 bg-gray-300 rounded-lg  animate-pulse lg:min-w-64"></div>
+      </div>
+    );
   }
   if (isError) {
     return <ErrorPage />;
@@ -69,14 +73,17 @@ const AttendenceViewCard = ({ userRole, ...className }) => {
       <div className="my-2">
         <NavLink state={{ userRole }} to="/attendance/add-attendance">
           {" "}
-          <Button className="bg-zinc-800 text-white cursor-pointer">
+          <Button className="bg-blue-100 hover:bg-blue-200 text-blue-600 cursor-pointer">
             Add new Attendence <Plus />
           </Button>
         </NavLink>
       </div>
       <div className="my-1.5">
         <NavLink state={{ userRole }} to="/attendance/view-records">
-          <Button className="text-zinc-800 cursor-pointer" variant="outline">
+          <Button
+            className="bg-orange-100 hover:bg-orange-200 text-orange-600 cursor-pointer"
+            variant="filled"
+          >
             View {userRole}s Attendence <Eye />
           </Button>
         </NavLink>

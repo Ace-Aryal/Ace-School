@@ -37,7 +37,6 @@ import { capitalize } from "@/utils/capitalize";
 import { handleDocumentDelete } from "@/utils/handleDocumentDelete";
 import { setLoading } from "@/features/loadingStateTrackerSlice";
 
-let isLoading;
 export const studentColumns = [
   {
     id: "actions",
@@ -68,7 +67,7 @@ export const studentColumns = [
               to="/view-students/update-student"
               state={{ originalData }}
             >
-              <DropdownMenuItem className=" bg-zinc-800 text-white gap-1 justify-center flex items-center">
+              <DropdownMenuItem className="bg-blue-100 hover:bg-blue-200 text-blue-600 gap-1 justify-center flex items-center">
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
             </NavLink>{" "}
@@ -86,7 +85,7 @@ export const studentColumns = [
                   refetch,
                 });
               }}
-              className="my-1 bg-red-500 text-white gap-1 justify-center flex items-center"
+              className="my-1 bg-red-100 hover:bg-red-200 text-red-600 gap-1 justify-center flex items-center"
             >
               {loading ? (
                 <Spinner />
@@ -124,13 +123,57 @@ export const studentColumns = [
     },
   },
   {
-    accessorKey: "DOB",
-    header: "DOB",
+    accessorKey: "attendance",
+    header: "Attendance",
+    cell: ({ row }) => {
+      console.log(row.original);
+      const attendance = row
+        .getValue("attendance")
+        ?.toLowerCase()
+        .trim()
+        .replaceAll(" ", "");
+      const classNames =
+        attendance === "present"
+          ? "text-green-600"
+          : attendance === "absent"
+          ? "text-red-600"
+          : attendance === "onleave"
+          ? "text-blue-600"
+          : "text-gray-700";
+      const FormattedAttendence = row.getValue("attendance");
+      return (
+        <div>
+          <span className={classNames}>{FormattedAttendence}</span>
+        </div>
+      ); // attendanceRecordRequired (Link to detailed table)
+    },
   },
   {
-    accessorKey: "stream",
-    header: "Stream",
+    accessorKey: "attendanceRecord",
+    header: "Attendence Records",
+    cell: ({ row }) => {
+      const attendanceRecord = JSON.parse(row.original.attendanceRecord);
+      const { studentName, rollNo, grade } = row.original;
+      return (
+        <NavLink
+          state={{
+            attendanceRecord: attendanceRecord,
+            personInfo: {
+              name: studentName,
+              roll: rollNo,
+              grade,
+            },
+          }}
+          className="text-blue-600 flex items-center gap-1  w-full justify-center "
+          to="/attendance/view-individual-records"
+        >
+          View
+          <Link2 />
+        </NavLink>
+      );
+    }, // this will be link to a long table with date and true or false can add filter by date bte with date picker (later)
   },
+
   {
     accessorKey: "phoneNumber",
     header: "Contact No",
@@ -138,6 +181,14 @@ export const studentColumns = [
   {
     accessorKey: "email",
     header: "Email", // emailRequired
+  },
+  {
+    accessorKey: "DOB",
+    header: "DOB",
+  },
+  {
+    accessorKey: "stream",
+    header: "Stream",
   },
   {
     accessorKey: "sex",
@@ -174,47 +225,7 @@ export const studentColumns = [
     accessorKey: "remarks",
     header: "Remarks",
   },
-  {
-    accessorKey: "attendance",
-    header: "Attendance",
-    cell: ({ row }) => {
-      console.log(row.original);
-      const attendance = row
-        .getValue("attendance")
-        ?.toLowerCase()
-        .trim()
-        .replaceAll(" ", "");
-      const classNames =
-        attendance === "present"
-          ? "text-green-600"
-          : attendance === "absent"
-          ? "text-red-600"
-          : attendance === "onleave"
-          ? "text-blue-600"
-          : "text-gray-700";
-      const FormattedAttendence = row.getValue("attendance");
-      return (
-        <div>
-          <span className={classNames}>{FormattedAttendence}</span>
-        </div>
-      ); // attendanceRecordRequired (Link to detailed table)
-    },
-  },
-  {
-    accessorKey: "attendanceRecord",
-    header: "Attendence Records",
-    cell: ({ row }) => {
-      return (
-        <Link
-          className="text-blue-600 flex items-center gap-1  w-full justify-center "
-          to="#"
-        >
-          View
-          <Link2 />
-        </Link>
-      );
-    }, // this will be link to a long table with date and true or false can add filter by date bte with date picker (later)
-  },
+
   {
     accessorKey: "scholarship",
     header: "Scholarship(%)",
@@ -255,7 +266,7 @@ export const staffColumns = [
               to="/view-staffs/update-staff"
               state={{ originalData }}
             >
-              <DropdownMenuItem className="my-1 bg-zinc-800 text-white justify-center gap-1  flex items-center">
+              <DropdownMenuItem className="my-1 bg-blue-100 hover:bg-blue-200 text-blue-600 justify-center gap-1  flex items-center">
                 {" "}
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
@@ -274,7 +285,7 @@ export const staffColumns = [
                   refetch,
                 });
               }}
-              className="my-1 bg-red-500 text-white justify-center gap-1 flex items-center"
+              className="my-1 bg-red-100 hover:bg-red-200 text-red-600  justify-center gap-1 flex items-center"
             >
               {" "}
               {loading ? (
@@ -297,6 +308,46 @@ export const staffColumns = [
   {
     accessorKey: "fullName",
     header: "Full Name", // fullNameRequired
+  },
+  {
+    accessorKey: "attendance",
+    header: "Attendance", // attendance
+    cell: ({ row }) => {
+      const attendance = row.getValue("attendance");
+      return (
+        <div>
+          {attendance ? (
+            <span className="text-green-500"> Present </span>
+          ) : (
+            <span className="text-red-500">Absent</span>
+          )}
+        </div>
+      ); // attendanceRecordRequired (Link to detailed table)
+    },
+  },
+  {
+    accessorKey: "attendanceRecord",
+    header: "Attendance Records",
+    cell: ({ row }) => {
+      const attendanceRecord = JSON.parse(row.original.attendanceRecord);
+      const { fullName, staffId } = row.original;
+      return (
+        <NavLink
+          state={{
+            attendanceRecord: attendanceRecord,
+            personInfo: {
+              name: fullName,
+              id: staffId,
+            },
+          }}
+          className="text-blue-600 flex items-center gap-1  w-full justify-center "
+          to="/attendance/view-individual-records"
+        >
+          View
+          <Link2 />
+        </NavLink>
+      );
+    },
   },
   {
     accessorKey: "email",
@@ -341,37 +392,6 @@ export const staffColumns = [
     accessorKey: "status",
     header: "Status", // statusRequired (e.g., Active, On Leave, Resigned)
   },
-  {
-    accessorKey: "attendance",
-    header: "Attendance", // attendance
-    cell: ({ row }) => {
-      const attendance = row.getValue("attendance");
-      return (
-        <div>
-          {attendance ? (
-            <span className="text-green-500"> Present </span>
-          ) : (
-            <span className="text-red-500">Absent</span>
-          )}
-        </div>
-      ); // attendanceRecordRequired (Link to detailed table)
-    },
-  },
-  {
-    accessorKey: "attendanceRecord",
-    header: "Attendance Records",
-    cell: ({ row }) => {
-      return (
-        <Link
-          className="text-blue-600 flex items-center gap-1  w-full justify-center "
-          to="#"
-        >
-          View
-          <Link2 />
-        </Link>
-      ); // attendanceRecordRequired (Link to detailed table)
-    },
-  },
 ];
 export const teacherColumns = [
   {
@@ -403,7 +423,7 @@ export const teacherColumns = [
               to="/view-teachers/update-teacher"
               state={{ originalData }}
             >
-              <DropdownMenuItem className=" flex items-center justify-center gap-1  bg-zinc-800">
+              <DropdownMenuItem className=" flex items-center justify-center gap-1  bg-blue-100 hover:bg-blue-200 text-blue-600">
                 {" "}
                 <PenSquare /> <p>Update</p>
               </DropdownMenuItem>
@@ -422,7 +442,7 @@ export const teacherColumns = [
                   refetch,
                 });
               }}
-              className="my-1 w-full bg-red-500 text-white flex items-center gap-1 justify-center"
+              className="my-1 w-full bg-red-100 hover:bg-red-200 text-red-600 flex items-center gap-1 justify-center"
             >
               {loading ? (
                 <Spinner />
@@ -444,6 +464,46 @@ export const teacherColumns = [
   {
     accessorKey: "teacherName",
     header: "Teacher Name", // teacherNameRequired
+  },
+  {
+    accessorKey: "attendance",
+    header: "Attendance", // attendance
+    cell: ({ row }) => {
+      const attendance = row.getValue("attendance");
+      return (
+        <div>
+          {attendance ? (
+            <span className="text-green-500"> Present </span>
+          ) : (
+            <span className="text-red-500">Absent</span>
+          )}
+        </div>
+      ); // attendanceRecordRequired (Link to detailed table)
+    },
+  },
+  {
+    accessorKey: "attendanceRecord",
+    header: "Attendance Records",
+    cell: ({ row }) => {
+      const attendanceRecord = JSON.parse(row.original.attendanceRecord);
+      const { teacherName, teacherId } = row.original;
+      return (
+        <NavLink
+          state={{
+            attendanceRecord: attendanceRecord,
+            personInfo: {
+              name: teacherName,
+              id: teacherId,
+            },
+          }}
+          className="text-blue-600 flex items-center gap-1  w-full justify-center "
+          to="/attendance/view-individual-records"
+        >
+          View
+          <Link2 />
+        </NavLink>
+      );
+    },
   },
   {
     accessorKey: "email",
@@ -468,6 +528,7 @@ export const teacherColumns = [
       return <p>O</p>;
     }, // sexRequired (Using 'sex' as per your studentColumns)
   },
+
   {
     accessorKey: "DOB",
     header: "DOB", // DOBRequired
@@ -537,37 +598,6 @@ export const teacherColumns = [
           ))}
         </div>
       );
-    },
-  },
-  {
-    accessorKey: "attendance",
-    header: "Attendance", // attendance
-    cell: ({ row }) => {
-      const attendance = row.getValue("attendance");
-      return (
-        <div>
-          {attendance ? (
-            <span className="text-green-500"> Present </span>
-          ) : (
-            <span className="text-red-500">Absent</span>
-          )}
-        </div>
-      ); // attendanceRecordRequired (Link to detailed table)
-    },
-  },
-  {
-    accessorKey: "attendanceRecord",
-    header: "Attendance Records",
-    cell: ({ row }) => {
-      return (
-        <Link
-          className="text-blue-600 flex items-center w-full justify-center gap-1"
-          to="#"
-        >
-          View
-          <Link2 />
-        </Link>
-      ); // attendanceRecordRequired (Link to detailed table)
     },
   },
 ];
