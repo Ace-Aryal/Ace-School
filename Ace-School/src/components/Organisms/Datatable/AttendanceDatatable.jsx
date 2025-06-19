@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -39,32 +39,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
 import AlertDialogComponent from "@/components/Molecules/AlertDialog";
 import databaseService from "@/appwrite/Database/database";
 import NepaliDate from "nepali-datetime";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { catchError } from "@/utils/catchError";
 import config from "@/appwrite";
 
-export function AttendanceDatatable({
-  attendeesRole,
-  setGrade,
-  data,
-  grade,
-  reportData,
-}) {
+export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
   const {
-    register,
+    _register,
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, errors },
+    formState: { _isSubmitting, errors },
   } = useForm();
-  const queryClient = useQueryClient();
-  const [userData, setUserData] = useState([]);
+  const [_userData, setUserData] = useState([]);
 
   const studentColumns = [
     {
@@ -78,7 +69,7 @@ export function AttendanceDatatable({
           rollNo,
           $collectionId,
           attendanceRecord,
-        } = row?.original;
+        } = row.original;
         let attendance = row?.original?.attendance
           ?.toLowerCase()
           .replaceAll(" ", "");
@@ -188,7 +179,7 @@ export function AttendanceDatatable({
       accessorKey: "grade",
       header: () => <div className="t">Grade</div>,
       cell: ({ row }) => {
-        const grade = parseFloat(row.getValue("grade"));
+        // const grade = parseFloat(row.getValue("grade"));
 
         // Format the amount as a dollar amount
 
@@ -218,8 +209,7 @@ export function AttendanceDatatable({
       id: "select",
       header: "Attendance",
       cell: ({ row }) => {
-        const { $id, teacherName, teacherId, $collectionId, attendanceRecord } =
-          row?.original;
+        const { $id } = row.original;
         let attendance = row?.original?.attendance
           ?.toLowerCase()
           .replaceAll(" ", "");
@@ -326,8 +316,8 @@ export function AttendanceDatatable({
       id: "select",
       header: "Attendance",
       cell: ({ row }) => {
-        const { $id } = row?.original;
-        let attendance = row?.original?.attendance
+        const { $id } = row.original;
+        let attendance = row.original?.attendance
           ?.toLowerCase()
           .replaceAll(" ", "");
         if (
@@ -427,7 +417,6 @@ export function AttendanceDatatable({
       ),
     },
   ];
-  const attenderRoles = useSelector((state) => state.auth.user.roles);
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -502,13 +491,17 @@ export function AttendanceDatatable({
       }
     }
     async function getOrCreateAttendenceDocument(collectionID, data) {
-      const { response: getResponse, error: getError } = await catchError(() =>
+      const { response: getResponse, error: _getError } = await catchError(() =>
         databaseService.getDocument(collectionID, now)
       );
       if (getResponse) {
         const Report = JSON.parse(getResponse.Report);
-
-        const { response, error } = await catchError(() =>
+        if (attendeesRole.toLowerCase() === "student") {
+          data = { ...JSON.parse(getResponse.Report), ...data };
+          console.log("resp", JSON.parse(getResponse.Report));
+        }
+        console.log("data", data);
+        const { response, _error } = await catchError(() =>
           databaseService.updateAttendenceRecords(collectionID, now, data)
         );
         if (!response) {
@@ -547,9 +540,12 @@ export function AttendanceDatatable({
           roll: studentRecord.rollNo,
           att: studentRecord.attendance,
         }));
-        console.log(classAttendenceRecordArray);
+        const classesAttendanceObject = {
+          [grade]: classAttendenceRecordArray,
+        };
+        console.log("obj", classesAttendanceObject);
         const collectionId = config.studentAttendenceCollectionId;
-        getOrCreateAttendenceDocument(collectionId, classAttendenceRecordArray);
+        getOrCreateAttendenceDocument(collectionId, classesAttendanceObject);
       }
       if (attendeesRole.toLowerCase() === "staff") {
         const { response, error } = await catchError(
@@ -559,14 +555,14 @@ export function AttendanceDatatable({
           showErrorToast("Error ferching data");
           return;
         }
-        const classAttendenceRecordArray = response.map((staffRecord) => ({
+        const staffAttendenceRecordArray = response.map((staffRecord) => ({
           name: staffRecord.fullName,
-          id: staffRecord.id,
+          id: staffRecord.staffId,
           att: staffRecord.attendance,
         }));
-        console.log(classAttendenceRecordArray);
+        console.log(staffAttendenceRecordArray);
         const collectionId = config.staffAttendenceCollectionId;
-        getOrCreateAttendenceDocument(collectionId, classAttendenceRecordArray);
+        getOrCreateAttendenceDocument(collectionId, staffAttendenceRecordArray);
       }
       if (attendeesRole.toLowerCase() === "teacher") {
         const { response, error } = await catchError(
@@ -576,14 +572,17 @@ export function AttendanceDatatable({
           showErrorToast("Error ferching data");
           return;
         }
-        const classAttendenceRecordArray = response.map((teacherRecord) => ({
+        const teacherAttendenceRecordArray = response.map((teacherRecord) => ({
           name: teacherRecord.teacherName,
-          id: teacherRecord.id,
+          id: teacherRecord.teacherId,
           att: teacherRecord.attendance,
         }));
-        console.log(classAttendenceRecordArray);
+        console.log(teacherAttendenceRecordArray);
         const collectionId = config.teacherAttendenceCollectionId;
-        getOrCreateAttendenceDocument(collectionId, classAttendenceRecordArray);
+        getOrCreateAttendenceDocument(
+          collectionId,
+          teacherAttendenceRecordArray
+        );
       }
     }
 
@@ -607,9 +606,9 @@ export function AttendanceDatatable({
 
     // create attendance record
 
-    getDataForAttendance();
+    await getDataForAttendance();
 
-    // reset();
+    reset();
 
     // let attendanceReport = JSON.parse(reportData?.Report) || {};
 

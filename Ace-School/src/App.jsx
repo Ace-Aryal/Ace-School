@@ -42,6 +42,8 @@ import { useEffect } from "react";
 import { setUser } from "./features/authSlice";
 import authService from "./appwrite/auth/auth";
 import Librarypage from "./pages/Librarypage";
+import databaseService from "./appwrite/Database/database";
+import ViewAttendancePage from "./pages/ViewAttendancePage";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
@@ -52,16 +54,26 @@ function App() {
     console.log("checking auth");
     try {
       const currentuser = await authService.getCurrentUser();
-      dispatch(
-        setUser({
-          isLoggedIn: true,
-          username: currentuser.name,
-          email: currentuser.email,
-          roles: currentuser.labels,
-          phone: currentuser.phone,
-          createdAt: currentuser.$createdAt,
-        })
-      );
+      let currentUserDocument;
+      let roles = currentuser.labels;
+      if (currentuser.labels.length === 0) {
+        currentUserDocument = await databaseService.getUserDocument(
+          currentuser.email
+        );
+        roles = [currentUserDocument.documents[0].role];
+      }
+      if (currentuser.labels || currentUserDocument.total) {
+        dispatch(
+          setUser({
+            isLoggedIn: true,
+            username: currentuser.name,
+            email: currentuser.email,
+            roles,
+            phone: currentuser.phone,
+            createdAt: currentuser.$createdAt,
+          })
+        );
+      }
     } catch (error) {
       navigate("/login");
       dispatch(
@@ -111,6 +123,10 @@ function App() {
           <Route
             path="attendance/add-attendance"
             element={<AddAttendencePage />}
+          />
+          <Route
+            path="attendance/view-records"
+            element={<ViewAttendancePage />}
           />
           <Route path="billing" element={<BillingPage />} />
           <Route path="library" element={<Librarypage />} />

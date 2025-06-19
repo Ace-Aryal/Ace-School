@@ -521,6 +521,7 @@ class DatabaseService {
   };
   updateAttendenceRecords = async (collectionId, documentId, data) => {
     try {
+      console.log("data in attendance", data);
       const response = await this.database.updateDocument(
         appwriteDatabaseID,
         collectionId,
@@ -534,7 +535,7 @@ class DatabaseService {
       console.error(error);
     }
   };
-  getAttendanceStats = async (collectionID, documentId) => {
+  getAttendanceStats = async (collectionID, documentId, role) => {
     console.log(documentId);
     try {
       const response = await this.database.getDocument(
@@ -542,12 +543,28 @@ class DatabaseService {
         collectionID,
         documentId
       );
-      const parsedReport = JSON.parse(response.Report);
+      let parsedReport = JSON.parse(response.Report);
       let attendanceDataReport = {
         present: 0,
         absent: 0,
         onleave: 0,
       };
+      if (role === "student") {
+        for (const grade in parsedReport) {
+          parsedReport[grade].forEach((attendee) => {
+            if (attendee.att === "present") {
+              attendanceDataReport.present++;
+              return;
+            }
+            if (attendee.att === "onleave") {
+              attendanceDataReport.onleave++;
+              return;
+            }
+            attendanceDataReport.absent++;
+          });
+        }
+        return attendanceDataReport;
+      }
       parsedReport.forEach((attendee) => {
         if (attendee.att === "present") {
           attendanceDataReport.present++;

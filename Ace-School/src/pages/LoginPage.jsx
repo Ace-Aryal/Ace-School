@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import authService from "@/appwrite/auth/auth";
@@ -9,7 +9,7 @@ import { showErrorToast } from "@/components/Templates/toast";
 import databaseService from "@/appwrite/Database/database";
 import { Eye, EyeOff } from "lucide-react";
 import Spinner from "@/components/Atoms/Spinner";
-function LoginPage(props) {
+function LoginPage() {
   const {
     register,
     handleSubmit,
@@ -68,7 +68,6 @@ function LoginPage(props) {
     } catch (error) {
       console.error(error);
       showErrorToast("Error logging in");
-    } finally {
     }
   };
 

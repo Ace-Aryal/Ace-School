@@ -28,7 +28,8 @@ const AttendenceViewCard = ({ userRole, ...className }) => {
       }
       const respone = await databaseService.getAttendanceStats(
         collectionId,
-        now
+        now,
+        userRole.toLowerCase()
       );
       return (
         respone || {
@@ -74,9 +75,11 @@ const AttendenceViewCard = ({ userRole, ...className }) => {
         </NavLink>
       </div>
       <div className="my-1.5">
-        <Button className="text-zinc-800 cursor-pointer" variant="outline">
-          View {userRole}s Attendence <Eye />
-        </Button>
+        <NavLink state={{ userRole }} to="/attendance/view-records">
+          <Button className="text-zinc-800 cursor-pointer" variant="outline">
+            View {userRole}s Attendence <Eye />
+          </Button>
+        </NavLink>
       </div>
     </div>
   );

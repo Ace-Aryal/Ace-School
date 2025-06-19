@@ -4,15 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useLocation } from "react-router";
 import LoadingPage from "./LoadingPage";
-import config from "@/appwrite";
 
 const AddAttendencePage = () => {
   const [grade, setGrade] = useState("nursery");
   const location = useLocation();
   const userRole = location.state?.userRole.toLowerCase() || null;
   const { data, isLoading, isError } = useAttendenceQuery(userRole, grade);
-  const { reportData, isReportLoading, isReportError } =
-    useAttendenceReportQuery(userRole);
+
   if (!userRole) {
     return (
       <div className="w-full h-[90vh] flex justify-center items-center">
@@ -20,8 +18,11 @@ const AddAttendencePage = () => {
       </div>
     );
   }
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
-  if (isError || isReportError) {
+  if (isError) {
     return (
       <div className="h-[90vh w-full grid place-items-center">
         <p>Error Fetching data from database, try refreshing</p>
@@ -38,62 +39,11 @@ const AddAttendencePage = () => {
           data={data || []}
           grade={grade}
           isLoading={isLoading}
-          reportData={reportData}
         />
       </div>
     </div>
   );
 };
-
-export function useAttendenceReportQuery(attendeesRole) {
-  // to update report
-
-  // if (attendeesRole?.toLowerCase() === "staff") {
-  //   const { data, isLoading, isError } = useQuery({
-  //     queryKey: ["studentAtt", "studentAttendenceReportData", grade],
-  //     queryFn: async () => await databaseService.getAllStudentsDocs(grade),
-  //   });
-  //   const formattedData = data?.sort((a, b) => a.rollNo - b.rollNo);
-  //   return { data: formattedData, isLoading, isError };
-  // }
-
-  // if (attendeesRole?.toLowerCase() === "student") {
-  //   {
-  //     const { data, isLoading, isError } = useQuery({
-  //       queryKey: ["staffAtt", "staffAttendenceReportData"],
-  //       queryFn: async () =>
-  //         await databaseService.getDocument(
-  //           config.studentAttendenceCollectionId,
-  //           config.studentAttendenceDocummentId
-  //         ),
-  //     });
-  //     console.log(data);
-  //     // const formattedData = data?.sort((a, b) => a.staffId - b.staffId);
-  //     return {
-  //       reportData: data,
-  //       isReportLoading: isLoading,
-  //       isReportError: isError,
-  //     };
-  //   }
-  // }
-  // if (attendeesRole?.toLowerCase() === "teacher") {
-  //   {
-  //     const { data, isLoading, isError } = useQuery({
-  //       queryKey: ["teacherAtt", "teacherAttendenceReportData"],
-  //       queryFn: async () => await databaseService.getAllTeachersDocument(),
-  //     });
-  //     const formattedData = data?.sort((a, b) => a.teacherId - b.teacherId);
-  //     return { data: formattedData, isLoading, isError };
-  //   }
-  // }
-  return {
-    reportData: {
-      report: "ntg",
-    },
-    isReportLoading: false,
-    isReportError: false,
-  };
-}
 
 export function useAttendenceQuery(attendeesRole, grade) {
   if (attendeesRole?.toLowerCase() === "student") {
