@@ -75,7 +75,6 @@ function App() {
         );
       }
     } catch (error) {
-      navigate("/login");
       dispatch(
         setUser({
           isLoggedIn: false,
