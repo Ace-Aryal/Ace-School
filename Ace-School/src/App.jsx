@@ -44,7 +44,7 @@ import authService from "./appwrite/auth/auth";
 import Librarypage from "./pages/Librarypage";
 import databaseService from "./appwrite/Database/database";
 import ViewAttendancePage from "./pages/ViewAttendancePage";
-import ViewIndividualAttendancePage from "./pages/viewIndividualAttendanceRecordPage";
+import ViewIndividualAttendancePage from "./pages/ViewIndividualAttendanceRecordPage";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
