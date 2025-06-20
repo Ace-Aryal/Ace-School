@@ -27,7 +27,8 @@ function HomePage() {
     {
       name: "Dipesh Aryal",
       batch: "SEE 2079 Graduate (3.8 GPA)",
-      image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
+      image:
+        "https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75",
       mesage:
         "​As proud alumni of SBSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
     },
@@ -35,7 +36,8 @@ function HomePage() {
       name: "Dipesh Aryal",
       batch: "SEE 2079 Graduate",
 
-      image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
+      image:
+        "https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75",
       mesage:
         "​As proud alumni of [School Name], we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
     },
@@ -43,7 +45,8 @@ function HomePage() {
       name: "Dipesh Aryal",
       batch: "SEE 2079 Graduate",
 
-      image: "https://aryaldipesh.com.np/assets/aboutPhoto.png",
+      image:
+        "https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75",
       mesage:
         "​As proud alumni of BSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
     },
@@ -152,7 +155,7 @@ function HomePage() {
                       <img
                         src={alumini.image}
                         alt="alumimi-image"
-                        className="h-[150px] m-5 rounded-full  object-cover"
+                        className="h-[150px] m-5 aspect-square rounded-full  object-cover"
                       />
                       <h3 className="font-semibold text-center text-xl">
                         {alumini.name}
