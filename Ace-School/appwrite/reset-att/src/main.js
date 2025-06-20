@@ -13,33 +13,35 @@ export default async ({ req, res, log }) => {
     process.env.TEACHER_ATT_COLLECTION,
     process.env.STAFF_ATT_COLLECTION,
   ];
-  
+
   try {
-    collectionIds.forEach(async (collection) => {
-      let offset = 0;
-      const limit = 100;
-      let totalFetched = 0;
-      let hasMore = true;
+    await Promise.all(
+      collectionIds.map(async (collection) => {
+        let offset = 0;
+        const limit = 100;
+        let totalFetched = 0;
+        let hasMore = true;
 
-      while (hasMore) {
-        const res = await databases.listDocuments(databaseId, collection, [
-          Query.limit(limit),
-          Query.offset(offset),
-        ]);
+        while (hasMore) {
+          const res = await databases.listDocuments(databaseId, collection, [
+            Query.limit(limit),
+            Query.offset(offset),
+          ]);
 
-        if (res.documents.length === 0) break;
+          if (res.documents.length === 0) break;
 
-        for (const doc of res.documents) {
-          await databases.updateDocument(databaseId, collection, doc.$id, {
-            attendance: "noattendance", // Example field
-          });
+          for (const doc of res.documents) {
+            await databases.updateDocument(databaseId, collection, doc.$id, {
+              attendance: "noattendance", // Example field
+            });
+          }
+
+          totalFetched += res.documents.length;
+          offset += limit;
+          hasMore = res.documents.length === limit; // If less than limit, we reached the end
         }
-
-        totalFetched += res.documents.length;
-        offset += limit;
-        hasMore = res.documents.length === limit; // If less than limit, we reached the end
-      }
-    });
+      })
+    );
     log("attendence reset complete");
     return res.send("Attendence Reset complete");
   } catch (error) {
