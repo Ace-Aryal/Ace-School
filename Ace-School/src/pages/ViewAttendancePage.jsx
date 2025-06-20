@@ -41,7 +41,10 @@ function ViewAttendancePage() {
     "10",
   ];
 
-  if (isReportError) return <GeneralErrorPage />;
+  if (isReportError)
+    return (
+      <GeneralErrorPage message="Internal server error or attendance hasn't been submitted yet" />
+    );
   if (isReportLoading) return <LoadingPage />;
 
   const attendanceStats = {
