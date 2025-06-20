@@ -1,7 +1,7 @@
 import config from "@/appwrite";
 import databaseService from "@/appwrite/Database/database";
 import AuthenticatedContainer from "@/components/Templates/AuthenticatedContainer";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, QueryClient } from "@tanstack/react-query";
 import NepaliDate from "nepali-datetime";
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router";
@@ -11,9 +11,11 @@ import "@sbmdkl/nepali-datepicker-reactjs/dist/index.css";
 import GeneralErrorPage from "./GeneralErrorPage";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import dayjs from "dayjs";
 
 function ViewAttendancePage() {
   const location = useLocation();
+  const queryClinet = new QueryClient();
   const userRole = location.state?.userRole.toLowerCase() || null;
   const now = new NepaliDate().toString().trim().slice(0, 10);
   const [selectedDate, setSelectedDate] = useState(now);
@@ -46,6 +48,29 @@ function ViewAttendancePage() {
       <GeneralErrorPage message="Internal server error or attendance hasn't been submitted yet" />
     );
   if (isReportLoading) return <LoadingPage />;
+  if (reportData === 404) {
+    console.log("selected", selectedDate);
+    const todayAD = new NepaliDate(selectedDate).formatEnglishDate(
+      "YYYY-MM-DD"
+    );
+    const today = new Date(todayAD);
+    const dayBeforeAD = dayjs(today).subtract(1, "day").format("YYYY-MM-DD");
+    // const  = new Date(today);
+    // dayBeforeAD.setDate(today.getDate() - 1);
+    // console.log(dayBeforeAD);
+    console.log(dayBeforeAD);
+    const dayBeforeBs = NepaliDate.parseEnglishDate(
+      dayBeforeAD,
+      "YYYY-MM-DD"
+    ).format("YYYY-MM-DD");
+    setSelectedDate(dayBeforeBs);
+    queryClinet.invalidateQueries({
+      queryKey: ["staffAtt", "teacherAtt", "studnentAtt"],
+    });
+    return (
+      <GeneralErrorPage message="Today's Attendance not available. Stay for yesterday's attendance" />
+    );
+  }
 
   const attendanceStats = {
     absent: 0,

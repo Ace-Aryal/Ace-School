@@ -502,7 +502,12 @@ class DatabaseService {
       console.log(response);
       return response;
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
+      if (
+        error.message === "Document with the requested ID could not be found."
+      ) {
+        return 404;
+      }
     }
   };
 

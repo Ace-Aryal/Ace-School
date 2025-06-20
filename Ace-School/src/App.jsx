@@ -89,8 +89,27 @@ function App() {
       console.error(error);
     }
   }
+
   useEffect(() => {
+    const handleKeys = (e) => {
+      e.preventDefault();
+      console.log("checking keys");
+
+      if (e.key === "F3") {
+        e.preventDefault(); // optional
+        // Your custom logic for back
+        navigate(-1);
+      }
+      if (e.key === "F4") {
+        e.preventDefault(); // optional
+        // Your custom logic for forward
+        navigate(1);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeys);
     checkAuth();
+    return () => document.removeEventListener("keydown", handleKeys);
   }, []);
   return (
     <Routes>

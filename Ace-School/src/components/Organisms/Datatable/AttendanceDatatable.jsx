@@ -495,7 +495,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
       const { response: getResponse, error: _getError } = await catchError(() =>
         databaseService.getDocument(collectionID, now)
       );
-      if (getResponse) {
+      if (getResponse && getResponse !== 404) {
         const Report = JSON.parse(getResponse.Report);
         if (attendeesRole.toLowerCase() === "student") {
           data = { ...JSON.parse(getResponse.Report), ...data };
