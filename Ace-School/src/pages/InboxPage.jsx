@@ -53,11 +53,7 @@ const InboxPage = () => {
   }, [data]);
 
   if (isLoading) {
-    return (
-      <div className="w-full justify-center items-center">
-        <LoadingPage />
-      </div>
-    );
+    return <LoadingPage />;
   }
   if (error) {
     return <div>Error Fetching</div>;

@@ -19,6 +19,7 @@ function ViewAttendancePage() {
   const userRole = location.state?.userRole.toLowerCase() || null;
   const now = new NepaliDate().toString().trim().slice(0, 10);
   const [selectedDate, setSelectedDate] = useState(now);
+  const [retry, setRetry] = useState(0);
   let { reportData, isReportLoading, isReportError } = useAttendenceReportQuery(
     userRole,
     selectedDate,
@@ -47,28 +48,58 @@ function ViewAttendancePage() {
     return (
       <GeneralErrorPage message="Internal server error or attendance hasn't been submitted yet" />
     );
-  if (isReportLoading) return <LoadingPage />;
-  if (reportData === 404) {
-    console.log("selected", selectedDate);
-    const todayAD = new NepaliDate(selectedDate).formatEnglishDate(
-      "YYYY-MM-DD"
-    );
-    const today = new Date(todayAD);
-    const dayBeforeAD = dayjs(today).subtract(1, "day").format("YYYY-MM-DD");
-    // const  = new Date(today);
-    // dayBeforeAD.setDate(today.getDate() - 1);
-    // console.log(dayBeforeAD);
-    console.log(dayBeforeAD);
-    const dayBeforeBs = NepaliDate.parseEnglishDate(
-      dayBeforeAD,
-      "YYYY-MM-DD"
-    ).format("YYYY-MM-DD");
-    setSelectedDate(dayBeforeBs);
-    queryClinet.invalidateQueries({
-      queryKey: ["staffAtt", "teacherAtt", "studnentAtt"],
-    });
+  if (isReportLoading)
     return (
-      <GeneralErrorPage message="Today's Attendance not available. Stay for yesterday's attendance" />
+      <AuthenticatedContainer>
+        <h1
+          id="top"
+          className="text-3xl font-bold text-center text-zinc-800 border-b border-zinc-200 pb-4 mb-6"
+        >
+          View Attendance Records
+        </h1>
+
+        <div className="sticky top-0 z-10 bg-white p-3  mb-6">
+          <div className="flex justify-center">
+            <NepaliDatePicker
+              language="en"
+              // maxDate={new NepaliDate().toString().trim().slice(0, 10)}
+              id="date"
+              defaultDate={selectedDate}
+              value={selectedDate}
+              className="bg-white text-center border border-zinc-300 px-4 py-2 rounded-md shadow-sm"
+              onChange={(value) => setSelectedDate(value.bsDate)}
+            />
+          </div>
+        </div>
+        <LoadingPage />
+      </AuthenticatedContainer>
+    );
+
+  if (reportData === 404) {
+    return (
+      <AuthenticatedContainer>
+        <h1
+          id="top"
+          className="text-3xl font-bold text-center text-zinc-800 border-b border-zinc-200 pb-4 mb-6"
+        >
+          View Attendance Records
+        </h1>
+
+        <div className="sticky top-0 z-10 bg-white p-3  mb-6">
+          <div className="flex justify-center">
+            <NepaliDatePicker
+              language="en"
+              // maxDate={new NepaliDate().toString().trim().slice(0, 10)}
+              id="date"
+              defaultDate={selectedDate}
+              value={selectedDate}
+              className="bg-white text-center border border-zinc-300 px-4 py-2 rounded-md shadow-sm"
+              onChange={(value) => setSelectedDate(value.bsDate)}
+            />
+          </div>
+        </div>
+        <GeneralErrorPage message=" Attendance not available" />
+      </AuthenticatedContainer>
     );
   }
 
@@ -110,7 +141,7 @@ function ViewAttendancePage() {
         <div className="flex justify-center">
           <NepaliDatePicker
             language="en"
-            maxDate={now}
+            // maxDate={new NepaliDate().toString().trim().slice(0, 10)}
             id="date"
             defaultDate={selectedDate}
             value={selectedDate}

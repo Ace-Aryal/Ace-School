@@ -92,7 +92,7 @@ function App() {
 
   useEffect(() => {
     const handleKeys = (e) => {
-      e.preventDefault();
+      // e.preventDefault();
       console.log("checking keys");
 
       if (e.key === "F3") {

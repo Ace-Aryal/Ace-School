@@ -31,13 +31,14 @@ function Applayout() {
         </aside>
 
         <main
-          className={`mt-14 w-full flex ${
+          className={`mt-14 w-full flex grow ${
             sidebarState.expanded === "expanded"
           }  overflow-auto`}
         >
           <SidebarTrigger className=" ml-2 hidden lg:inline fixed z-10" />
-
-          <Outlet />
+          <div className="w-full h-full flex flex-col">
+            <Outlet />
+          </div>
         </main>
       </div>
     </SidebarProvider>
