@@ -28,14 +28,6 @@ const DashboardPage = () => {
   const { roles, username } = useSelector((state) => state.auth.user);
   const inboxCount = useSelector((state) => state.inbox.noOfInboxes);
   const noticeCount = useSelector((state) => state.notice.noOfNotices);
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  if (!roles?.includes("admin") && !roles?.includes("account")) {
-    return <h1>Hello {roles[0]}</h1>;
-  }
-
   const fetchDashboardData = async () => {
     const fetchMessages = databaseService.fetchMessages({
       pageParam: null,
@@ -60,6 +52,14 @@ const DashboardPage = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  if (!roles?.includes("admin") && !roles?.includes("account")) {
+    return <h1>Hello {roles[0]}</h1>;
+  }
 
   const statItems = [
     {

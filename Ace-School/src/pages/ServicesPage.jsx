@@ -13,42 +13,77 @@ function ServicesPage() {
         Our Services.
       </h1>
       <section className="flex w-full justify-center">
-        <div className="w-full sm:w-[80%] md:w-[60%] gap-2 sm:gap-y-14 grid grid-cols-1 sm:grid-cols-2 mt-4 sm:mt-16 mx-2  ">
+        <div className="w-full sm:w-[80%] md:w-[60%] gap-2 sm:gap-y-14 flex flex-col mt-4 sm:mt-16 mx-2  ">
           <SlideInWrapper>
-            <div>
-              <div className=" flex items-center flex-wrap">
-                <h2 className="text-3xl font-bold text-blue-500 ">
-                  Primary <span className="text-yellow-400 text-4xl"> &</span>{" "}
-                  Secondary Education
+            <div className="flex flex-col gap-2 sm:flex-row w-full justify-between items-center ">
+              {" "}
+              <div className="sm:w-1/2">
+                <div className=" flex items-center flex-wrap">
+                  <h2 className="text-3xl font-bold text-blue-500 ">
+                    Primary <span className="text-yellow-400 text-4xl"> &</span>{" "}
+                    Secondary Education
+                  </h2>
+                </div>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Asperiores, quaerat! Repudiandae tempore perferendis dolor
+                  maiores nulla labore, doloremque eos inventore veritatis vitae
+                  temporibus tenetur, odit ea vero. Velit, commodi rem!
+                </p>
+                <Button
+                  variant="filled"
+                  className="bg-orange-200 hover:bg-red-200 text-orange-600 cursor-pointer"
+                >
+                  Enroll Now
+                </Button>
+              </div>
+              <img
+                className="rounded-full sm:w-1/2 "
+                src="https://media.istockphoto.com/id/1409844960/vector/brain-light-bulb-two-white-collar-workers-jigsaw-puzzle.jpg?s=612x612&w=0&k=20&c=OKA92FVYjv3YEBg5ut7g82SJGtWlJWNEwmWKAbBgs_Y="
+                alt="Stock Image For About Us"
+              />
+            </div>
+          </SlideInWrapper>
+          <SlideInWrapper>
+            <div className="flex flex-col gap-2 sm:flex-row-reverse w-full justify-between items-center ">
+              <div className="sm:w-1/2">
+                <h2 className="text-3xl font-bold text-red-500 mt-8 sm:mt-2">
+                  {" "}
+                  <span className="text-yellow-400 text-4xl">|</span>{" "}
+                  Transportation{" "}
                 </h2>
+                <p>
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
+                  magni, modi ullam, laborum quaerat fugiat consectetur ad
+                  labore molestias, ea totam veritatis natus sequi tempora
+                  corporis repellendus nostrum amet accusamus!
+                </p>
               </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Asperiores, quaerat! Repudiandae tempore perferendis dolor
-                maiores nulla labore, doloremque eos inventore veritatis vitae
-                temporibus tenetur, odit ea vero. Velit, commodi rem!
-              </p>
-              <Button
-                variant="filled"
-                className="bg-orange-200 hover:bg-red-200 text-orange-600 cursor-pointer"
-              >
-                Enroll Now
-              </Button>
-            </div>
-          </SlideInWrapper>
-          <SlideInWrapper>
-            <div>
               <img
-                className="rounded-full "
+                className="rounded-3xl sm:w-1/2"
                 src="https://media.istockphoto.com/id/1409844960/vector/brain-light-bulb-two-white-collar-workers-jigsaw-puzzle.jpg?s=612x612&w=0&k=20&c=OKA92FVYjv3YEBg5ut7g82SJGtWlJWNEwmWKAbBgs_Y="
                 alt="Stock Image For About Us"
               />
             </div>
           </SlideInWrapper>
           <SlideInWrapper>
-            <div className="row-start-4 sm:row-start-2">
+            <div className="flex flex-col gap-2 sm:flex-row-reverse w-full justify-between items-center ">
+              <div className="sm:w-1/2 mt-8 sm:mt-2">
+                <div className="flex text-3xl items-center">
+                  <h2 className="text-3xl font-bold text-blue-500">Fooding </h2>
+                  <span className="text-yellow-400">
+                    <IoFastFoodOutline />
+                  </span>
+                </div>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Asperiores, quaerat! Repudiandae tempore perferendis dolor
+                  maiores nulla labore, doloremque eos inventore veritatis vitae
+                  temporibus tenetur, odit ea vero. Velit, commodi rem!
+                </p>
+              </div>{" "}
               <img
-                className="rounded-3xl"
+                className="rounded-full sm:w-1/2"
                 src="https://media.istockphoto.com/id/1409844960/vector/brain-light-bulb-two-white-collar-workers-jigsaw-puzzle.jpg?s=612x612&w=0&k=20&c=OKA92FVYjv3YEBg5ut7g82SJGtWlJWNEwmWKAbBgs_Y="
                 alt="Stock Image For About Us"
               />
@@ -56,67 +91,48 @@ function ServicesPage() {
           </SlideInWrapper>
           <SlideInWrapper>
             {" "}
-            <div className="">
-              <h2 className="text-3xl font-bold text-red-500 mt-8 sm:mt-2">
-                {" "}
-                <span className="text-yellow-400 text-4xl">|</span>{" "}
-                Transportation{" "}
-              </h2>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
-                magni, modi ullam, laborum quaerat fugiat consectetur ad labore
-                molestias, ea totam veritatis natus sequi tempora corporis
-                repellendus nostrum amet accusamus!
-              </p>
-            </div>
-          </SlideInWrapper>
-          <SlideInWrapper>
-            <div className=" mt-8 sm:mt-2">
-              <div className="flex text-3xl items-center">
-                <h2 className="text-3xl font-bold text-blue-500">Fooding </h2>
-                <span className="text-yellow-400">
-                  <IoFastFoodOutline />
-                </span>
+            <div className="flex flex-col gap-2 sm:flex-row w-full justify-between items-center ">
+              <div className=" mt-8 sm:mt-2 sm:w-1/2">
+                <div className="flex text-3xl items-center">
+                  <h2 className="text-3xl font-bold text-blue-500"> Labs </h2>
+                  <span className="text-yellow-400">
+                    <SlChemistry />
+                  </span>
+                </div>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Asperiores, quaerat! Repudiandae tempore perferendis dolor
+                  maiores nulla labore, doloremque eos inventore veritatis vitae
+                  temporibus tenetur, odit ea vero. Velit, commodi rem!
+                </p>
               </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Asperiores, quaerat! Repudiandae tempore perferendis dolor
-                maiores nulla labore, doloremque eos inventore veritatis vitae
-                temporibus tenetur, odit ea vero. Velit, commodi rem!
-              </p>
-            </div>
-          </SlideInWrapper>
-          <SlideInWrapper>
-            {" "}
-            <div>
+
               <img
-                className="rounded-full"
+                className="rounded-xl sm:w-1/2"
                 src="https://media.istockphoto.com/id/1409844960/vector/brain-light-bulb-two-white-collar-workers-jigsaw-puzzle.jpg?s=612x612&w=0&k=20&c=OKA92FVYjv3YEBg5ut7g82SJGtWlJWNEwmWKAbBgs_Y="
                 alt="Stock Image For About Us"
               />
             </div>
           </SlideInWrapper>
           <SlideInWrapper>
-            {" "}
-            <div className=" mt-8 sm:mt-2">
-              <div className="flex text-3xl items-center">
-                <h2 className="text-3xl font-bold text-blue-500"> Labs </h2>
-                <span className="text-yellow-400">
-                  <SlChemistry />
-                </span>
+            <div className="flex flex-col gap-2 sm:flex-row w-full justify-between items-center ">
+              {" "}
+              <div className="sm:w-1/2">
+                <h2 className="text-3xl font-bold text-red-500 mt-8 sm:mt-2">
+                  {" "}
+                  <span className="text-yellow-400 text-4xl">
+                    |
+                  </span> Library{" "}
+                </h2>
+                <p>
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
+                  magni, modi ullam, laborum quaerat fugiat consectetur ad
+                  labore molestias, ea totam veritatis natus sequi tempora
+                  corporis repellendus nostrum amet accusamus!
+                </p>
               </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Asperiores, quaerat! Repudiandae tempore perferendis dolor
-                maiores nulla labore, doloremque eos inventore veritatis vitae
-                temporibus tenetur, odit ea vero. Velit, commodi rem!
-              </p>
-            </div>
-          </SlideInWrapper>
-          <SlideInWrapper>
-            <div>
               <img
-                className="rounded-xl"
+                className="rounded-3xl sm:w-1/2 "
                 src="https://media.istockphoto.com/id/1409844960/vector/brain-light-bulb-two-white-collar-workers-jigsaw-puzzle.jpg?s=612x612&w=0&k=20&c=OKA92FVYjv3YEBg5ut7g82SJGtWlJWNEwmWKAbBgs_Y="
                 alt="Stock Image For About Us"
               />
@@ -124,51 +140,24 @@ function ServicesPage() {
           </SlideInWrapper>
           <SlideInWrapper>
             {" "}
-            <div className="row-start-10 sm:row-start-5">
+            <div className="flex flex-col gap-2 sm:flex-row w-full justify-between items-center ">
+              <div className="sm:w-1/2">
+                <h2 className="text-3xl font-bold text-red-500 mt-8 sm:mt-2">
+                  {" "}
+                  <span className="text-yellow-400 text-4xl">|</span> ECA's{" "}
+                </h2>
+                <p>
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
+                  magni, modi ullam, laborum quaerat fugiat consectetur ad
+                  labore molestias, ea totam veritatis natus sequi tempora
+                  corporis repellendus nostrum amet accusamus!
+                </p>
+              </div>
               <img
-                className="rounded-3xl"
+                className="rounded-full sm:w-1/2"
                 src="https://media.istockphoto.com/id/1409844960/vector/brain-light-bulb-two-white-collar-workers-jigsaw-puzzle.jpg?s=612x612&w=0&k=20&c=OKA92FVYjv3YEBg5ut7g82SJGtWlJWNEwmWKAbBgs_Y="
                 alt="Stock Image For About Us"
               />
-            </div>
-          </SlideInWrapper>
-          <SlideInWrapper>
-            {" "}
-            <div>
-              <h2 className="text-3xl font-bold text-red-500 mt-8 sm:mt-2">
-                {" "}
-                <span className="text-yellow-400 text-4xl">|</span> Library{" "}
-              </h2>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
-                magni, modi ullam, laborum quaerat fugiat consectetur ad labore
-                molestias, ea totam veritatis natus sequi tempora corporis
-                repellendus nostrum amet accusamus!
-              </p>
-            </div>
-          </SlideInWrapper>
-          <SlideInWrapper>
-            {" "}
-            <div className="row-start-12 sm:row-start-6">
-              <img
-                className="rounded-full"
-                src="https://media.istockphoto.com/id/1409844960/vector/brain-light-bulb-two-white-collar-workers-jigsaw-puzzle.jpg?s=612x612&w=0&k=20&c=OKA92FVYjv3YEBg5ut7g82SJGtWlJWNEwmWKAbBgs_Y="
-                alt="Stock Image For About Us"
-              />
-            </div>
-          </SlideInWrapper>
-          <SlideInWrapper>
-            <div>
-              <h2 className="text-3xl font-bold text-red-500 mt-8 sm:mt-2">
-                {" "}
-                <span className="text-yellow-400 text-4xl">|</span> ECA's{" "}
-              </h2>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
-                magni, modi ullam, laborum quaerat fugiat consectetur ad labore
-                molestias, ea totam veritatis natus sequi tempora corporis
-                repellendus nostrum amet accusamus!
-              </p>
             </div>
           </SlideInWrapper>
         </div>

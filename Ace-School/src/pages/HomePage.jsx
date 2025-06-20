@@ -50,7 +50,7 @@ function HomePage() {
   ];
   return (
     <main className="flex  m-0 flex-col  justify-center items-center w-[100vw] mb-20   ">
-      <div className="w-full flex flex-col items-center justify-center relative">
+      <div className="w-full flex flex-col items-center  justify-center relative">
         <Carousel
           plugins={[
             Autoplay({
@@ -60,18 +60,19 @@ function HomePage() {
           opts={{
             loop: true,
           }}
-          className="w-full p-0 m-0 relative"
+          className="w-full p-0 m-0 relative "
         >
-          <CarouselContent className="p-0 m-0  statEntry">
+          <CarouselContent className="p-0 m-0  outline-0 border-0 ring-0 statEntry">
             {schoolImageArray.map((image) => (
               <CarouselItem className="p-0 m-0" key={image}>
                 <div className="p-0 ">
                   <Card className="p-0">
                     <CardContent className="flex max-h-[91vh]  items-center justify-center p-0 m-0 border-0">
                       <img
+                        style={{ filter: "blur(0.2px)" }}
                         src={image}
                         alt="school image "
-                        className="w-screen aspect-video  p-0 m-0  object-cover"
+                        className="w-screen  aspect-4/6 sm:aspect-video  p-0 m-0  object-cover"
                       />
                     </CardContent>
                   </Card>
@@ -90,13 +91,22 @@ function HomePage() {
             size=""
           />
         </Carousel>
-        <h1 className=" absolute bg-linear-to-r from-blue-100/0  via-blue-200/60 to-blue-100/0  text-outline  w-full  text-3xl sm:text-5xl text-shadow-lg  py-4 text-indigo-500 font-bold text-center">
-          Creating Curious Minds<span className="text-yellow-400">.</span>
-        </h1>{" "}
+        <div
+          className="h-full flex justify-center items-center   absolute bg-blue-500/20   
+          w-full "
+        >
+          <h1 className=" text-4xl sm:text-5xl text-shadow-lg  py-4 text-zinc-100 font-bold text-center">
+            {" "}
+            Creating Curious Minds<span className="text-yellow-400">.</span>
+          </h1>
+        </div>{" "}
       </div>
 
       <SlideDownWrapper>
-        <div id="intro" className="flex w-full justify-center my-16">
+        <div
+          id="intro"
+          className="flex w-full justify-center p-4  rounded-md text-purple-700 my-3 sm:my-16"
+        >
           <div className="flex flex-col mx-2 sm:w-full lg:w-[50vw] md:w-[70vw] slideIn">
             <h2 className="text-3xl text-red-500 font-semibold ">
               Birendra Secondary School{" "}
@@ -131,14 +141,14 @@ function HomePage() {
             align: "start",
             loop: true,
           }}
-          className="max-w-[90vw] "
+          className="max-w-[90vw] b"
         >
           <CarouselContent className="">
             {aluminiIArray.map((alumini) => (
-              <CarouselItem key={alumini.mesage} className="outline-0">
+              <CarouselItem key={alumini.mesage} className="">
                 <div className=" flex justify-center ">
-                  <Card className="p-0 bg-blue-100">
-                    <CardContent className="flex flex-col lg:w-[40vw] sm:w-[80vw]  min-w-[40vw]    items-center justify-center px-8 py-4 m-0 ">
+                  <Card className="my-4 bg-blue-100 border-0 shadow-lg">
+                    <CardContent className="text-blue-600 flex flex-col lg:w-[40vw] sm:w-[80vw] my-2  min-w-[40vw]    items-center justify-center px-8 py-4 m-0 ">
                       <img
                         src={alumini.image}
                         alt="alumimi-image"
@@ -147,7 +157,7 @@ function HomePage() {
                       <h3 className="font-semibold text-center text-xl">
                         {alumini.name}
                       </h3>
-                      <h3 className="text-gray-700 font-semibold mb-1.5 text-center text-md">
+                      <h3 className="text-blue-800 font-md mb-1.5 text-center text-xs ">
                         {alumini.batch}
                       </h3>
                       <q className="text-justify">{alumini.mesage}</q>
@@ -171,6 +181,7 @@ function HomePage() {
           {" "}
           <Message
             order="order-0"
+            className="bg-red-100 text-red-600 p-3 rounded-lg shadow-lg"
             imageURL="https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75"
             role="Principal"
             message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
@@ -179,6 +190,7 @@ function HomePage() {
         <SlideLeftWrapper>
           {" "}
           <Message
+            className="sm:flex-row-reverse text-orange-600 bg-orange-100 p-3 px-5 rounded-lg shadow-lg "
             order="order-1"
             imageURL="https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75"
             role="Chairman"

@@ -57,7 +57,7 @@ function App() {
       const currentuser = await authService.getCurrentUser();
       let currentUserDocument;
       let roles = currentuser.labels;
-      if (currentuser.labels.length === 0) {
+      if (currentuser?.labels?.length === 0) {
         currentUserDocument = await databaseService.getUserDocument(
           currentuser.email
         );

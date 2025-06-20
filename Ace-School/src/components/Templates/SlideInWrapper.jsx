@@ -36,7 +36,7 @@ export function SlideRightWrapper({ children }) {
   return (
     <motion.div
       key={location.pathname}
-      initial={{ opacity: 0, x: -50 }}
+      initial={{ opacity: 0, x: -10 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       viewport={{ once: true, amount: 0.2 }}
@@ -50,7 +50,7 @@ export function SlideLeftWrapper({ children }) {
   return (
     <motion.div
       key={location.pathname}
-      initial={{ opacity: 0, x: 50 }}
+      initial={{ opacity: 0, x: 10 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       viewport={{ once: true, amount: 0.2 }}

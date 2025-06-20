@@ -52,7 +52,7 @@ function Navbar() {
         isAuthenticated
           ? "border-b navBarTransition border-gray-300 backdrop-blur-md bg-white"
           : "bg-indigo-900 lg:h-[10vh]"
-      } shadow-lg fixed top-0 z-10`}
+      } shadow-sm fixed top-0 z-10`}
     >
       <nav className="lg:px-16 px-6 flex flex-wrap items-center justify-between lg:py-0 py-2">
         <div className="flex items-center flex-1">
@@ -94,11 +94,15 @@ function Navbar() {
         >
           <ul className="lg:flex items-center justify-between gap-1 text-base text-gray-50 pt-4 lg:pt-0">
             {navElememts.map((element) => {
+              console.log("roles", roles);
+
               if (element.requireAuthentication && !isAuthenticated)
                 return null;
               if (
                 element.requireAuthentication &&
-                element?.readers?.some((reader) => !roles.includes(reader))
+                element.readers &&
+                !roles.includes("admin") &&
+                !roles.includes("account")
               )
                 return null;
               if (!element.requireAuthentication && isAuthenticated)

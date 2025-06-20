@@ -1,15 +1,20 @@
 import React from "react";
 
-const Message = ({ imageURL, role, message, order }) => {
+const Message = ({ imageURL, role, message, className }) => {
   return (
-    <div className="flex    my-8 justify-center flex-wrap sm:flex-nowrap  gap-6">
+    <div
+      className={`flex  ${className}  my-8 justify-center  flex-wrap sm:flex-nowrap  gap-6`}
+    >
       <img
         src={imageURL}
         alt="principal-photo"
-        className={` ${order}  w-full aspect-square rounded-lg sm:w-[40%] md:w-[30%]`}
+        className={`  w-full aspect-square object-cover rounded-lg sm:w-[40%] md:w-[30%]`}
       />
-      <div id="message-principal" className="flex flex-col sm:gap-2">
-        <h3 className="text-3xl text-red-500 font-semibold text-center my:3 sm:mt-16 sm:mb-5">
+      <div
+        id="message-principal"
+        className="flex flex-col justify-center items-center sm:gap-2 py-12"
+      >
+        <h3 className="text-3xl text-red-500 font-semibold text-center ">
           Message From {role}{" "}
           <span className="text-yellow-500 text-5xl">"</span>
         </h3>
