@@ -50,5 +50,5 @@ export default async ({ req, res, log }) => {
   // }
 
   log("✅ Function is running");
-  res.send("It works!");
+  return res.send("It works!");
 };
