@@ -45,6 +45,8 @@ export default async ({ req, res, log }) => {
     log("attendence reset complete");
     return res.send("Attendence Reset complete");
   } catch (error) {
+    console.log(error);
+
     log("Error updating attendance");
     return res.send("Error reseting attendance");
   } finally {
