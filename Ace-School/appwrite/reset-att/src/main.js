@@ -13,6 +13,7 @@ export default async ({ req, res, log }) => {
     process.env.TEACHER_ATT_COLLECTION,
     process.env.STAFF_ATT_COLLECTION,
   ];
+  
   try {
     collectionIds.forEach(async (collection) => {
       let offset = 0;
