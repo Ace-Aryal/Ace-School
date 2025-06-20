@@ -11,7 +11,7 @@ export default async ({ req, res, log }) => {
   const collectionIds = [
     process.env.STAFF_ATT_COLLECTION,
     process.env.TEACHER_ATT_COLLECTION,
-    process.env.STAFF_ATT_COLLECTION,
+    process.env.STUDENT_ATT_COLLECTION,
   ];
 
   try {
