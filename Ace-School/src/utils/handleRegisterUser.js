@@ -67,7 +67,6 @@ export const registerUser = async (
 
       attendanceRecord: JSON.stringify({}),
     };
-    console.log(documentData);
   }
 
   try {
