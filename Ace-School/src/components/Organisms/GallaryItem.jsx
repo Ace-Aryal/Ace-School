@@ -20,8 +20,12 @@ const GallaryItem = () => {
     return <p className="mt-14">Error loading images: {error.message}</p>;
 
   return (
-    <main className="container  p-3  flex justify-center  items-center">
-      <img src={data} alt="gallary-image" className="rounded-xl w-[90vw]" />
+    <main className=" w-full  p-3  flex justify-center  items-center">
+      <img
+        src={data}
+        alt="gallary-image"
+        className="rounded-xl w-[90vw] max-h-[91dvh] object-contain "
+      />
     </main>
   );
 };

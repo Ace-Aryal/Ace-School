@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import storageService from "@/appwrite/storage/storage";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { Outlet } from "react-router";
 import { useInView } from "react-intersection-observer";
@@ -42,20 +41,28 @@ const GallaryPage = () => {
     return (
       <main
         id="container"
-        className=" mx-2 sm:mx-4 mb-10 w-full flex flex-col items-center justify-center"
+        className="h-full min-h-[91dvh] grow mx-2 sm:mx-4 mb-10 w-full flex flex-col items-center justify-center"
       >
         <LoadingPage />
       </main>
     );
   }
   if (error)
-    return <p className="mt-18">Error loading images: {error.message}</p>;
+    return (
+      <main
+        id="container"
+        className="h-full min-h-[91dvh] grow mx-2 sm:mx-4 mb-10 w-full flex flex-col items-center justify-center"
+      >
+        <p className="mt-18">Error loading images: {error.message}</p>
+      </main>
+    );
+
   console.log(data);
 
   return (
     <main
       id="container"
-      className=" mx-2 sm:mx-4 mb-10 w-full flex flex-col items-center justify-center"
+      className="min-h-[91dvh] mx-2 sm:mx-4 mb-10 w-full flex flex-col items-center justify-center"
     >
       <h1 className="text-3xl text-center font-bold pt-4 text-indigo-500">
         Image Gallary
