@@ -76,12 +76,7 @@ function ModifyFeeTemplate() {
     );
   };
   // const {}
-  if (isLoading) {
-    return null;
-  }
-  if (isError) {
-    return <ErrorPage />;
-  }
+
   console.log(data);
 
   return (
