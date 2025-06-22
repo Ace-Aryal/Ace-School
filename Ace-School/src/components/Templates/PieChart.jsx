@@ -38,17 +38,13 @@ const chartConfig = {
 
 export default function ChartPieDonutActive({ month }) {
   return (
-    <Card className="flex flex-col border-0 ">
-      <CardHeader className="items-center pb-0">
-        <CardTitle></CardTitle>
-        <CardDescription className="capitalize">{month}</CardDescription>
-      </CardHeader>
-      <CardContent className="flex-1  pb-0">
+    <Card className=" flex flex-col border-0 shadow-none     ">
+      <CardContent className="flex-1 px-0 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto  aspect-square max-h-[250px]"
         >
-          <PieChart>
+          <PieChart className="">
             <ChartTooltip
               cursor={false}
               content={
@@ -58,6 +54,7 @@ export default function ChartPieDonutActive({ month }) {
             <Pie
               data={chartData}
               dataKey="amount"
+              className=""
               nameKey="status"
               innerRadius={60}
               strokeWidth={5}
@@ -70,22 +67,19 @@ export default function ChartPieDonutActive({ month }) {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="p-0 flex flex-col gap-2 text-sm">
-        <div className="flex justify-between items-center">
-          <div className=" bg-green-200 rounded-lg p-2 text-green-600  font-medium">
-            Total Paid : {}
-          </div>
-          <div className="bg-red-200 rounded-lg text-red-600 p-2 leading-none font-medium">
-            Total Due : {}
-          </div>
+      <CardFooter className="p-0  flex flex-col gap-2 text-sm">
+        <div className=" bg-green-100 rounded-lg p-2 w-9/10 shadow-sm  text-green-600  font-medium">
+          Total Paid : {}
         </div>
-        <div className="flex justify-between">
-          <div className=" bg-green-200 rounded-lg p-2 text-green-600  font-medium">
-            Paid Students : {}
-          </div>
-          <div className="bg-red-200 rounded-lg text-red-600 p-2 leading-none font-medium">
-            Due Students: {}
-          </div>
+        <div className=" bg-green-100 rounded-lg p-2 w-9/10 shadow-sm text-green-600  font-medium">
+          Paid Students : {}
+        </div>
+        <div className="bg-red-100  rounded-lg w-9/10 shadow-sm text-red-600 p-2  font-medium">
+          Total Due : {}
+        </div>
+
+        <div className="bg-red-100  rounded-lg w-9/10 shadow-sm text-red-600 p-2 font-medium">
+          Due Students: {}
         </div>
       </CardFooter>
     </Card>

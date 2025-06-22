@@ -13,7 +13,7 @@ function ClassFeeStatWrapper() {
   console.log(grade, month);
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <div className="flex justify-between items-center">
         <select
           className="p-1 border rounded-md border-zinc-500"
@@ -30,7 +30,7 @@ function ClassFeeStatWrapper() {
         </select>
         <select
           className="p-1 border rounded-md border-zinc-500"
-          value={grade}
+          value={month}
           onChange={(e) => setMonth(e.target.value)}
         >
           {monthMap.map((month) => {
@@ -42,7 +42,7 @@ function ClassFeeStatWrapper() {
           })}
         </select>
       </div>
-      <div>
+      <div className="mt-2">
         <ClassFeeStatDisplay month={month} grade={grade} />
       </div>
     </div>

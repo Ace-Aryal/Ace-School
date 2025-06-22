@@ -12,8 +12,8 @@ const AllStudentsFeeStatDisplay = lazy(() =>
 );
 function AdminAccountBillingDashboard() {
   return (
-    <div className="grow bg-gray-100 w-full rounded-lg gap-2 p-3 flex justify-between ">
-      <div className="w-1/4 p-2  bg-gray-200 rounded-lg ">
+    <div className="grow  w-full rounded-lg gap-2 p-3 flex justify-between ">
+      <div className="w-1/4 p-2  bg-gray-100 border  border-gray-200 shadow rounded-lg ">
         <Suspense fallback={<Spinner />}>
           <ClassFeeStatWrapper />
         </Suspense>
