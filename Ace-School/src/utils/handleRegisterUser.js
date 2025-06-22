@@ -166,7 +166,7 @@ export const registerUser = async (
     if (!FeeTemplateResponse || FeeTemplateError) {
       return showErrorToast("Failed to fetch fee template");
     }
-    const miscellenous = Number(FeeTemplateResponse.miscellenous);
+    const miscellenous = parseFloat(FeeTemplateResponse.miscellenous);
     console.log("ftr", FeeTemplateResponse);
     console.log(data.grade);
     const alphabeticalGrade = classMapFromNumericToAlphanumeric[data.grade];
@@ -178,21 +178,183 @@ export const registerUser = async (
         : gradeFees.oldAdmission;
     const hostelFee =
       data.hostel.toLowerCase() === "yes" ? gradeFees.hostel : 0;
-    const uniform = gradeFees.uniform;
+    const uniform = parseFloat(gradeFees.uniform);
 
-    const feeData = {
-      tuitionFees: parseFloat(gradeFees?.tuition ?? 0),
-      admissionFees: parseFloat(admissionFee ?? 0),
-      examinationFees: parseFloat(gradeFees?.examination ?? 0),
-      labFees: parseFloat(gradeFees?.labFee ?? 0),
-      hostelFees: parseFloat(hostelFee ?? 0),
-      registrationFees: parseFloat(gradeFees?.nebRegistration ?? 0),
-      transportationFees: parseFloat(data?.transportation ?? 0),
-      miscellenous: parseFloat(miscellenous ?? 0),
-      uniform: parseFloat(uniform),
-      disc: parseFloat(data.discount),
-      scholarship: parseFloat(data.scholarship),
+    const feeDataWithoutRecordFields = {
+      tuitionFees: parseFloat(parseFloat(gradeFees?.tuition ?? 0).toFixed(2)),
+      admissionFees: parseFloat(parseFloat(admissionFee ?? 0).toFixed(2)),
+      examinationFees: parseFloat(
+        parseFloat(gradeFees?.examination ?? 0).toFixed(2)
+      ),
+      labFees: parseFloat(parseFloat(gradeFees?.labFee ?? 0).toFixed(2)),
+      hostelFees: parseFloat(parseFloat(hostelFee ?? 0).toFixed(2)),
+      registrationFees: parseFloat(
+        parseFloat(gradeFees?.nebRegistration ?? 0).toFixed(2)
+      ),
+      transportationFees: parseFloat(
+        parseFloat(data?.transportation ?? 0).toFixed(2)
+      ),
+      miscellenous: parseFloat(parseFloat(miscellenous ?? 0).toFixed(2)),
+      uniform: parseFloat(parseFloat(uniform ?? 0).toFixed(2)),
+      disc: parseFloat(parseFloat(data?.discount ?? 0).toFixed(2)),
+      scholarship: parseFloat(parseFloat(data?.scholarship ?? 0).toFixed(2)),
     };
+
+    const {
+      tuitionFees,
+      admissionFees,
+      examinationFees,
+      uniform: parsedUniform,
+      miscellenous: parsedMiscellenous,
+      labFees,
+      hostelFees,
+      registrationFees,
+      transportationFees,
+      disc,
+      scholarship,
+    } = feeDataWithoutRecordFields;
+    console.log("fee data w/0", feeDataWithoutRecordFields);
+    const calculateMonthly = (month, total) => {
+      return {
+        month,
+        totalPayable: parseFloat(total.toFixed(2)),
+        due: parseFloat(total.toFixed(2)),
+        paid: 0,
+      };
+    };
+    const feeDataWithRecordFields = {
+      ...feeDataWithoutRecordFields,
+      monthlyRecords: [
+        JSON.stringify(
+          calculateMonthly(
+            "Baisakh",
+            tuitionFees +
+              admissionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              parsedMiscellenous +
+              parsedUniform
+          ),
+          calculateMonthly(
+            "Jestha",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Ashar",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Shrawan",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              examinationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Bhadra",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Ashoj",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Kartik",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Mangsir",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              examinationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Poush",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              registrationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Magh",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Falgun",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          ),
+          calculateMonthly(
+            "Chaitra",
+            tuitionFees +
+              labFees +
+              hostelFees +
+              transportationFees +
+              examinationFees +
+              parsedMiscellenous -
+              disc / 12 -
+              (tuitionFees + labFees) * ((100 - scholarship) / 100)
+          )
+        ),
+      ],
+      transactionsRecord: {},
+    };
+    console.log(feeDataWithRecordFields, "with records");
 
     const {
       response: createFeeDocumentResponse,
@@ -201,7 +363,7 @@ export const registerUser = async (
       databaseService.createDocument(
         config.feeRecordColletionId,
         feeId,
-        feeData
+        feeDataWithRecordFields
       )
     );
     console.log(

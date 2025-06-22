@@ -78,6 +78,7 @@ const AddStudentsPage = () => {
                 </label>
                 <input
                   type={formField.type}
+                  step="0.01"
                   id={formField.name}
                   {...register(formField.name, {
                     required:

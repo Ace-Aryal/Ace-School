@@ -42,8 +42,8 @@ const AttendenceViewCard = ({ userRole, ...className }) => {
   });
   if (isLoading) {
     return (
-      <div className=" entryAnimation w-full  myshadow-sm border  border-gray-200 p-6 bg-gray-300 rounded-xl  ">
-        <div className=" min-w-40 min-h-60 bg-gray-300 rounded-lg  animate-pulse lg:min-w-64"></div>
+      <div className="  w-full  myshadow-sm border  border-gray-200 p-6 bg-gray-300 rounded-xl  ">
+        <div className=" min-w-40 min-h-60 bg-gray-300 rounded-lg   animate-pulse  lg:min-w-64"></div>
       </div>
     );
   }

@@ -94,8 +94,6 @@ function Navbar() {
         >
           <ul className="lg:flex items-center justify-between gap-1 text-base text-gray-50 pt-4 lg:pt-0">
             {navElememts.map((element) => {
-              console.log("roles", roles);
-
               if (element.requireAuthentication && !isAuthenticated)
                 return null;
               if (
