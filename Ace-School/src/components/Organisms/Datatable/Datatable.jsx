@@ -46,7 +46,7 @@ export function DataTable({
   isLoading,
 
   error,
-
+  grade,
   setGrade,
 }) {
   const dispatch = useDispatch();
@@ -120,7 +120,7 @@ export function DataTable({
             className="p-2 text-sm mx-2 border rounded-lg"
             name="filter"
             id="class"
-            value={table.getColumn("grade")?.getFilterValue() ?? ""}
+            value={grade || table.getColumn("grade")?.getFilterValue()}
             onChange={(event) => {
               setGrade(event.target.value);
 

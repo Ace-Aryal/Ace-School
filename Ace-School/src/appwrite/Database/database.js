@@ -4,6 +4,7 @@ import { Query } from "appwrite";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import NepaliDate from "nepali-datetime";
 import { catchError } from "@/utils/catchError";
+import authService from "../auth/auth";
 const {
   appwriteDatabaseID,
   userMetaDataCollectionID,
@@ -95,7 +96,9 @@ class DatabaseService {
         adjustObject // data (optional)
       );
       return true;
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
   deleteMessages = async (documentID) => {
     try {
@@ -255,7 +258,9 @@ class DatabaseService {
         data
       );
       return resposne;
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
   getStudentDocument = async (email) => {
     try {
@@ -316,8 +321,7 @@ class DatabaseService {
         appwritreStudentCollectionID,
         queries
       );
-      if (response) {
-      }
+
       return response.documents;
     } catch (error) {
       console.error(error);
@@ -333,8 +337,7 @@ class DatabaseService {
 
         [Query.orderAsc("teacherName"), Query.limit(50)]
       );
-      if (response) {
-      }
+
       return response.documents;
     } catch (error) {
       console.error(error);
@@ -347,8 +350,7 @@ class DatabaseService {
         appwritreStaffsCollectionID,
         [Query.orderAsc("fullName"), Query.limit(50)]
       );
-      if (response) {
-      }
+
       return response.documents;
     } catch (error) {
       console.error(error);
@@ -364,6 +366,7 @@ class DatabaseService {
         documentID, // documentId
         updatedDocument // data (optional)
       );
+
       return true;
     } catch (error) {
       console.error(error);
@@ -441,18 +444,14 @@ class DatabaseService {
     const { documentId, attendance, date } = data;
     console.log(data);
     let userCollectionId;
-    let attendenceCollectionId;
     if (role.toLowerCase() === "student") {
       userCollectionId = appwritreStudentCollectionID;
-      attendenceCollectionId = studentAttendenceCollectionId;
     }
     if (role.toLowerCase() === "staff") {
       userCollectionId = appwritreStaffsCollectionID;
-      attendenceCollectionId = staffAttendenceCollectionId;
     }
     if (role.toLowerCase() === "teacher") {
       userCollectionId = appwritreTeachersCollectionID;
-      attendenceCollectionId = teacherAttendenceCollectionId;
     }
     const { error, response: userDataRespone } = await catchError(() =>
       this.getDocument(userCollectionId, documentId)
@@ -519,6 +518,7 @@ class DatabaseService {
         documentId,
         data
       );
+      console.log("resp", response);
       return response;
     } catch (error) {
       console.error(error);
@@ -589,6 +589,39 @@ class DatabaseService {
         absent: 0,
         onleave: 0,
       };
+    }
+  };
+  getFeeTemplate = async () => {
+    console.log(config.feeTemplateId);
+    try {
+      const response = await this.database.getDocument(
+        appwriteDatabaseID,
+        config.feeTemplateId,
+        "fee-template"
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+  modifyFeeTemplate = async (adjustObject) => {
+    try {
+      const currentuser = await authService.getCurrentUser();
+      const roles = currentuser.labels;
+      if (!roles.includes("admin")) {
+        return false;
+      }
+      const response = await this.database.updateDocument(
+        appwriteDatabaseID,
+        config.feeTemplateId,
+        "fee-template",
+        adjustObject
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
   };
 }

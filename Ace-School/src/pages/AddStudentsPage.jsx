@@ -18,7 +18,13 @@ const AddStudentsPage = () => {
     reset,
     control,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      transportation: "0",
+      scholarship: "0",
+      discount: "0",
+    },
+  });
   const { getStudentDocument, createStudentDocument } = databaseService;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
   const { roles } = useSelector((state) => state?.auth?.user);
@@ -61,7 +67,13 @@ const AddStudentsPage = () => {
           ) {
             return (
               <div key={formField.name} className="flex flex-col">
-                <label htmlFor={formField.name.replaceAll(" ", "")}>
+                <label
+                  htmlFor={formField.name.replaceAll(" ", "")}
+                  className={`${
+                    formField.required &&
+                    "after:content-['*'] after:ml-1 after:text-red-500"
+                  }`}
+                >
                   {formField.label}
                 </label>
                 <input
@@ -85,7 +97,11 @@ const AddStudentsPage = () => {
                           value: /^[1-9]\d*$/,
                           message: "Enter valid Roll No",
                         }
-                      : {},
+                      : formField.type === "number" && {
+                          value: /^(?:0|[1-9]\d*)(?:\.\d+)?$/,
+
+                          message: "Enter valid value",
+                        },
                   })}
                   className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"
                 />
@@ -100,7 +116,15 @@ const AddStudentsPage = () => {
           if (formField.type === "select") {
             return (
               <div key={formField.name} className="flex flex-col">
-                <label htmlFor={formField.name}>{formField.label}</label>
+                <label
+                  htmlFor={formField.name}
+                  className={`${
+                    formField.required &&
+                    "after:content-['*'] after:ml-1 after:text-red-500"
+                  }`}
+                >
+                  {formField.label}
+                </label>
                 <select
                   {...register(formField.name, {
                     required:
@@ -126,7 +150,15 @@ const AddStudentsPage = () => {
           if (formField.type === "date") {
             return (
               <div key={formField.name} className="flex flex-col">
-                <label htmlFor={formField.name}>{formField.label}</label>
+                <label
+                  htmlFor={formField.name}
+                  className={`${
+                    formField.required &&
+                    "after:content-['*'] after:ml-1 after:text-red-500"
+                  }`}
+                >
+                  {formField.label}
+                </label>
                 <Controller
                   name={formField.name}
                   control={control}
@@ -155,7 +187,7 @@ const AddStudentsPage = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-20 text-lg bg-blue-100 hover:bg-blue-200 text-blue-600"
+            className="w-20 text-lg active:bg-blue-500 bg-blue-100 hover:bg-blue-200 text-blue-600"
           >
             {isSubmitting ? <Spinner /> : "Add"}
           </Button>

@@ -53,7 +53,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
     _register,
     handleSubmit,
     control,
-    reset,
     formState: { _isSubmitting, errors },
   } = useForm();
   const [_userData, setUserData] = useState([]);
@@ -63,15 +62,8 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
       id: "select",
       header: "Attendence",
       cell: ({ row }) => {
-        const {
-          $id,
-          studentName,
-          grade,
-          rollNo,
-          $collectionId,
-          attendanceRecord,
-        } = row.original;
-        let attendance = row?.original?.attendance
+        const { $id } = row.original;
+        let attendance = row.original?.attendance
           ?.toLowerCase()
           .replaceAll(" ", "");
         if (
@@ -99,26 +91,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
                   value={field.value}
                   onValueChange={(data) => {
                     field.onChange(data);
-                    setUserData((prevData) => {
-                      // this code has no work
-                      if (
-                        prevData.some((student) => student.documentId === $id)
-                      ) {
-                        return prevData;
-                      }
-
-                      return [
-                        ...prevData,
-                        {
-                          documentId: $id,
-                          studentName,
-                          grade,
-                          rollNo,
-                          $collectionId,
-                          attendanceRecord,
-                        },
-                      ];
-                    });
                   }}
                   className="w-[130px]"
                 >
@@ -600,7 +572,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
     );
 
     if (failedPromises.length > 0) {
-      retryPosting(failedPromises);
+      await retryPosting(failedPromises);
     } else {
       showSuccessToast("All  attendence registered");
     }
@@ -616,7 +588,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
     queryClient.invalidateQueries({
       queryKey: [querykey],
     });
-    reset();
 
     // let attendanceReport = JSON.parse(reportData?.Report) || {};
 
@@ -740,7 +711,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
       <div className="flex items-center py-4">
         {attendeesRole.toLowerCase() === "student" && (
           <select
-            value={table.getColumn("grade")?.getFilterValue() ?? ""}
+            value={grade || table.getColumn("grade")?.getFilterValue()}
             onChange={(event) => {
               table.getColumn("grade")?.setFilterValue(event.target.value);
               setGrade(event.target.value);

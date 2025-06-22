@@ -1,6 +1,6 @@
 import ViewUsers from "@/components/Templates/ViewUsersTemplate";
 import { studentColumns } from "@/components/Organisms/Datatable/Columns";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import databaseService from "@/appwrite/Database/database";
 import LoadingPage from "./LoadingPage";
@@ -35,6 +35,7 @@ const ViewStudents = () => {
         error={error}
         setGrade={setGrade}
         refetch={refetch}
+        grade={grade}
       />
     </div>
   );

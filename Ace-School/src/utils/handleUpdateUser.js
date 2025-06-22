@@ -92,7 +92,6 @@ export const updateUser = async (
         functionService.deleteUser(originalEmail),
         await databaseService.getUserDocument(originalEmail),
       ]);
-      console.log(response, metadataFetchResponse);
       if (response?.responseStatusCode !== 200) {
         showErrorToast("Failed to delete user");
         return;
@@ -105,11 +104,11 @@ export const updateUser = async (
         return;
       }
 
-      const updatedMetadataDocument = { email, name, role: userRole };
       if (!metadataFetchResponse) {
         showErrorToast("Could'nt fetch metadata");
         return;
       }
+      const updatedMetadataDocument = { email, name, role: userRole };
       const documentID = metadataFetchResponse.documents[0]?.$id;
       const metadataUpdateResponse = await databaseService.updateUserMetaData(
         updatedMetadataDocument,

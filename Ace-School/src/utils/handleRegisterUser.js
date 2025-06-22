@@ -1,5 +1,8 @@
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import databaseService from "@/appwrite/Database/database";
+import config from "@/appwrite";
+import { catchError } from "./catchError";
+import { classMapFromNumericToAlphanumeric } from "./class";
 export const registerUser = async (
   data,
   {
@@ -17,14 +20,22 @@ export const registerUser = async (
   let email;
   let name;
   let documentData;
+  let feeId;
   if (userRole === "Student") {
     email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`
       .toLowerCase()
       .replaceAll(" ", "");
     name = data.studentName;
-
+    feeId = `${data.studentName}${data.grade}${data.rollNo}${formattedDOB}`
+      .toLowerCase()
+      .replaceAll(" ", "");
+    const studentData = JSON.parse(JSON.stringify(data));
+    delete studentData.admission;
+    delete studentData.transportation;
+    delete studentData.hostel;
     documentData = {
-      ...data,
+      ...studentData,
+      "fee-document-id": feeId,
       email,
       phoneNumber: data.phoneNumber.trim(),
       discount: Number(data.discount.trim()),
@@ -142,12 +153,70 @@ export const registerUser = async (
         }),
       ]);
 
-    if (userCollectionResponse?.$id && userMetaDataCollectionResponse?.$id) {
+    if (userRole.toLowerCase() !== "student") return;
+    const { response: getFeeDocumentResponse, error: getFeeDocumentError } =
+      catchError(() =>
+        databaseService.getDocument(config.feeRecordColletionId, feeId)
+      );
+    if (getFeeDocumentResponse !== 404 && getFeeDocumentResponse) {
+      return showErrorToast("Another student with same fee Id already exists");
+    }
+    const { response: FeeTemplateResponse, error: FeeTemplateError } =
+      await catchError(databaseService.getFeeTemplate);
+    if (!FeeTemplateResponse || FeeTemplateError) {
+      return showErrorToast("Failed to fetch fee template");
+    }
+    const miscellenous = Number(FeeTemplateResponse.miscellenous);
+    console.log("ftr", FeeTemplateResponse);
+    console.log(data.grade);
+    const alphabeticalGrade = classMapFromNumericToAlphanumeric[data.grade];
+    const gradeFees = JSON.parse(FeeTemplateResponse[alphabeticalGrade]);
+    console.log(gradeFees, "gradeFees");
+    const admissionFee =
+      data.admission.toLowerCase() === "new"
+        ? gradeFees.newAdmission
+        : gradeFees.oldAdmission;
+    const hostelFee =
+      data.hostel.toLowerCase() === "yes" ? gradeFees.hostel : 0;
+    const uniform = gradeFees.uniform;
+
+    const feeData = {
+      tuitionFees: parseFloat(gradeFees?.tuition ?? 0),
+      admissionFees: parseFloat(admissionFee ?? 0),
+      examinationFees: parseFloat(gradeFees?.examination ?? 0),
+      labFees: parseFloat(gradeFees?.labFee ?? 0),
+      hostelFees: parseFloat(hostelFee ?? 0),
+      registrationFees: parseFloat(gradeFees?.nebRegistration ?? 0),
+      transportationFees: parseFloat(data?.transportation ?? 0),
+      miscellenous: parseFloat(miscellenous ?? 0),
+      uniform: parseFloat(uniform),
+      disc: parseFloat(data.discount),
+      scholarship: parseFloat(data.scholarship),
+    };
+
+    const {
+      response: createFeeDocumentResponse,
+      error: createFeeDocumentError,
+    } = await catchError(() =>
+      databaseService.createDocument(
+        config.feeRecordColletionId,
+        feeId,
+        feeData
+      )
+    );
+    console.log(
+      "cerate fee doc resp",
+      createFeeDocumentResponse,
+      createFeeDocumentError
+    );
+    if (!createFeeDocumentResponse) {
+      return showErrorToast(`Error creating fee document`);
+    }
+    if (userCollectionResponse.$id && userMetaDataCollectionResponse.$id) {
       showSuccessToast(`User registered sucessfully`);
       reset();
       return true;
     }
-    showErrorToast(`Error registering user`);
   } catch (error) {
     console.error(error);
     showErrorToast(`Error registering user`);

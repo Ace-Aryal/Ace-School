@@ -189,7 +189,19 @@ function ViewAttendancePage() {
                               {attendee.roll}
                             </td>
                             <td className="p-2 border">{attendee.name}</td>
-                            <td className="p-2 border capitalize">{att}</td>
+                            <td
+                              className={`${
+                                att === "present"
+                                  ? "bg-green-100 text-green-600"
+                                  : att === "absent"
+                                  ? "bg-red-100 text-red-600"
+                                  : att === "onleave"
+                                  ? "bg-blue-100 text-blue-600"
+                                  : "bg-yellow-100 text-yellow-600"
+                              } p-2 border capitalize`}
+                            >
+                              {att}
+                            </td>
                           </tr>
                         );
                       })}
@@ -248,7 +260,19 @@ function ViewAttendancePage() {
                           {attendee.id}
                         </td>
                         <td className="p-2 border">{attendee.name}</td>
-                        <td className="p-2 border capitalize">{att}</td>
+                        <td
+                          className={`${
+                            att === "present"
+                              ? "bg-green-100 text-green-600"
+                              : att === "absent"
+                              ? "bg-red-100 text-red-600"
+                              : att === "onleave"
+                              ? "bg-blue-100 text-blue-600"
+                              : "bg-yellow-100 text-yellow-600"
+                          } p-2 border capitalize`}
+                        >
+                          {att}
+                        </td>
                       </tr>
                     );
                   })}

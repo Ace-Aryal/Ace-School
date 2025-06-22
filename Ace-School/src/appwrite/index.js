@@ -35,5 +35,7 @@ const config = {
   staffAttendenceCollectionId: String(
     import.meta.env.VITE_STAFF_ATTENDANCE_COLLECTION_ID
   ),
+  feeTemplateId: String(import.meta.env.VITE_FEE_TEMPLATE_COLLECTION_ID),
+  feeRecordColletionId: String(import.meta.env.VITE_FEE_RECORDS_COLLECTION_ID),
 };
 export default config;

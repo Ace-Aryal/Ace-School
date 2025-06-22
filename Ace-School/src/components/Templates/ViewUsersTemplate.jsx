@@ -11,7 +11,7 @@ const ViewUsers = ({
   columns,
   data,
   isLoading,
-
+  grade,
   error,
   refetch,
   setGrade,
@@ -69,6 +69,7 @@ const ViewUsers = ({
           data={dataWithContext}
           isLoading={isLoading}
           error={error}
+          grade={grade}
           setGrade={setGrade}
         />
       </section>
