@@ -26,7 +26,7 @@ export const registerUser = async (
       .toLowerCase()
       .replaceAll(" ", "");
     name = data.studentName;
-    feeId = `${data.studentName}${data.grade}${data.rollNo}${formattedDOB}`
+    feeId = `${data.studentName}_${data.grade}_${data.rollNo}_${formattedDOB}`
       .toLowerCase()
       .replaceAll(" ", "");
     const studentData = JSON.parse(JSON.stringify(data));
