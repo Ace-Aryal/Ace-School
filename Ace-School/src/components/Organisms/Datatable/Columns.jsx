@@ -41,8 +41,15 @@ export const studentColumns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const { email, $collectionId, $id, loading, dispatch, refetch } =
-        row.original;
+      const {
+        email,
+        $collectionId,
+        $id,
+        loading,
+        dispatch,
+        refetch,
+        feeDocumentId,
+      } = row.original;
       const originalData = JSON.parse(JSON.stringify(row.original));
       delete originalData.dispatch;
       delete originalData.refetch;
@@ -81,6 +88,7 @@ export const studentColumns = [
                 handleDocumentDelete({
                   documentId: $id,
                   collectionId: $collectionId,
+                  feeDocumentId,
                   email,
                   refetch,
                 });

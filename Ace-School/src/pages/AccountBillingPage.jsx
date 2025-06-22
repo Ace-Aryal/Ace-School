@@ -1,11 +1,7 @@
+import AdminAccountBillingDashboard from "@/components/Organisms/AdminAccountBillingDashboard";
 import React from "react";
-import AuthenticatedContainer from "../Templates/AuthenticatedContainer";
-import { Button } from "../ui/button";
-import { Link, NavLink } from "react-router";
-import { PenBox } from "lucide-react";
-import AdminAccountBillingDashboard from "./AdminAccountBillingDashboard";
 
-function AdminBillingPage({ username }) {
+function AccountBillingPage({ username }) {
   return (
     <AuthenticatedContainer>
       <div id="top" className="p-3 flex justify-between items-center">
@@ -26,4 +22,4 @@ function AdminBillingPage({ username }) {
   );
 }
 
-export default AdminBillingPage;
+export default AccountBillingPage;

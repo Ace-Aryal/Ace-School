@@ -35,7 +35,7 @@ export const registerUser = async (
     delete studentData.hostel;
     documentData = {
       ...studentData,
-      "fee-document-id": feeId,
+      feeDocumentId: feeId,
       email,
       phoneNumber: data.phoneNumber.trim(),
       discount: Number(data.discount.trim()),
