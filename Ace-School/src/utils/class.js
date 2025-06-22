@@ -14,3 +14,19 @@ export const classMapFromNumericToAlphanumeric = {
   9: "nine",
   10: "ten",
 };
+
+export const classLabels = [
+  { grade: "nursery", label: "Nursery" },
+  { grade: "lkg", label: "LKG" },
+  { grade: "ukg", label: "UKG" },
+  { grade: "1", label: "Grade 1" },
+  { grade: "2", label: "Grade 2" },
+  { grade: "3", label: "Grade 3" },
+  { grade: "4", label: "Grade 4" },
+  { grade: "5", label: "Grade 5" },
+  { grade: "6", label: "Grade 6" },
+  { grade: "7", label: "Grade 7" },
+  { grade: "8", label: "Grade 8" },
+  { grade: "9", label: "Grade 9" },
+  { grade: "10", label: "Grade 10" },
+];

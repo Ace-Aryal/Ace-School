@@ -37,9 +37,9 @@ export const registerUser = async (
       ...studentData,
       feeDocumentId: feeId,
       email,
-      phoneNumber: data.phoneNumber.trim(),
-      discount: Number(data.discount.trim()),
-      scholarship: Number(data.scholarship.trim()),
+      phoneNumber: data.phoneNumber?.trim(),
+      discount: Number(data.discount?.trim()),
+      scholarship: Number(data.scholarship?.trim()),
       DOB: formattedDOB,
       attendance: "Not Added",
       attendanceRecord: JSON.stringify({}),
@@ -181,6 +181,7 @@ export const registerUser = async (
     const uniform = parseFloat(gradeFees.uniform);
 
     const feeDataWithoutRecordFields = {
+      grade: data.grade,
       tuitionFees: parseFloat(parseFloat(gradeFees?.tuition ?? 0).toFixed(2)),
       admissionFees: parseFloat(parseFloat(admissionFee ?? 0).toFixed(2)),
       examinationFees: parseFloat(
@@ -225,7 +226,7 @@ export const registerUser = async (
     const feeDataWithRecordFields = {
       ...feeDataWithoutRecordFields,
       monthlyRecords: [
-        JSON.stringify(
+        JSON.stringify([
           calculateMonthly(
             "Baisakh",
             tuitionFees +
@@ -349,9 +350,10 @@ export const registerUser = async (
               parsedMiscellenous -
               disc / 12 -
               (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          )
-        ),
+          ),
+        ]),
       ],
+
       transactionsRecord: {},
     };
     console.log(feeDataWithRecordFields, "with records");

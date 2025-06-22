@@ -48,7 +48,7 @@ function Navbar() {
 
   return (
     <header
-      className={`antialiased w-full ${
+      className={`antialiased w-full z-20 ${
         isAuthenticated
           ? "border-b navBarTransition border-gray-300 backdrop-blur-md bg-white"
           : "bg-indigo-900 lg:h-[10vh]"

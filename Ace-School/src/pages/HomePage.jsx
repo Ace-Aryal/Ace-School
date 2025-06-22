@@ -52,7 +52,7 @@ function HomePage() {
     },
   ];
   return (
-    <main className="flex  m-0 flex-col  justify-center items-center w-[100vw] mb-20   ">
+    <main className="flex  m-0 flex-col  justify-center items-center w-full mb-20   ">
       <div className="w-full flex flex-col items-center  justify-center relative">
         <Carousel
           plugins={[
@@ -69,8 +69,8 @@ function HomePage() {
             {schoolImageArray.map((image) => (
               <CarouselItem className="p-0 m-0" key={image}>
                 <div className="p-0 ">
-                  <Card className="p-0">
-                    <CardContent className="flex max-h-[91vh]  items-center justify-center p-0 m-0 border-0">
+                  <Card className="p-0 border-0">
+                    <CardContent className="flex max-h-[91vh]  border-0 items-center justify-center p-0 m-0 border-0">
                       <img
                         style={{ filter: "blur(0.2px)" }}
                         src={image}

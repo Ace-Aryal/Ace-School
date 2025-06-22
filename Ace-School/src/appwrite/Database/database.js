@@ -624,6 +624,19 @@ class DatabaseService {
       return false;
     }
   };
+  getClassFeeStats = async (grade) => {
+    const queries = [Query.equal("grade", grade)];
+    try {
+      const respone = await this.database.listDocuments(
+        appwriteDatabaseID,
+        config.feeRecordColletionId,
+        queries
+      );
+      return respone;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 const databaseService = new DatabaseService();
 export default databaseService;
