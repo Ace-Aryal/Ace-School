@@ -26,7 +26,7 @@ export const registerUser = async (
       .toLowerCase()
       .replaceAll(" ", "");
     name = data.studentName;
-    feeId = `${data.studentName}_${data.grade}_${data.rollNo}_${formattedDOB}`
+    feeId = `${data.studentName}_${data.grade}_${data.rollNo}`
       .toLowerCase()
       .replaceAll(" ", "");
     const studentData = JSON.parse(JSON.stringify(data));
@@ -193,12 +193,12 @@ export const registerUser = async (
         parseFloat(gradeFees?.nebRegistration ?? 0).toFixed(2)
       ),
       transportationFees: parseFloat(
-        parseFloat(data?.transportation ?? 0).toFixed(2)
+        parseFloat(data?.transportation || 0).toFixed(2)
       ),
       miscellenous: parseFloat(parseFloat(miscellenous ?? 0).toFixed(2)),
       uniform: parseFloat(parseFloat(uniform ?? 0).toFixed(2)),
-      disc: parseFloat(parseFloat(data?.discount ?? 0).toFixed(2)),
-      scholarship: parseFloat(parseFloat(data?.scholarship ?? 0).toFixed(2)),
+      disc: parseFloat(parseFloat(data?.discount || 0).toFixed(2)),
+      scholarship: parseFloat(parseFloat(data?.scholarship || 0).toFixed(2)),
     };
 
     const {

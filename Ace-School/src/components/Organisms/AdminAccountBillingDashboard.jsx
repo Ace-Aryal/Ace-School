@@ -7,27 +7,27 @@ const ClassFeeStatDisplay = lazy(() =>
 const FeeBillingDatatable = lazy(() =>
   import("./Datatable/FeeBillingDatatable")
 );
-const AllStudentsFeeStatDisplay = lazy(() =>
-  import("../Molecules/AllStudentsFeeStatDisplay")
+const AllStudentsFeeStatWrapper = lazy(() =>
+  import("../Molecules/AllStudentsFeeWrapper")
 );
 function AdminAccountBillingDashboard() {
   return (
-    <div className="grow  w-full rounded-lg gap-2 p-3 flex justify-between ">
-      <div className="w-1/4 p-2  bg-gray-100 border  border-gray-200 shadow rounded-lg ">
+    <div className="grow  w-full rounded-lg gap-2 p-3 flex flex-wrap md:flex-nowrap justify-between ">
+      <div className="w-full sm:w-1/4 p-2  border  border-gray-200 shadow-lg rounded-lg ">
         <Suspense fallback={<Spinner />}>
           <ClassFeeStatWrapper />
         </Suspense>
       </div>
-      <div className="w-1/2  bg-gray-200 rounded-lg p-2">
+      <div className="w-full border sm:w-1/2 border-gray-200 shadow-lg    rounded-lg p-2">
         {" "}
         <Suspense fallback={<Spinner />}>
           <FeeBillingDatatable />
         </Suspense>
       </div>
-      <div className="w-1/4 p-2 bg-gray-200 rounded-lg ">
+      <div className="w-full sm:w-1/4 p-2 border border-gray-200 shadow-lg   rounded-lg ">
         {" "}
         <Suspense fallback={<Spinner />}>
-          <AllStudentsFeeStatDisplay />
+          <AllStudentsFeeStatWrapper />
         </Suspense>
       </div>
     </div>

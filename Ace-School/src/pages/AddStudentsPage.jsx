@@ -98,10 +98,19 @@ const AddStudentsPage = () => {
                           value: /^[1-9]\d*$/,
                           message: "Enter valid Roll No",
                         }
-                      : formField.type === "number" && {
-                          value: /^(?:0|[1-9]\d*)(?:\.\d+)?$/,
-
+                      : formField.name === "scholarship"
+                      ? {
+                          value: /^(100|(\d{1,2})(\.\d{1,2})?)$/,
                           message: "Enter valid value",
+                        }
+                      : formField.type === "number"
+                      ? {
+                          value: /^(?:0|[1-9]\d*)(?:\.\d+)?$/,
+                          message: "Enter valid value",
+                        }
+                      : {
+                          value: /^.*\S.*$/,
+                          message: "This field cannot be empty",
                         },
                   })}
                   className="px-2 py-1.5 border rounded bg-gray-100 shadow outline-gray-700"

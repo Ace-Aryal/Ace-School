@@ -374,8 +374,7 @@ class DatabaseService {
     }
   };
   updateUserDocument = async (collectionID, documentID, updatedDocument) => {
-    console.log(documentID, collectionID, updatedDocument);
-
+    console.log("helloooo helloo", collectionID, documentID);
     try {
       const result = await this.database.updateDocument(
         appwriteDatabaseID, // databaseId

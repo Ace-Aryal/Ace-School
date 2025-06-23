@@ -36,7 +36,7 @@ const chartConfig = {
   },
 };
 
-export default function ChartPieDonutActive({ month }) {
+export default function ChartPieDonutActive({ data, chartData }) {
   return (
     <Card className=" flex flex-col border-0 shadow-none     ">
       <CardContent className="flex-1 px-0 pb-0">
@@ -69,17 +69,17 @@ export default function ChartPieDonutActive({ month }) {
       </CardContent>
       <CardFooter className="p-0  flex flex-col gap-2 text-sm">
         <div className=" bg-green-100 rounded-lg p-2 w-9/10 shadow-sm  text-green-600  font-medium">
-          Total Paid : {}
+          Total Paid : {data.paidFees?.toFixed(2)}
         </div>
         <div className=" bg-green-100 rounded-lg p-2 w-9/10 shadow-sm text-green-600  font-medium">
-          Paid Students : {}
+          Paid Students : {data.paidStudents}
         </div>
         <div className="bg-red-100  rounded-lg w-9/10 shadow-sm text-red-600 p-2  font-medium">
-          Total Due : {}
+          Total Due : {data.dueFees?.toFixed(2)}
         </div>
 
         <div className="bg-red-100  rounded-lg w-9/10 shadow-sm text-red-600 p-2 font-medium">
-          Due Students: {}
+          Due Students: {data.dueStudents}
         </div>
       </CardFooter>
     </Card>
