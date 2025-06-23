@@ -86,7 +86,7 @@ const NoticeListElement = ({ data: notice, role }) => {
           ) : (
             <button
               onClick={() => navigate(`/notice/${notice.$id}`)}
-              className="bg-zinc-800 text-white px-2 py-1 rounded text-xs"
+              className="bg-blue-100 hover:bg-blue-200 text-blue-600  px-2 py-1 rounded text-xs"
             >
               <Eye />
             </button>

@@ -10,7 +10,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Loader, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -31,54 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-const data = [
-  {
-    name: "Dipesh Aryal",
-    grade: "1",
-    rollNo: "3",
-    monthDue: 100,
-    monthPaid: 100,
-    totalDue: 5000,
-    totalPaid: 2000,
-  },
-  {
-    name: "Sita Sharma",
-    grade: "2",
-    rollNo: "5",
-    monthDue: 150,
-    monthPaid: 150,
-    totalDue: 4500,
-    totalPaid: 4500,
-  },
-  {
-    name: "Ram Thapa",
-    grade: "3",
-    rollNo: "2",
-    monthDue: 200,
-    monthPaid: 0,
-    totalDue: 6000,
-    totalPaid: 3000,
-  },
-  {
-    name: "Anjali Gurung",
-    grade: "1",
-    rollNo: "8",
-    monthDue: 100,
-    monthPaid: 50,
-    totalDue: 4000,
-    totalPaid: 3500,
-  },
-  {
-    name: "Bikash Karki",
-    grade: "2",
-    rollNo: "1",
-    monthDue: 120,
-    monthPaid: 120,
-    totalDue: 3600,
-    totalPaid: 3600,
-  },
-];
+import { classLabels } from "@/utils/class";
 
 const columns = [
   // {
@@ -103,20 +56,25 @@ const columns = [
   //   enableSorting: false,
   //   enableHiding: false,
   // },
-  {
-    accessorKey: "grade",
-    header: "Grade",
-    cell: ({ row }) => (
-      <div className="capitalize text-center  font-medium">
-        {row.getValue("grade")}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "grade",
+  //   header: "Grade",
+  //   cell: ({ row }) => (
+  //     <div className="capitalize p-2 text-center  font-medium">
+  //       {row.getValue("grade")}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "rollNo",
     header: ({ column }) => (
-      <Button className="p-0" variant="ghost">
+      <Button
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="p-0"
+        variant="ghost"
+      >
         Roll
+        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ row }) => (
@@ -129,7 +87,9 @@ const columns = [
     accessorKey: "name",
     header: () => <div className="">Name</div>,
     cell: ({ row }) => {
-      return <div className="p-2 font-medium">{row.getValue("name")}</div>;
+      return (
+        <div className="p-2 font-medium capitalize">{row.getValue("name")}</div>
+      );
     },
   },
   {
@@ -218,8 +178,7 @@ const columns = [
   //   },
   // },
 ];
-
-export default function DataTableDemo() {
+export default function FeeBillingDatatable({ data, setGrade, grade }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -248,24 +207,34 @@ export default function DataTableDemo() {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
+  console.log(data);
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex gap-2 items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
+          placeholder="Filter name..."
+          value={table.getColumn("name")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm focus:ring-1 ring-gray-500"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="ml-auto  border-gray-500">
               Columns <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <select
+            value={grade}
+            onChange={(e) => setGrade(e.target.value)}
+            className="p-1.75  border-gray-500 border rounded-lg"
+          >
+            {classLabels.map((grade) => (
+              <option value={grade.grade}>{grade.label}</option>
+            ))}
+          </select>
+          <DropdownMenuContent className="bg-white" align="end">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -290,7 +259,7 @@ export default function DataTableDemo() {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead
-                    className="border  border-gray-400"
+                    className="border  border-gray-300"
                     key={header.id}
                   >
                     {header.isPlaceholder
@@ -313,7 +282,7 @@ export default function DataTableDemo() {
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
-                      className="border p-0 border-gray-400"
+                      className="border p-0 border-gray-300"
                       key={cell.id}
                     >
                       {flexRender(

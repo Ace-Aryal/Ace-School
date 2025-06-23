@@ -23,6 +23,7 @@ import databaseService from "@/appwrite/Database/database";
 import { setMessages } from "@/features/inboxSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { setNotices } from "@/features/noticeSlice";
+import NonPriviligesDashboard from "./NonPriviligesDashboard";
 const DashboardPage = () => {
   const dispatch = useDispatch();
   const { roles, username } = useSelector((state) => state.auth.user);
@@ -58,7 +59,7 @@ const DashboardPage = () => {
   }, []);
 
   if (!roles?.includes("admin") && !roles?.includes("account")) {
-    return <h1>Hello {roles[0]}</h1>;
+    return <NonPriviligesDashboard />;
   }
 
   const statItems = [

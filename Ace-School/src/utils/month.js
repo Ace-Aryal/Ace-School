@@ -1,3 +1,5 @@
+import NepaliDate from "nepali-datetime";
+
 export const monthMap = [
   { order: 0, label: "Baisakh", value: "baisakh" },
   { order: 1, label: "Jestha", value: "jestha" },
@@ -16,3 +18,5 @@ export const monthMap = [
 export const monthMapperByOrder = (monthOrder) => {
   return monthMap[monthOrder];
 };
+const monthInteger = new NepaliDate().getMonth();
+export const monthValue = monthMapperByOrder(monthInteger).value;

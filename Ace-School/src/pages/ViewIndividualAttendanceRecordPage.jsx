@@ -8,7 +8,7 @@ export default function ViewIndividualAttendancePage() {
   const location = useLocation();
   const attendanceRecord = location.state?.attendanceRecord || null;
   const personInfo = location.state?.personInfo || null;
-
+  console.log(location.state, "att rec");
   if (!attendanceRecord) {
     return (
       <div className="w-full grid place-items-center">

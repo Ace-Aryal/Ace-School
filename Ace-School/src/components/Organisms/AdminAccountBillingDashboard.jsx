@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import Spinner from "../Atoms/Spinner";
 import ClassFeeStatWrapper from "../Molecules/ClassFeeStatWrapper";
+import FeeBillingDatatableWrapper from "./FeeBillingDatatableWrapper";
 const ClassFeeStatDisplay = lazy(() =>
   import("../Molecules/ClassFeeStatDisplay")
 );
@@ -19,13 +20,11 @@ function AdminAccountBillingDashboard() {
         </Suspense>
       </div>
       <div className="w-full border sm:w-1/2 border-gray-200 shadow-lg    rounded-lg p-2">
-        {" "}
         <Suspense fallback={<Spinner />}>
-          <FeeBillingDatatable />
+          <FeeBillingDatatableWrapper />
         </Suspense>
       </div>
       <div className="w-full sm:w-1/4 p-2 border border-gray-200 shadow-lg   rounded-lg ">
-        {" "}
         <Suspense fallback={<Spinner />}>
           <AllStudentsFeeStatWrapper />
         </Suspense>

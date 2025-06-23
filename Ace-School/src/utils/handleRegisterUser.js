@@ -26,7 +26,9 @@ export const registerUser = async (
       .toLowerCase()
       .replaceAll(" ", "");
     name = data.studentName;
-    feeId = `${data.studentName}_${data.grade}_${data.rollNo}`
+    feeId = `${data.studentName.replaceAll(" ", "_")}_${data.grade}_${
+      data.rollNo
+    }`
       .toLowerCase()
       .replaceAll(" ", "");
     const studentData = JSON.parse(JSON.stringify(data));
@@ -41,7 +43,7 @@ export const registerUser = async (
       discount: Number(data.discount?.trim()),
       scholarship: Number(data.scholarship?.trim()),
       DOB: formattedDOB,
-      attendance: "Not Added",
+      attendance: "noattendance",
       attendanceRecord: JSON.stringify({}),
     };
   }
@@ -57,7 +59,7 @@ export const registerUser = async (
       joiningDate: formattedJoiningDate,
       DOB: formattedDOB,
       classes: JSON.stringify(data.classes),
-      attendance: "Not Added",
+      attendance: "noattendance",
       subjectsTaught: JSON.stringify(data.subjectsTaught),
       attendanceRecord: JSON.stringify({}),
     };
@@ -74,7 +76,7 @@ export const registerUser = async (
       joiningDate: formattedJoiningDate,
       DOB: formattedDOB,
 
-      attendance: "No Attendence",
+      attendance: "noattendance",
 
       attendanceRecord: JSON.stringify({}),
     };
@@ -153,7 +155,16 @@ export const registerUser = async (
         }),
       ]);
 
-    if (userRole.toLowerCase() !== "student") return;
+    if (
+      userRole.toLowerCase() !== "student" &&
+      userCollectionResponse.$id &&
+      userMetaDataCollectionResponse.$id
+    ) {
+      showSuccessToast(`User registered sucessfully`);
+      reset();
+      return;
+    }
+
     const { response: getFeeDocumentResponse, error: getFeeDocumentError } =
       catchError(() =>
         databaseService.getDocument(config.feeRecordColletionId, feeId)
@@ -182,6 +193,7 @@ export const registerUser = async (
 
     const feeDataWithoutRecordFields = {
       grade: data.grade,
+      rollNo: parseInt(data.rollNo),
       tuitionFees: parseFloat(parseFloat(gradeFees?.tuition ?? 0).toFixed(2)),
       admissionFees: parseFloat(parseFloat(admissionFee ?? 0).toFixed(2)),
       examinationFees: parseFloat(
@@ -374,7 +386,9 @@ export const registerUser = async (
       createFeeDocumentError
     );
     if (!createFeeDocumentResponse) {
-      return showErrorToast(`Error creating fee document`);
+      return showErrorToast(
+        `Error creating fee document, please try deleting and creating user`
+      );
     }
     if (userCollectionResponse.$id && userMetaDataCollectionResponse.$id) {
       showSuccessToast(`User registered sucessfully`);

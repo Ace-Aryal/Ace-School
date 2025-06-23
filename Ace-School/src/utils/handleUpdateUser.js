@@ -43,7 +43,9 @@ export const updateUser = async (
     email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`
       .toLowerCase()
       .replaceAll(" ", "");
-    feeId = `${data.studentName}_${data.grade}_${data.rollNo}`
+    feeId = `${data.studentName.replaceAll(" ", "_")}_${data.grade}_${
+      data.rollNo
+    }`
       .toLowerCase()
       .replaceAll(" ", "");
     const studentData = JSON.parse(JSON.stringify(data));
@@ -161,7 +163,6 @@ export const updateUser = async (
     const uniform = parseFloat(gradeFees.uniform);
 
     const feeDataWithoutRecordFields = {
-      grade: data.grade,
       tuitionFees: parseFloat(parseFloat(gradeFees?.tuition ?? 0).toFixed(2)),
       admissionFees: parseFloat(parseFloat(admissionFee ?? 0).toFixed(2)),
       examinationFees: parseFloat(

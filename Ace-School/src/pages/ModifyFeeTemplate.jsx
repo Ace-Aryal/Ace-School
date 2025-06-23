@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import React from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import { useForm } from "react-hook-form";
 import Spinner from "@/components/Atoms/Spinner";
 import { catchError } from "@/utils/catchError";
 import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
+import { useSelector } from "react-redux";
 
 function ModifyFeeTemplate() {
   const { data, isError, isLoading } = useQuery({
@@ -75,9 +76,11 @@ function ModifyFeeTemplate() {
       }`
     );
   };
-  // const {}
-
-  console.log(data);
+  const navigate = useNavigate();
+  const roles = useSelector((state) => state.auth.user.roles);
+  if (!roles.includes("admin")) {
+    navigate(-1);
+  }
 
   return (
     <AuthenticatedContainer classnames="pl-8">

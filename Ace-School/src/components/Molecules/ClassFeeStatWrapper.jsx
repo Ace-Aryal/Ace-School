@@ -3,12 +3,11 @@ import { Select } from "../ui/select";
 import { classLabels } from "@/utils/class";
 import ClassFeeStatDisplay from "./ClassFeeStatDisplay";
 import NepaliDate from "nepali-datetime";
-import { monthMap, monthMapperByOrder } from "@/utils/month";
+import { monthMap, monthValue } from "@/utils/month";
 
 function ClassFeeStatWrapper() {
   const [grade, setGrade] = useState("nursery");
-  const monthInteger = new NepaliDate().getMonth();
-  const monthValue = monthMapperByOrder(monthInteger).value;
+
   const [month, setMonth] = useState(monthValue);
   console.log(grade, month);
 

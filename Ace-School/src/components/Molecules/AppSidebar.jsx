@@ -157,13 +157,13 @@ export default function AppSidebar({ getSidebarState }) {
     >
       <SidebarContent className="bg-white ">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-md flex gap-1 font-semibold ">
+          <SidebarGroupLabel className="capitalize text-md flex gap-1 mb-6 font-semibold ">
             <User size={64} />
             {`${username} (${roles[0]})`}
           </SidebarGroupLabel>
 
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="">
               {items
                 .filter(
                   (element) =>

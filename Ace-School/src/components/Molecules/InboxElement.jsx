@@ -92,7 +92,7 @@ const InboxElement = ({ message }) => {
               onClick={() => {
                 handleItemClick(message.seen, message.$id);
               }}
-              className="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-xs"
+              className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs"
             >
               <Eye />
             </button>

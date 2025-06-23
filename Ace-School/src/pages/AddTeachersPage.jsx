@@ -627,7 +627,7 @@ export default function AddTeachersPage() {
         </div>
         {/* Date Picker */}
         <div className="flex flex-col">
-          <label className="text-gray-600">Select DOB</label>
+          <label className="text-gray-600">Select Joining Date</label>
           <Controller
             name="joiningDate"
             control={control}
@@ -644,7 +644,7 @@ export default function AddTeachersPage() {
               );
             }}
           />
-          {errors.DOB && (
+          {errors.joiningDate && (
             <p className="text-sm text-red-500">{errors.DOB.message}</p>
           )}
         </div>

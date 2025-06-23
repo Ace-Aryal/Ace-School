@@ -216,6 +216,19 @@ class DatabaseService {
       console.error(error);
     }
   };
+  listAllUsersDocument = async (collectionId, email) => {
+    console.log(collectionId, email);
+    try {
+      const response = await this.database.listDocuments(
+        appwriteDatabaseID,
+        collectionId,
+        [Query.equal("email", email)]
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   createUserDocment = async (data) => {
     // {email : "" , role : ""}
@@ -624,7 +637,7 @@ class DatabaseService {
     }
   };
   getClassFeeStats = async (grade) => {
-    const queries = [Query.equal("grade", grade)];
+    const queries = [Query.equal("grade", grade), Query.orderAsc("rollNo")];
     try {
       const respone = await this.database.listDocuments(
         appwriteDatabaseID,
