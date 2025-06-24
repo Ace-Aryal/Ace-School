@@ -66,20 +66,20 @@ export default function ChartPieDonutActive({ data, chartData }) {
         <div className=" bg-green-100 rounded-lg p-2 w-9/10 shadow-sm  text-green-600  font-medium">
           Total Paid : {data.paidFees?.toFixed(2)}
         </div>
-        {data.paidStudents && (
+        {data.paidStudents === 0 || data.paidStudents ? (
           <div className=" bg-green-100 rounded-lg p-2 w-9/10 shadow-sm text-green-600  font-medium">
             Paid Students : {data.paidStudents}
           </div>
-        )}
+        ) : null}
         <div className="bg-red-100  rounded-lg w-9/10 shadow-sm text-red-600 p-2  font-medium">
           Total Due : {data.dueFees?.toFixed(2)}
         </div>
 
-        {data.dueStudents && (
+        {data.dueStudents === 0 || data.dueStudents ? (
           <div className="bg-red-100  rounded-lg w-9/10 shadow-sm text-red-600 p-2 font-medium">
             Due Students: {data.dueStudents}
           </div>
-        )}
+        ) : null}
       </CardFooter>
     </Card>
   );

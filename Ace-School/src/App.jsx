@@ -94,8 +94,7 @@ function App() {
 
   useEffect(() => {
     const handleKeys = (e) => {
-      e.preventDefault();
-
+      // e.preventDefault();
       // if (e.key === "F3") {
       //   e.preventDefault(); // optional
       //   // Your custom logic for back

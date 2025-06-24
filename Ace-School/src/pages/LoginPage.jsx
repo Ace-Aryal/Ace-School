@@ -69,7 +69,7 @@ function LoginPage() {
 
   return (
     <section className=" w-full grow grid place-items-center">
-      <div class="flex flex-col w-full items-center justify-center px-6 py-8 mx-auto lg:py-0 ">
+      <div class="flex flex-col w-full items-center h-fit justify-center px-6 py-8 mx-auto lg:py-0 ">
         <Link
           href="#"
           class="flex items-center mb-6 text-2xl font-semibold text-gray-900"
