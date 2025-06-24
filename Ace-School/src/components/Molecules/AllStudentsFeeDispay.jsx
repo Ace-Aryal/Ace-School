@@ -17,7 +17,7 @@ function ClassFeeStatDisplay({ grade, month }) {
   //   if (isLoading) {
   //     return <p>Is Loading...</p>;
   //   }
-  //     const chartData = [
+  const chartData = [
     { status: "paid", amount: 275, fill: "var(--color-paid)" }, // green-500
     { status: "due", amount: 300, fill: "var(--color-due)" }, // red-500
   ];
