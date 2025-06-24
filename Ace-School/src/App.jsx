@@ -79,16 +79,16 @@ function App() {
       }
       console.log(roles, "roles");
     } catch (error) {
-      // dispatch(
-      //   setUser({
-      //     isLoggedIn: false,
-      //     username: "",
-      //     email: "",
-      //     roles: "",
-      //     phone: "",
-      //     createdAt: "",
-      //   })
-      // );
+      dispatch(
+        setUser({
+          isLoggedIn: false,
+          username: "",
+          email: "",
+          roles: "",
+          phone: "",
+          createdAt: "",
+        })
+      );
       console.error(error);
     }
   }

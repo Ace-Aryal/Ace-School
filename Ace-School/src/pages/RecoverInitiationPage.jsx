@@ -21,7 +21,7 @@ const RecoverInitiationPage = () => {
     }
   };
   return (
-    <div className="w-full flex min-h-screen items-start justify-center sm:items-center">
+    <div className="w-full flex grow items-start justify-center sm:items-center">
       <form
         onSubmit={handleSubmit}
         action=""

@@ -1,119 +1,109 @@
-import { Client, Account, ID } from 'appwrite';
-import config from '..';
-import { showErrorToast } from '@/components/Templates/toast';
+import { Client, Account, ID } from "appwrite";
+import config from "..";
+import { showErrorToast } from "@/components/Templates/toast";
 class AuthService {
-    client = new Client()
-    account;
+  client = new Client();
+  account;
 
-    constructor() {
-        this.client.setEndpoint(config.appwritreURL)
-            .setProject(config.appwritreProjectID)
+  constructor() {
+    this.client
+      .setEndpoint(config.appwritreURL)
+      .setProject(config.appwritreProjectID);
 
-        this.account = new Account(this.client)
+    this.account = new Account(this.client);
+  }
+
+  signup = async ({ username, email, password }) => {
+    try {
+      const user = await this.account.create(
+        ID.unique(), // Auto-generated unique ID
+        email, // Email
+        password, // Password
+        username // Optional: Name
+      );
+      return true;
+    } catch (error) {
+      showErrorToast(error.message);
+      console.error(error);
+
+      return false;
     }
+  };
+  login = async ({ email, password }) => {
+    try {
+      return await this.account.createEmailPasswordSession(email, password);
+    } catch (error) {
+      showErrorToast("Error logging in");
+      console.error(error);
 
-
-
-    signup = async ({ username, email, password }) => {
-
-        try {
-            const user = await this.account.create(
-                ID.unique(),                 // Auto-generated unique ID
-                email,         // Email
-                password,        // Password
-                username              // Optional: Name
-            );
-            return true
-        } catch (error) {
-            showErrorToast(error.message)
-            console.error(error);
-
-            return false
-
-        }
+      return false;
     }
-    login = async ({ email, password }) => {
-        try {
-            return await this.account.createEmailPasswordSession(email, password);
+  };
+  logout = async () => {
+    try {
+      await this.account.deleteSessions();
+      return true;
+    } catch (error) {
+      console.error(error);
 
-        } catch (error) {
-            showErrorToast("Error logging in")
-            console.error(error);
-
-            return false
-
-        }
+      return false;
     }
-    logout = async () => {
-        try {
+  };
+  changePassword = async (currentPassword, newPassword) => {
+    try {
+      const response = await this.account.updatePassword(
+        newPassword,
+        currentPassword
+      );
 
-
-
-            await this.account.deleteSessions()
-            return true
-
-        } catch (error) {
-            console.error(error);
-
-            return false
-        }
+      if (response) {
+        return true;
+      }
+    } catch (error) {
+      console.error("Error updating password:", error);
+      return error.message;
     }
-    changePassword = async (currentPassword, newPassword) => {
-        try {
-            const response = await this.account.updatePassword(newPassword, currentPassword);
+  };
+  initiateAccountRecovery = async (email) => {
+    try {
+      await this.account.createRecovery(
+        email,
+        "http://localhost:5173/recover-account"
+      );
+      console.log("here");
 
-
-            if (response) {
-
-                return true
-            }
-
-        } catch (error) {
-            console.error("Error updating password:", error);
-            return error.message
-        }
-    };
-    initiateAccountRecovery = async (email) => {
-        try {
-
-            await this.account.createRecovery(email, 'http://localhost:5173/recover-account')
-            console.log("here");
-
-            return true
-        } catch (error) {
-            console.error(error)
-            return false
-        }
-
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
-    recoverAccount = async ({ secretID, userID, password }) => {
-        try {
-            const promise = await this.account.updateRecovery(
-                userID,
-                secretID,
-                password
-            );
-            if (promise) {
-                return true
-            }
-            return false
-        } catch (error) {
-            console.error(error);
+  };
+  recoverAccount = async ({ secretID, userID, password }) => {
+    try {
+      const promise = await this.account.updateRecovery(
+        userID,
+        secretID,
+        password
+      );
+      if (promise) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
 
-            return false
-        }
-
+      return false;
     }
-    getCurrentUser = async () => {
-        try {
-            return await this.account.get()
-        } catch (error) {
-            console.error(error)
-            return false
-        }
+  };
+  getCurrentUser = async () => {
+    try {
+      return await this.account.get();
+    } catch (error) {
+      console.error(error);
+      return false;
     }
-
+  };
 }
 
-const authService = new AuthService()
-export default authService
+const authService = new AuthService();
+export default authService;

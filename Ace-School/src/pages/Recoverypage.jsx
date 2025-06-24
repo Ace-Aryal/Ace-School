@@ -40,7 +40,7 @@ const RecoveryPage = () => {
     showErrorToast(" Error changing password , pease try again");
   };
   return (
-    <div class="min-h-screen bg-gray-100 text-gray-900 w-full flex justify-center sm:p-16 sm:px-20">
+    <div class="grow bg-gray-100 text-gray-900 w-full flex justify-center sm:p-16 sm:px-20">
       <div class="max-w-screen-xl  bg-white shadow -lg flex justify-center flex-1">
         <div class=" ">
           <div class="mt-12 flex flex-col items-center">
@@ -52,7 +52,7 @@ const RecoveryPage = () => {
 
             <form
               onSubmit={handleSubmit(handlePasswordChange)}
-              class="mx-auto max-w-xs"
+              class="mx-auto max-w-xs py-5 "
             >
               <div className="relative mt-5 flex items-center p-0">
                 <input
@@ -104,7 +104,7 @@ const RecoveryPage = () => {
                   {errors.confirmatoryPassword.message}
                 </p>
               )}
-              <button class="mt-5 tracking-wide font-semibold bg-blue-100 hover:bg-blue-200 text-blue-600w-full py-4 rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+              <button class="mt-5 w-full tracking-wide font-semibold bg-blue-100 hover:bg-blue-200 text-blue-600w-full py-4 rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                 <LockOpen />
                 <span class="ml-3">
                   {isSubmitting ? "...." : "Change Password"}
