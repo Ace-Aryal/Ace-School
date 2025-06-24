@@ -6,6 +6,9 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router";
 import PieDonut from "./PieOnly";
 import UnscrambleGame from "../Organisms/ScrambleGame";
+import LoadingPage from "@/pages/LoadingPage";
+import { Button } from "../Atoms/button";
+import StudentCharts from "./StudentCharts";
 
 function PersonalInfo() {
   const { roles, email } = useSelector((state) => state.auth.user);
@@ -29,20 +32,16 @@ function PersonalInfo() {
     return <GeneralErrorPage />;
   }
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="w-full h-full grow grid place-items-center">
+        <LoadingPage />
+      </div>
+    );
   }
   if (!data.total) {
     return null;
   }
-  console.log("self data", data);
-  let chartData1 = [
-    { status: "paid", amount: 124, fill: "var(--color-paid)" }, // green-500
-    { status: "due", amount: 111, fill: "var(--color-due)" }, // red-500
-  ];
-  let chartData2 = [
-    { status: "paid", amount: 121, fill: "var(--color-paid)" }, // green-500
-    { status: "due", amount: 113, fill: "var(--color-due)" }, // red-500
-  ];
+
   const selfDocument = data.documents[0];
   let classes = "";
   let subjects = "";
@@ -57,6 +56,7 @@ function PersonalInfo() {
       .map((subject) => subject.label)
       .join(",");
   }
+  console.log("self data", selfDocument);
   return (
     <section
       className="flex flex-wrap flex-col sm:flex-row gap-8 sm:flex-nowrap mt-5 w-full sm:mt-8"
@@ -65,17 +65,17 @@ function PersonalInfo() {
       <div id="personal-info" className="space-y-4 w-full sm:w-9/20  ">
         <div>
           {selfDocument.teacherName && (
-            <h2 className="text-4xl font-bold text-gray-800">
+            <h2 className="capitalize text-4xl font-bold text-gray-800">
               Hello, {selfDocument.teacherName}
             </h2>
           )}
           {selfDocument.studentName && (
-            <h2 className="text-4xl font-bold text-gray-800">
+            <h2 className="capitalize text-4xl font-bold text-gray-800">
               Hello, {selfDocument.studentName}
             </h2>
           )}
           {selfDocument.fullName && (
-            <h2 className="text-4xl font-bold text-gray-800">
+            <h2 className="capitalize text-4xl font-bold text-gray-800">
               Hello, {selfDocument.fullName}
             </h2>
           )}
@@ -94,7 +94,7 @@ function PersonalInfo() {
             <span className="font-semibold text-gray-800">Email:</span> {email}
           </p>
           <p>
-            <span className="font-semibold text-gray-800">Date of Birth:</span>
+            <span className="font-semibold text-gray-800">Date of Birth:</span>{" "}
             {DOB}
           </p>
           <p className="capitalize">
@@ -105,25 +105,25 @@ function PersonalInfo() {
           </p>
           {selfDocument.grade && (
             <p>
-              <span className="font-semibold text-gray-800">Grade:</span>
+              <span className="font-semibold text-gray-800">Grade:</span>{" "}
               {selfDocument.grade}
             </p>
           )}
           {selfDocument.teacherId && (
             <p>
-              <span className="font-semibold text-gray-800">ID:</span>
+              <span className="font-semibold text-gray-800">ID:</span>{" "}
               {selfDocument.teacherId}
             </p>
           )}
           {selfDocument.rollNo && (
             <p>
-              <span className="font-semibold text-gray-800">Roll No:</span>
+              <span className="font-semibold text-gray-800">Roll No:</span>{" "}
               {selfDocument.rollNo}
             </p>
           )}
           {selfDocument.scholarship && (
             <p>
-              <span className="font-semibold text-gray-800">Scholarship:</span>
+              <span className="font-semibold text-gray-800">Scholarship:</span>{" "}
               {selfDocument.scholarship}%
             </p>
           )}
@@ -135,32 +135,32 @@ function PersonalInfo() {
           )}
           {selfDocument.stream && (
             <p>
-              <span className="font-semibold text-gray-800">Stream:</span>
+              <span className="font-semibold text-gray-800">Stream:</span>{" "}
               {selfDocument.stream}
             </p>
           )}
           {selfDocument.stream && (
             <p>
-              <span className="font-semibold text-gray-800">Stream:</span>
+              <span className="font-semibold text-gray-800">Stream:</span>{" "}
               {selfDocument.stream}
             </p>
           )}
 
           {selfDocument.subjectsTaught && (
             <p>
-              <span className="font-semibold text-gray-800">Subjects:</span>
+              <span className="font-semibold text-gray-800">Subjects:</span>{" "}
               {subjects}
             </p>
           )}
           {selfDocument.classes && (
             <p>
-              <span className="font-semibold text-gray-800">Classes:</span>
+              <span className="font-semibold text-gray-800">Classes:</span>{" "}
               {classes}
             </p>
           )}
           {selfDocument.role && (
             <p>
-              <span className="font-semibold text-gray-800">Role:</span>
+              <span className="font-semibold text-gray-800">Role:</span>{" "}
               {selfDocument.role}
             </p>
           )}
@@ -199,7 +199,7 @@ function PersonalInfo() {
                   : selfDocument.attendance}
               </p>
             </div>
-            <NavLink to="/attendance ">
+            <NavLink to="/attendance " stat>
               <button className="bg-blue-200 text-blue-600 px-4 py-2 rounded-lg hover:bg-indigo-200 transition">
                 View Full Attendance
               </button>
@@ -207,21 +207,7 @@ function PersonalInfo() {
           </div>
         </div>
         {roles.includes("student") ? (
-          <div id="bottom" className="mt-3 pt-4 bg-gray-100 p-4 shadow-md">
-            <h2 className="text-2xl font-bold text-gray-800">
-              Your Fee Summary
-            </h2>
-            <div className="grid grid-cols-2 ">
-              <div>
-                <PieDonut chartData={chartData1} />
-                <p className="text-center font-semibold">This Month</p>
-              </div>
-              <div>
-                <PieDonut chartData={chartData2} />
-                <p className="text-center font-semibold">This Year</p>
-              </div>
-            </div>
-          </div>
+          <StudentCharts feeDocumentId={selfDocument.feeDocumentId} />
         ) : (
           <UnscrambleGame />
         )}

@@ -151,15 +151,17 @@ export default function AppSidebar({ getSidebarState }) {
   }, [state]);
   return (
     <Sidebar
-      className="mt-10 pt-10 z-1 sm:z-0 border-r border-gray-300 sideBarTransition "
+      className="mt-8 pt-10 z-1 sm:z-0 border-r border-gray-300 sideBarTransition "
       variant="sidebar"
       collapsible="offcanvas"
     >
       <SidebarContent className="bg-white ">
-        <SidebarGroup>
-          <SidebarGroupLabel className="capitalize text-md flex gap-1 mb-6 font-semibold ">
-            <User size={64} />
-            {`${username} (${roles[0]})`}
+        <SidebarGroup className="flex flex-col">
+          <SidebarGroupLabel className="h-fit capitalize text-md flex flex-col gap-1 mb-1 font-semibold ">
+            <div className="flex w-full justify-start items-center">
+              <User size={20} />
+              <p>{username}</p>
+            </div>
           </SidebarGroupLabel>
 
           <SidebarGroupContent>

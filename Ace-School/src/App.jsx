@@ -46,6 +46,7 @@ import databaseService from "./appwrite/Database/database";
 import ViewAttendancePage from "./pages/ViewAttendancePage";
 import ViewIndividualAttendancePage from "./pages/ViewIndividualAttendanceRecordPage";
 import ModifyFeeTemplate from "./pages/ModifyFeeTemplate";
+import StudentSelfBillingViewPage from "./pages/StudentSelfBillingViewPage";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
@@ -154,6 +155,10 @@ function App() {
             element={<ViewIndividualAttendancePage />}
           />
           <Route path="billing" element={<BillingPage />} />
+          <Route
+            path="student-self-billing-view"
+            element={<StudentSelfBillingViewPage />}
+          />
           <Route
             path="/billing/modify-fee-template"
             element={<ModifyFeeTemplate />}

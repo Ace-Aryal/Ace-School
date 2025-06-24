@@ -8,7 +8,7 @@ import PersonalInfo from "../Molecules/PersonalInfo";
 function NonPriviligesDashboard() {
   return (
     <AuthenticatedContainer classnames="p-2 items-center flex sm:px-8">
-      <div className="max-w-4xl w-full">
+      <div className="max-w-4xl w-full grow">
         <section id="header" className="flex justify-between">
           <h1 className="text-3xl font-semibold ">Dashboard</h1>
           <NavLink to="/notice">
