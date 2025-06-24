@@ -31,8 +31,6 @@ function LoginPage() {
       const userSession = await authService.login({ ...data });
       const currentuser = await authService.getCurrentUser();
 
-      console.log(userSession, currentuser);
-
       if (!(userSession || currentuser)) {
         throw new Error("Failed to log in");
       }
@@ -49,8 +47,6 @@ function LoginPage() {
         userSession.current &&
         (currentuser.labels || currentUserDocument.total)
       ) {
-        console.log(currentUserDocument);
-
         dispatch(
           setUser({
             isLoggedIn: true,

@@ -146,7 +146,7 @@
 /* Total scrollbar track */
 *::-webkit-scrollbar {
   width: 10px;
-  height: 10px;
+  height: 12px;
 }
 
 *::-webkit-scrollbar-track {

@@ -6,7 +6,6 @@ import parse from "html-react-parser";
 import ErrorPage from "@/pages/ErrorPage";
 const NoticeElement = () => {
   const { id } = useParams();
-  console.log("id", id);
   const notice = useSelector((state) =>
     state.notice?.notices?.find((notice) => notice.$id === id)
   );

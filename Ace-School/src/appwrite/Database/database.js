@@ -217,7 +217,6 @@ class DatabaseService {
     }
   };
   listAllUsersDocument = async (collectionId, email) => {
-    console.log(collectionId, email);
     try {
       const response = await this.database.listDocuments(
         appwriteDatabaseID,
@@ -371,7 +370,6 @@ class DatabaseService {
   };
 
   updateUserMetaData = async (updatedDocument, documentID) => {
-    console.log(documentID);
     try {
       const result = await this.database.updateDocument(
         appwriteDatabaseID, // databaseId
@@ -387,7 +385,6 @@ class DatabaseService {
     }
   };
   updateUserDocument = async (collectionID, documentID, updatedDocument) => {
-    console.log("helloooo helloo", collectionID, documentID);
     try {
       const result = await this.database.updateDocument(
         appwriteDatabaseID, // databaseId
@@ -395,7 +392,6 @@ class DatabaseService {
         documentID, // documentId
         updatedDocument // data (optional)
       );
-      console.log(result);
       return true;
     } catch (error) {
       console.error(error);
@@ -429,7 +425,6 @@ class DatabaseService {
         appwritreScheduleCollectionID,
         classScheduleDocumentID
       );
-      console.log(JSON.parse(response.scheduleJSON));
       return await JSON.parse(response.scheduleJSON);
     } catch (error) {
       console.error(error);
@@ -454,7 +449,6 @@ class DatabaseService {
   };
   batchUpdateDocument = async (data, role) => {
     const { documentId, attendance, date } = data;
-    console.log(data);
     let userCollectionId;
     if (role.toLowerCase() === "student") {
       userCollectionId = appwritreStudentCollectionID;
@@ -510,10 +504,9 @@ class DatabaseService {
         collectionID,
         documentId
       );
-      console.log(response);
       return response;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       if (
         error.message === "Document with the requested ID could not be found."
       ) {
@@ -530,7 +523,6 @@ class DatabaseService {
         documentId,
         data
       );
-      console.log("resp", response);
       return response;
     } catch (error) {
       console.error(error);
@@ -538,7 +530,6 @@ class DatabaseService {
   };
   updateAttendenceRecords = async (collectionId, documentId, data) => {
     try {
-      console.log("data in attendance", data);
       const response = await this.database.updateDocument(
         appwriteDatabaseID,
         collectionId,
@@ -553,7 +544,6 @@ class DatabaseService {
     }
   };
   getAttendanceStats = async (collectionID, documentId, role) => {
-    console.log(documentId);
     try {
       const response = await this.database.getDocument(
         appwriteDatabaseID,
@@ -604,7 +594,6 @@ class DatabaseService {
     }
   };
   getFeeTemplate = async () => {
-    console.log(config.feeTemplateId);
     try {
       const response = await this.database.getDocument(
         appwriteDatabaseID,

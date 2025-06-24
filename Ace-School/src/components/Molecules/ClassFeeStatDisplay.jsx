@@ -7,7 +7,6 @@ function ClassFeeStatDisplay({ grade, month }) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["classFeeStat", grade],
     queryFn: async () => {
-      console.log(grade);
       const response = await databaseService.getClassFeeStats(grade);
       return response;
     },
@@ -35,7 +34,6 @@ function ClassFeeStatDisplay({ grade, month }) {
     );
 
     monthlyRecords.forEach((student) => {
-      console.log(student);
       for (let index = 0; index < student.length; index++) {
         const recordMonth = student[index];
         if (recordMonth.month.toLowerCase() === month.toLowerCase()) {

@@ -8,7 +8,6 @@ import { NavLink } from "react-router";
 
 const TimetablePage = () => {
   const roles = useSelector((state) => state?.auth?.user?.roles);
-  console.log(roles);
 
   return (
     <div className="w-full mt-14 h-full grow flex flex-col gap-8 items-center px-2">

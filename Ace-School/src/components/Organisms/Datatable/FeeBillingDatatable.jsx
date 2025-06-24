@@ -32,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { classLabels } from "@/utils/class";
+import { NavLink, useNavigate } from "react-router";
 
 const columns = [
   // {
@@ -183,7 +184,7 @@ export default function FeeBillingDatatable({ data, setGrade, grade }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
-
+  const navigate = useNavigate();
   const table = useReactTable({
     data,
     columns,
@@ -207,7 +208,6 @@ export default function FeeBillingDatatable({ data, setGrade, grade }) {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  console.log(data);
   return (
     <div className="w-full">
       <div className="flex gap-2 items-center py-4">
@@ -231,7 +231,9 @@ export default function FeeBillingDatatable({ data, setGrade, grade }) {
             className="p-1.75  border-gray-500 border rounded-lg"
           >
             {classLabels.map((grade) => (
-              <option value={grade.grade}>{grade.label}</option>
+              <option key={grade.grade} value={grade.grade}>
+                {grade.label}
+              </option>
             ))}
           </select>
           <DropdownMenuContent className="bg-white" align="end">
@@ -253,7 +255,7 @@ export default function FeeBillingDatatable({ data, setGrade, grade }) {
       </div>
 
       <div className="rounded-md border">
-        <Table className="text-sm ">
+        <Table className="text-sm mb-3 ">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -273,16 +275,21 @@ export default function FeeBillingDatatable({ data, setGrade, grade }) {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  onClick={() => {
+                    navigate("/billing/actions", {
+                      state: { data: row.original },
+                    });
+                  }}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
-                      className="border p-0 border-gray-300"
+                      className="border cursor-pointer p-0 border-gray-300"
                       key={cell.id}
                     >
                       {flexRender(

@@ -56,7 +56,6 @@ function PersonalInfo() {
       .map((subject) => subject.label)
       .join(",");
   }
-  console.log("self data", selfDocument);
   return (
     <section
       className="flex flex-wrap flex-col sm:flex-row gap-8 sm:flex-nowrap mt-5 w-full sm:mt-8"

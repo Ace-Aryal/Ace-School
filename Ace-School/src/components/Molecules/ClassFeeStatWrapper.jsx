@@ -9,7 +9,6 @@ function ClassFeeStatWrapper() {
   const [grade, setGrade] = useState("nursery");
 
   const [month, setMonth] = useState(monthValue);
-  console.log(grade, month);
 
   return (
     <div className="w-full ">

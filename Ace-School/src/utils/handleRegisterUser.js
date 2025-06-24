@@ -26,9 +26,9 @@ export const registerUser = async (
       .toLowerCase()
       .replaceAll(" ", "");
     name = data.studentName;
-    feeId = `${data.studentName.replaceAll(" ", "_")}_${data.grade}_${
-      data.rollNo
-    }`
+    feeId = `${data.studentName.replace(" ", "_").replaceAll(" ", "")}_${
+      data.grade
+    }_${data.rollNo}`
       .toLowerCase()
       .replaceAll(" ", "");
     const studentData = JSON.parse(JSON.stringify(data));
@@ -83,8 +83,6 @@ export const registerUser = async (
   }
 
   try {
-    console.log(documentData);
-
     const [userCollectionAlreadyExists, userMetadataCollectionExists] =
       await Promise.all([
         getUserDocumentFn(email),
@@ -178,11 +176,8 @@ export const registerUser = async (
       return showErrorToast("Failed to fetch fee template");
     }
     const miscellenous = parseFloat(FeeTemplateResponse.miscellenous);
-    console.log("ftr", FeeTemplateResponse);
-    console.log(data.grade);
     const alphabeticalGrade = classMapFromNumericToAlphanumeric[data.grade];
     const gradeFees = JSON.parse(FeeTemplateResponse[alphabeticalGrade]);
-    console.log(gradeFees, "gradeFees");
     const admissionFee =
       data.admission.toLowerCase() === "new"
         ? gradeFees.newAdmission
@@ -226,7 +221,6 @@ export const registerUser = async (
       disc,
       scholarship,
     } = feeDataWithoutRecordFields;
-    console.log("fee data w/0", feeDataWithoutRecordFields);
     const calculateMonthly = (month, total) => {
       return {
         month,
@@ -368,7 +362,6 @@ export const registerUser = async (
 
       transactionsRecord: {},
     };
-    console.log(feeDataWithRecordFields, "with records");
 
     const {
       response: createFeeDocumentResponse,

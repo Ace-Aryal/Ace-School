@@ -73,7 +73,6 @@ export function useAttendenceQuery(attendeesRole, grade) {
         queryFn: async () => await databaseService.getAllTeachersDocument(),
       });
       const formattedData = data?.sort((a, b) => a.teacherId - b.teacherId);
-      console.log(formattedData);
       return { data: formattedData, isLoading, isError };
     }
   }

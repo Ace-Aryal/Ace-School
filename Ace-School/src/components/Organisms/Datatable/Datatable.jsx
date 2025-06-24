@@ -95,7 +95,6 @@ export function DataTable({
   if (error) {
     return <ErrorPage />;
   }
-  console.log(data);
 
   return (
     <div className="w-full  bg-gray-50 shadow-xl shadow-gray-800 rounded-2xl  p-5 px-10 mt-4">

@@ -70,8 +70,6 @@ const UpdateScheduleTable = () => {
         switch (period) {
           case "1":
             {
-              console.log(key, data[element]);
-
               const subjectArray = data[element];
               period1 = {
                 ...period1,
@@ -151,7 +149,6 @@ const UpdateScheduleTable = () => {
         period6,
         period7,
       ];
-      console.log("updated", updatedData);
 
       await databaseService.updateClassSchedule(updatedData);
     } catch (error) {

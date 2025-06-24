@@ -38,8 +38,6 @@ export const updateUser = async (
   let updatedDocument;
   let feeId;
   if (userRole.toLowerCase() === "student") {
-    console.log(data);
-
     email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`
       .toLowerCase()
       .replaceAll(" ", "");
@@ -64,7 +62,6 @@ export const updateUser = async (
     };
   }
   if (userRole.toLowerCase() === "teacher") {
-    console.log(data.subjectsTaught);
     email = data.email;
     name = data.teacherName;
     navigationLocation = "/view-teachers";
@@ -90,12 +87,9 @@ export const updateUser = async (
   }
 
   try {
-    console.log(email, originalEmail);
-
     if (email !== originalEmail) {
       const emailAlreadyExists = await databaseService.getUserDocument(email);
 
-      console.log(emailAlreadyExists);
       if (emailAlreadyExists.total !== 0) {
         showErrorToast("Updated email already exists in database");
         return;
@@ -149,11 +143,8 @@ export const updateUser = async (
       return showErrorToast("Failed to fetch fee template");
     }
     const miscellenous = parseFloat(FeeTemplateResponse.miscellenous);
-    console.log("ftr", FeeTemplateResponse);
-    console.log(data.grade);
     const alphabeticalGrade = classMapFromNumericToAlphanumeric[data.grade];
     const gradeFees = JSON.parse(FeeTemplateResponse[alphabeticalGrade]);
-    console.log(gradeFees, "gradeFees");
     const admissionFee =
       data.admission.toLowerCase() === "new"
         ? gradeFees.newAdmission
@@ -195,7 +186,6 @@ export const updateUser = async (
       disc,
       scholarship,
     } = feeDataWithoutRecordFields;
-    console.log("fee data w/0", feeDataWithoutRecordFields);
     const calculateMonthly = (month, total) => {
       return {
         month,
@@ -338,8 +328,6 @@ export const updateUser = async (
       transactionsRecord: {},
     };
 
-    console.log(feeDataWithRecordFieldsUpdated, "with records");
-    console.log("fee id update", feeId);
     const {
       response: createFeeDocumentResponse,
       error: createFeeDocumentError,

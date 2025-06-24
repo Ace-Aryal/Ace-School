@@ -14,7 +14,6 @@ function FeeBillingDatatableWrapper() {
   } = useQuery({
     queryKey: ["classFeeStat", grade],
     queryFn: async () => {
-      console.log(grade);
       const response = await databaseService.getClassFeeStats(grade);
       return response;
     },
@@ -26,16 +25,34 @@ function FeeBillingDatatableWrapper() {
     return <div className="w-full h-full">Loading....</div>;
   }
 
-  console.log(studentsAttedanceRecods, "att rec");
   let studentFeeStatusArray = [];
   if (studentsAttedanceRecods.documents.length > 0) {
     const monthlyRecords = studentsAttedanceRecods.documents.map((document) => {
-      const [fname, lname, grade, roll] = document.$id.split("_");
+      const splittedArray = document.$id.split("_");
+      const studentDetails = {
+        fname: splittedArray[0],
+        lname: "",
+        mname: "",
+        roll: "",
+        grade: "",
+      };
+      if (splittedArray.length === 5) {
+        studentDetails.mname = splittedArray[1];
+        studentDetails.lname = splittedArray[2];
+        studentDetails.roll = splittedArray[3];
+        studentDetails.grade = splittedArray[4];
+      } else {
+        studentDetails.lname = splittedArray[1];
+        studentDetails.roll = splittedArray[2];
+        studentDetails.grade = splittedArray[3];
+      }
+
       return {
         monthlyRecord: [...JSON.parse(document.monthlyRecords)],
-        name: fname + " " + lname,
-        grade,
-        roll,
+        name: studentDetails.fname + " " + studentDetails.lname,
+        grade: studentDetails.grade,
+        roll: studentDetails.roll,
+        studentDocument: document,
       };
     });
 
@@ -48,8 +65,8 @@ function FeeBillingDatatableWrapper() {
         monthDue: 0,
         totalPaid: 0,
         totalDue: 0,
+        studentDoc: student.studentDocument,
       };
-      console.log("student", student);
       for (let index = 0; index < student.monthlyRecord.length; index++) {
         const recordMonth = student.monthlyRecord[index];
         studentFeeStatusObject.totalPaid += recordMonth.paid;

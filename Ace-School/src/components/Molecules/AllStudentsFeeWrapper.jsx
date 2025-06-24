@@ -10,7 +10,6 @@ function ClassFeeStatWrapper() {
   const monthInteger = new NepaliDate().getMonth();
   const monthValue = monthMapperByOrder(monthInteger).value;
   const [month, setMonth] = useState(monthValue);
-  console.log(grade, month);
 
   return (
     <div className="w-full ">

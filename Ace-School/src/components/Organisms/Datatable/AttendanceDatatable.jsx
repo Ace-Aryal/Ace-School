@@ -430,7 +430,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
 
   const grades = Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`);
   const handleAttendence = async (data) => {
-    console.log("attendance data", data);
     const now = new NepaliDate().toString().trim().slice(0, 10);
     //handle attendances
     function createBatchAttendencePromise(data) {
@@ -451,7 +450,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
       let isFailed = true;
       let count = 0;
       while (count < 5 && isFailed) {
-        console.log(count);
         let data = {};
         failedPromises.forEach((promise) => {
           data = { ...data, ...promise.value?.sentData };
@@ -471,9 +469,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
         const Report = JSON.parse(getResponse.Report);
         if (attendeesRole.toLowerCase() === "student") {
           data = { ...JSON.parse(getResponse.Report), ...data };
-          console.log("resp", JSON.parse(getResponse.Report));
         }
-        console.log("data", data);
         const { response, _error } = await catchError(() =>
           databaseService.updateAttendenceRecords(collectionID, now, data)
         );
@@ -489,7 +485,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
           Report: JSON.stringify(data),
         })
       );
-      console.log(response, error);
       if (!response) {
         return showErrorToast("Couldn't add to today record! Retry");
       }
@@ -516,7 +511,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
         const classesAttendanceObject = {
           [grade]: classAttendenceRecordArray,
         };
-        console.log("obj", classesAttendanceObject);
         const collectionId = config.studentAttendenceCollectionId;
         getOrCreateAttendenceDocument(collectionId, classesAttendanceObject);
       }
@@ -533,7 +527,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
           id: staffRecord.staffId,
           att: staffRecord.attendance,
         }));
-        console.log(staffAttendenceRecordArray);
         const collectionId = config.staffAttendenceCollectionId;
         getOrCreateAttendenceDocument(collectionId, staffAttendenceRecordArray);
       }
@@ -550,7 +543,6 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
           id: teacherRecord.teacherId,
           att: teacherRecord.attendance,
         }));
-        console.log(teacherAttendenceRecordArray);
         const collectionId = config.teacherAttendenceCollectionId;
         getOrCreateAttendenceDocument(
           collectionId,
@@ -666,8 +658,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
     //     let failedResult = response.filter(
     //       (result) => result.status === "rejected"
     //     );
-    //     console.log(failedResult);
-
+    //
     //     promises = failedResult.map((result) => {
     //       const { collectionId, documentId, adjustDocument, userIdentifier } =
     //         result.sentData;
@@ -687,10 +678,8 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
     //       `Couldn't register all attendence retry for ${failedUsers.join(",")}`
     //     );
     //   }
-    // console.log(attendanceReport, "att rep");
-    // const updatedReport = JSON.stringify(attendanceReport);
-    // console.log(reportCollectionId, reportDocumentId);
-    // const reportResult = await databaseService.updateAttendenceRecords(
+    //     // const updatedReport = JSON.stringify(attendanceReport);
+    //     // const reportResult = await databaseService.updateAttendenceRecords(
     //   reportCollectionId,
     //   reportDocumentId,
     //   { Report: updatedReport }

@@ -44,7 +44,6 @@ function StudentCharts({ feeDocumentId, noLabels }) {
   useEffect(() => {
     if (FeeDocumet) {
       const monthlyRecords = JSON.parse(FeeDocumet.monthlyRecords);
-      console.log(FeeDocumet, "fee doc", monthlyRecords);
       statObject.dueFees = 0;
       statObject.dueTotal = 0;
       statObject.paidFees = 0;

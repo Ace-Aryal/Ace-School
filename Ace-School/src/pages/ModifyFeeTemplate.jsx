@@ -58,7 +58,6 @@ function ModifyFeeTemplate() {
         miscellenous: parseFloat(formData.miscellenous),
       };
     }
-    console.log(adjustData, "adjust");
     const { response } = await catchError(() =>
       databaseService.modifyFeeTemplate(adjustData)
     );

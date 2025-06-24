@@ -61,7 +61,6 @@ export default function StudentSelfBillingViewPage() {
     tuitionFees,
     uniform,
   } = FeeDocumet;
-  console.log(monthlyRecords);
   const chartData = [
     { feeCategory: "Admission ", amount: admissionFees, fill: "#4ade80" }, // green-400
     {

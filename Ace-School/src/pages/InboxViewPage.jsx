@@ -8,7 +8,6 @@ const InboxViewPage = () => {
   const inbox = useSelector((state) =>
     state?.inbox?.inbox.find((message) => message?.$id === id)
   );
-  console.log(inbox);
 
   const { fullName, $createdAt, message, phone } = inbox;
 

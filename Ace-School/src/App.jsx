@@ -47,6 +47,7 @@ import ViewAttendancePage from "./pages/ViewAttendancePage";
 import ViewIndividualAttendancePage from "./pages/ViewIndividualAttendanceRecordPage";
 import ModifyFeeTemplate from "./pages/ModifyFeeTemplate";
 import StudentSelfBillingViewPage from "./pages/StudentSelfBillingViewPage";
+import BillingActions from "./pages/BillingActions";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
@@ -54,7 +55,6 @@ function App() {
   const navigate = useNavigate();
 
   async function checkAuth() {
-    console.log("checking auth");
     try {
       const currentuser = await authService.getCurrentUser();
       let currentUserDocument;
@@ -77,7 +77,6 @@ function App() {
           })
         );
       }
-      console.log(roles, "roles");
     } catch (error) {
       dispatch(
         setUser({
@@ -95,19 +94,18 @@ function App() {
 
   useEffect(() => {
     const handleKeys = (e) => {
-      // e.preventDefault();
-      console.log("checking keys");
+      e.preventDefault();
 
-      if (e.key === "F3") {
-        e.preventDefault(); // optional
-        // Your custom logic for back
-        navigate(-1);
-      }
-      if (e.key === "F4") {
-        e.preventDefault(); // optional
-        // Your custom logic for forward
-        navigate(1);
-      }
+      // if (e.key === "F3") {
+      //   e.preventDefault(); // optional
+      //   // Your custom logic for back
+      //   navigate(-1);
+      // }
+      // if (e.key === "F4") {
+      //   e.preventDefault(); // optional
+      //   // Your custom logic for forward
+      //   navigate(1);
+      // }
     };
 
     document.addEventListener("keydown", handleKeys);
@@ -155,6 +153,7 @@ function App() {
             element={<ViewIndividualAttendancePage />}
           />
           <Route path="billing" element={<BillingPage />} />
+          <Route path="billing/actions" element={<BillingActions />} />
           <Route
             path="student-self-billing-view"
             element={<StudentSelfBillingViewPage />}

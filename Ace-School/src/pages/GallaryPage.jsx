@@ -57,8 +57,6 @@ const GallaryPage = () => {
       </main>
     );
 
-  console.log(data);
-
   return (
     <main
       id="container"

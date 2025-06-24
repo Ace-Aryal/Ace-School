@@ -47,7 +47,6 @@ export function SimpleTable() {
   if (isError) {
     return <ErrorPage />;
   }
-  console.log(data);
   return (
     <Table className="border  w-full border-gray-500 ">
       <TableHeader>

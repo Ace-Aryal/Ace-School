@@ -83,7 +83,6 @@ export const studentColumns = [
                 event.preventDefault();
               }}
               onClick={async () => {
-                console.log(row.original);
                 dispatch(setLoading());
                 handleDocumentDelete({
                   documentId: $id,
@@ -134,7 +133,6 @@ export const studentColumns = [
     accessorKey: "attendance",
     header: "Attendance",
     cell: ({ row }) => {
-      console.log(row.original);
       const attendance = row
         .getValue("attendance")
         ?.toLowerCase()
@@ -284,7 +282,6 @@ export const staffColumns = [
                 event.preventDefault();
               }}
               onClick={async () => {
-                console.log(row.original);
                 dispatch(setLoading());
                 handleDocumentDelete({
                   documentId: $id,
@@ -441,7 +438,6 @@ export const teacherColumns = [
                 event.preventDefault();
               }}
               onClick={async () => {
-                console.log(row.original);
                 dispatch(setLoading());
                 handleDocumentDelete({
                   documentId: $id,
@@ -550,7 +546,6 @@ export const teacherColumns = [
     header: "Qualification", // qualificationRequired
     cell: ({ row }) => {
       const qualification = row.getValue("qualification") || "null";
-      console.log(qualification);
 
       const capitalized = capitalize(qualification);
       return <span>{capitalized}</span>; // attendanceRecordRequired (Link to detailed table)

@@ -16,7 +16,6 @@ const AttendenceViewCard = ({ userRole, ...className }) => {
     queryFn: async () => {
       const now = new NepaliDate().toString().trim().slice(0, 10);
       let collectionId;
-      console.log(userRole);
       if (userRole.toLowerCase() === "staff") {
         collectionId = config.staffAttendenceCollectionId;
       }

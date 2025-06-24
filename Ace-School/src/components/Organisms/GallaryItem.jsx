@@ -4,7 +4,6 @@ import storageService from "@/appwrite/storage/storage";
 import { useQuery } from "@tanstack/react-query";
 const GallaryItem = () => {
   const { id } = useParams();
-  console.log(id);
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["image"],

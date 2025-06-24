@@ -76,8 +76,6 @@ export default function RTE(props) {
 
   const { username: author, roles } = useSelector((state) => state.auth.user);
   const handleCreate = async (data) => {
-    console.log("data", data);
-
     const response = await databaseService.createNotice({
       author,
       message: data.content,
@@ -95,8 +93,6 @@ export default function RTE(props) {
     showErrorToast("Error Publishing Notice");
   };
   const handleUpdate = async (data) => {
-    console.log("data", data);
-
     const response = await databaseService.updateNotice({
       adjustObject: {
         author,

@@ -70,7 +70,6 @@ class AuthService {
         email,
         "http://localhost:5173/recover-account"
       );
-      console.log("here");
 
       return true;
     } catch (error) {

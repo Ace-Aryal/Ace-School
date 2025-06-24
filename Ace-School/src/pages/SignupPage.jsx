@@ -21,7 +21,6 @@ export default function SignupPage() {
   const [isShowingPassword, setIshowingPassword] = useState(false);
   const password = watch("password");
   async function handleSignup(data) {
-    console.log(data);
     try {
       const isRegistered = await databaseService.getUserDocument(data.email);
       if (!isRegistered || isRegistered?.total === 0) {
