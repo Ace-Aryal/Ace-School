@@ -17,7 +17,7 @@ const UpdateStaffPage = () => {
   const navigate = useNavigate();
   const { originalData } = location.state;
   const staffsFormField = getStaffFormField();
-  const { username, roles, emal } = useSelector((state) => state.auth.user);
+  const { username, roles } = useSelector((state) => state.auth.user);
   const originalEmail = originalData.email;
   const collectionID = originalData.$collectionId;
   const documentID = originalData.$id;

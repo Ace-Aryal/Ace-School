@@ -65,6 +65,7 @@ function FeeBillingDatatableWrapper() {
     });
 
     studentFeeStatusArray = monthlyRecords.map((student) => {
+      console.log(student, "penalties");
       const studentFeeStatusObject = {
         name: student.name,
         grade: student.grade,
@@ -72,7 +73,7 @@ function FeeBillingDatatableWrapper() {
         monthPaid: 0,
         monthDue: 0,
         totalPaid: 0,
-        totalDue: 0,
+        totalDue: student.studentDocument.penalties || 0,
         studentDoc: student.studentDocument,
       };
       for (let index = 0; index < student.monthlyRecord.length; index++) {

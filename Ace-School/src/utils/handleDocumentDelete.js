@@ -69,6 +69,13 @@ export const handleDocumentDelete = async ({
     }
 
     showSuccessToast("User document deleted sucessfully");
+    const activityLogCreationResp = await catchError(() =>
+      databaseService.createActivityLog(
+        `delwted user`,
+        `deleted user with email ${email}`,
+        "admin"
+      )
+    );
   } catch (error) {
     showErrorToast("Error deleting user data");
     console.error(error);
