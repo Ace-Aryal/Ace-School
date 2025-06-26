@@ -26,19 +26,19 @@ const AlertDialogComponent = ({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   return (
-    <AlertDialog className=" " open={open}>
+    <AlertDialog className="" open={open}>
       <AlertDialogTrigger
         onClick={() => {
           setOpen(true);
         }}
         className={twMerge(
-          `bg-red-100 hover:bg-red-200 text-red-600 rounded-lg px-4 py-2 `,
+          `bg-red-100 hover:bg-red-200 text-red-600 rounded-lg px-4 py-2 w-full `,
           continueButtonColor
         )}
       >
         {buttonText}
       </AlertDialogTrigger>
-      <AlertDialogContent className=" bg-white ">
+      <AlertDialogContent className=" bg-white">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>

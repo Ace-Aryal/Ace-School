@@ -174,7 +174,7 @@ export const registerUser = async (
     ) {
       await databaseService.deleteCollection(
         userCollectionResponse.value.$collectionId,
-        $id
+        userCollectionResponse.value.$id
       );
       return showErrorToast("Error registering user , please retry");
     }
@@ -184,7 +184,7 @@ export const registerUser = async (
     ) {
       await databaseService.deleteCollection(
         userMetaDataCollectionResponse.value.$collectionId,
-        $id
+        userMetaDataCollectionResponse.$id
       );
       return showErrorToast("Error registering user , please retry");
     }
@@ -213,6 +213,7 @@ export const registerUser = async (
     const uniform = parseFloat(gradeFees.uniform);
 
     const feeDataWithoutRecordFields = {
+      name: data.studentName,
       grade: data.grade,
       rollNo: parseInt(data.rollNo),
       tuitionFees: parseFloat(parseFloat(gradeFees?.tuition ?? 0).toFixed(2)),
