@@ -110,9 +110,9 @@ export const getStudentFormFiled = () => {
     },
     {
       name: "transportation",
-      label: "Transportation Fee",
+      label: "Transportation Fee (min:0)",
       type: "number",
-      required: false,
+      required: true,
     },
     {
       name: "scholarship",
@@ -122,7 +122,7 @@ export const getStudentFormFiled = () => {
     },
     {
       name: "discount",
-      label: "Discount(Nrs)",
+      label: "Discount(Nrs)| note: over scholarship",
       type: "number",
       required: false,
     },

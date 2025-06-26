@@ -61,7 +61,7 @@ const UpdateStudentPage = () => {
             originalJoiningDate,
             documentID,
             userRole: "student",
-            authorInfo: `${username}, Role:${roles[0]}, Email:${email}`,
+            authorInfo: `${username}, Role:${roles[0]}`,
           })
         )}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
@@ -87,7 +87,9 @@ const UpdateStudentPage = () => {
                   step="0.01"
                   disabled={
                     formField.name === "studentName" ||
-                    formField.name === "rollNo"
+                    formField.name === "rollNo" ||
+                    formField.name === "discount" ||
+                    formField.name === "scholarship"
                   }
                   type={formField.type}
                   id={formField.name}
@@ -148,7 +150,9 @@ const UpdateStudentPage = () => {
                   {formField.label}
                 </label>
                 <select
-                  disabled={formField.name === "grade"}
+                  disabled={
+                    formField.name === "grade" || formField.name === "admission"
+                  }
                   defaultChecked={originalData[formField.name]}
                   defaultValue={originalData[formField.name]}
                   {...register(formField.name, {

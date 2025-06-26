@@ -5,6 +5,8 @@ import databaseService from "@/appwrite/Database/database";
 import { catchError } from "./catchError";
 import { classMapFromNumericToAlphanumeric } from "./class";
 import config from "@/appwrite";
+import NepaliDate from "nepali-datetime";
+import { monthMap } from "./month";
 export const updateUser = async (
   data,
   {
@@ -142,218 +144,85 @@ export const updateUser = async (
       return;
     }
     // update fee bill
+    const { response: getRecordDocRes, error } = await catchError(() =>
+      databaseService.getDocument(config.feeRecordColletionId, feeId)
+    );
+    if (!response) {
+      return showErrorToast("Failed to get fee data, retry");
+    }
+    console.log(getRecordDocRes, "get resp");
+
     const { response: FeeTemplateResponse, error: FeeTemplateError } =
       await catchError(databaseService.getFeeTemplate);
     if (!FeeTemplateResponse || FeeTemplateError) {
       return showErrorToast("Failed to fetch fee template");
     }
-    const miscellenous = parseFloat(FeeTemplateResponse.miscellenous);
     const alphabeticalGrade = classMapFromNumericToAlphanumeric[data.grade];
     const gradeFees = JSON.parse(FeeTemplateResponse[alphabeticalGrade]);
-    const admissionFee =
-      data.admission.toLowerCase() === "new"
-        ? gradeFees.newAdmission
-        : gradeFees.oldAdmission;
-    const hostelFee =
-      data.hostel.toLowerCase() === "yes" ? gradeFees.hostel : 0;
-    const uniform = parseFloat(gradeFees.uniform);
-
-    const feeDataWithoutRecordFields = {
-      tuitionFees: parseFloat(parseFloat(gradeFees?.tuition ?? 0).toFixed(2)),
-      admissionFees: parseFloat(parseFloat(admissionFee ?? 0).toFixed(2)),
-      examinationFees: parseFloat(
-        parseFloat(gradeFees?.examination ?? 0).toFixed(2)
-      ),
-      labFees: parseFloat(parseFloat(gradeFees?.labFee ?? 0).toFixed(2)),
-      hostelFees: parseFloat(parseFloat(hostelFee ?? 0).toFixed(2)),
-      registrationFees: parseFloat(
-        parseFloat(gradeFees?.nebRegistration ?? 0).toFixed(2)
-      ),
-      transportationFees: parseFloat(
-        parseFloat(data.transportation || 0).toFixed(2)
-      ),
-      miscellenous: parseFloat(parseFloat(miscellenous ?? 0).toFixed(2)),
-      uniform: parseFloat(parseFloat(uniform ?? 0).toFixed(2)),
-      disc: parseFloat(parseFloat(data?.discount || 0).toFixed(2)),
-      scholarship: parseFloat(parseFloat(data?.scholarship || 0).toFixed(2)),
-    };
-
+    const updatedHostelFee =
+      data.hostel.toLowerCase() === "yes" ? Number(gradeFees.hostel) : 0;
     const {
-      tuitionFees,
-      admissionFees,
-      examinationFees,
-      uniform: parsedUniform,
-      miscellenous: parsedMiscellenous,
-      labFees,
-      hostelFees,
-      registrationFees,
       transportationFees,
-      disc,
       scholarship,
-    } = feeDataWithoutRecordFields;
-    const calculateMonthly = (month, total) => {
-      return {
-        month,
-        totalPayable: parseFloat(total.toFixed(2)),
-        due: parseFloat(total.toFixed(2)),
-        paid: 0,
-      };
-    };
-    const feeDataWithRecordFieldsUpdated = {
-      ...feeDataWithoutRecordFields,
-      monthlyRecords: [
-        JSON.stringify([
-          calculateMonthly(
-            "Baisakh",
-            tuitionFees +
-              admissionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              parsedMiscellenous +
-              parsedUniform
-          ),
-          calculateMonthly(
-            "Jestha",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Ashar",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Shrawan",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              examinationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Bhadra",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Ashoj",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Kartik",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Mangsir",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              examinationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Poush",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              registrationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Magh",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Falgun",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-          calculateMonthly(
-            "Chaitra",
-            tuitionFees +
-              labFees +
-              hostelFees +
-              transportationFees +
-              examinationFees +
-              parsedMiscellenous -
-              disc / 12 -
-              (tuitionFees + labFees) * ((100 - scholarship) / 100)
-          ),
-        ]),
-      ],
-
-      transactionsRecord: {},
-    }; // TO FIX LATER (OLD DATA SANGA UPDATE GARNU PARXA NEW BANAUNI HAINA)
-
+      disc,
+      hostelFees,
+      monthlyRecords,
+    } = getRecordDocRes;
     const {
-      response: createFeeDocumentResponse,
-      error: createFeeDocumentError,
-    } = await catchError(() =>
-      databaseService.updateUserDocument(
-        config.feeRecordColletionId,
-        feeId,
-        feeDataWithRecordFieldsUpdated
-      )
-    );
-    console.log(
-      "cerate fee doc resp",
-      createFeeDocumentResponse,
-      createFeeDocumentError
-    );
-    if (!createFeeDocumentResponse) {
-      return showErrorToast(`Error creating fee document`);
+      transportation: updatedTransportation,
+      discount: updatedDiscount,
+      scholarship: updatedScholarship,
+    } = data;
+    console.log(hostelFees, updatedHostelFee);
+    if (
+      transportationFees === Number(updatedTransportation || 0) &&
+      disc === Number(updatedDiscount) &&
+      scholarship === Number(updatedScholarship) &&
+      hostelFees === Number(updatedHostelFee)
+    ) {
+      return showSuccessToast("Document Updated sucessfully");
     }
+
+    const monthIndex = new NepaliDate().getMonth();
+    const monthlyRecordsArray = JSON.parse(monthlyRecords);
+    const updatedMonthlyRecordArray = monthlyRecordsArray.map(
+      (month, index) => {
+        if (index < monthIndex) {
+          return month;
+        }
+        const originalTotalPayable =
+          month.totalPayable - transportationFees - hostelFees; // this removes extra fees
+
+        const updatedTotalpayable =
+          originalTotalPayable +
+          Number(updatedTransportation) +
+          updatedHostelFee;
+        const updatedDue = updatedTotalpayable - month.paid;
+        return {
+          ...month,
+          due: updatedDue,
+          totalPayable: updatedTotalpayable,
+        };
+      }
+    );
+    console.log(monthlyRecordsArray, "rcds");
+
+    console.log(updatedMonthlyRecordArray, "arr");
+
+    const { response: updateFeeRes } = await catchError(() =>
+      databaseService.updateUserDocument(config.feeRecordColletionId, feeId, {
+        transportationFees: parseFloat(updatedTransportation),
+        hostelFees: parseFloat(updatedHostelFee),
+        disc: parseFloat(updatedDiscount),
+        scholarship: parseFloat(updatedScholarship),
+        monthlyRecords: [JSON.stringify(updatedMonthlyRecordArray)],
+      })
+    );
     showSuccessToast("Document Updated sucessfully");
-    reset();
-    const { error } = await catchError(() =>
+    if (!updateFeeRes) {
+      return showErrorToast("Server error, couldn't update fees, retry later");
+    }
+    const activityLogCreationResp = await catchError(() =>
       databaseService.createActivityLog(
         `updated ${userRole}`,
         description,
@@ -361,7 +230,7 @@ export const updateUser = async (
       )
     );
 
-    navigate(navigationLocation);
+    // navigate(navigationLocation);
   } catch (error) {
     console.error(error);
     showErrorToast("Failed to update document");
