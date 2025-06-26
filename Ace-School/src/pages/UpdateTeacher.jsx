@@ -25,9 +25,7 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
-import databaseService from "@/appwrite/Database/database";
-import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
-import { registerUser } from "@/utils/handleRegisterUser";
+
 import ErrorPage from "./ErrorPage";
 import { useLocation, useNavigate } from "react-router";
 import { updateUser } from "@/utils/handleUpdateUser";
@@ -176,10 +174,9 @@ export default function UpdateTeacherPage() {
   const location = useLocation();
   const { originalData } = location.state;
   const navigate = useNavigate();
-  const { roles } = useSelector((state) => state?.auth?.user);
+  const { username, roles, emal } = useSelector((state) => state.auth.user);
   const collectionID = originalData.$collectionId;
   const documentID = originalData.$id;
-
   const originalDOB = originalData.DOB;
   const originalEmail = originalData.email;
   const originalJoiningDate = originalData.joiningDate;
@@ -228,6 +225,7 @@ export default function UpdateTeacherPage() {
             userRole: "teacher",
             originalDOB,
             originalJoiningDate,
+            authorInfo: `${username}, Role:${roles[0]}`,
           });
         })}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"

@@ -173,7 +173,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
         );
       },
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("studentName")}</div>
+        <div className="capitalize">{row.getValue("studentName")}</div>
       ),
     },
   ];
@@ -280,7 +280,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
         );
       },
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("teacherName")}</div>
+        <div className="capitalize">{row.getValue("teacherName")}</div>
       ),
     },
   ];
@@ -386,7 +386,7 @@ export function AttendanceDatatable({ attendeesRole, setGrade, data, grade }) {
         );
       },
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("fullName")}</div>
+        <div className="capitalize">{row.getValue("fullName")}</div>
       ),
     },
   ];

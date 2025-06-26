@@ -33,7 +33,7 @@ const ChangePasswordPage = () => {
     showErrorToast("Error changing passwprd");
   };
   return (
-    <div class="min-h-screen bg-gray-100 text-gray-900 w-full flex justify-center p-2 sm:p-16 sm:px-20">
+    <div class="grow h-full bg-gray-100 text-gray-900 w-full flex justify-center p-2 sm:p-16 sm:px-20">
       <div class="max-w-screen-xl  bg-white shadow -lg flex justify-center flex-1">
         <div class=" ">
           <div class="mt-12 flex flex-col items-center">

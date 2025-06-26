@@ -51,8 +51,8 @@ function Navbar() {
       className={`antialiased w-full z-20 ${
         isAuthenticated
           ? "border-b navBarTransition border-gray-300 backdrop-blur-md bg-white"
-          : "bg-indigo-900 lg:h-[10vh]"
-      } shadow-sm fixed top-0 z-10`}
+          : "bg-indigo-900 "
+      } shadow-sm fixed top-0 z-10 h-14`}
     >
       <nav className="lg:px-16 px-6 flex flex-wrap items-center justify-between lg:py-0 py-2">
         <div className="flex items-center flex-1">

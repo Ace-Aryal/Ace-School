@@ -12,9 +12,9 @@ import ErrorPage from "./ErrorPage";
 import Spinner from "@/components/Atoms/Spinner";
 const AddStaffsPage = () => {
   const staffsFormField = getStaffFormField();
-  const { roles } = useSelector((state) => state?.auth?.user);
   const { getStaffsDocument, createStaffsDocument } = databaseService;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
+  const { username, roles, emal } = useSelector((state) => state.auth.user);
 
   const {
     register,
@@ -40,6 +40,7 @@ const AddStaffsPage = () => {
             errorDeletingDuplicate,
             setErrorDeletingDuplicate,
             reset,
+            authorInfo: `${username}, Role:${roles[0]}`,
           });
         })}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"

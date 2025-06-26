@@ -14,7 +14,7 @@ const ErrorPage = () => {
   if (loading) {
     return (
       <div
-        class={`flex w-full space-x-2 justify-center items-center  h-screen `}
+        class={`flex w-full space-x-2 justify-center items-center  grow h-screen `}
       >
         <span class="sr-only">Loading...</span>
         <div class="h-8 w-8 bg-zinc-800 rounded-full animate-bounce [animation-delay:-0.3s]"></div>

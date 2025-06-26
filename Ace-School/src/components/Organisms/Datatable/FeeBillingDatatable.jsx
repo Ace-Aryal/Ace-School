@@ -10,7 +10,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { ArrowUpDown, ChevronDown, Loader, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  Eye,
+  Loader,
+  MoreHorizontal,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -32,7 +38,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { classLabels } from "@/utils/class";
-import { NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const columns = [
   // {
@@ -115,7 +122,7 @@ const columns = [
         row.getValue("monthPaid")
       );
       return (
-        <div className=" bg-green-100 p-2 text-green-700 font-medium">
+        <div className=" bg-emerald-100 p-2 text-emerald-700 font-medium">
           रु {formatted}
         </div>
       );
@@ -143,7 +150,7 @@ const columns = [
         row.getValue("totalPaid")
       );
       return (
-        <div className=" font-medium bg-green-100 p-2 text-green-700">
+        <div className=" font-medium bg-emerald-100 p-2 text-emerald-700">
           रु {formatted}
         </div>
       );
@@ -179,12 +186,18 @@ const columns = [
   //   },
   // },
 ];
-export default function FeeBillingDatatable({ data, setGrade, grade }) {
+export default function FeeBillingDatatable({
+  data,
+  setGrade,
+  grade,
+  feeTotalsForClass,
+}) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const navigate = useNavigate();
+  const { roles } = useSelector((state) => state.auth.user);
   const table = useReactTable({
     data,
     columns,
@@ -280,9 +293,11 @@ export default function FeeBillingDatatable({ data, setGrade, grade }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   onClick={() => {
-                    navigate("/billing/actions", {
-                      state: { data: row.original },
-                    });
+                    if (roles.includes("account")) {
+                      navigate("/billing/actions", {
+                        state: { data: row.original },
+                      });
+                    }
                   }}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
@@ -314,7 +329,25 @@ export default function FeeBillingDatatable({ data, setGrade, grade }) {
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <div className="space-x-2 text-sm">
+          <span className="bg-red-100 rounded-lg  p-1.75 border border-gray-400 px-2 text-red-700">
+            Total Due :{feeTotalsForClass.totalDue}
+          </span>
+          <span className="bg-emerald-100 rounded-lg  p-1.75 px-2  border border-gray-400 text-emerald-700">
+            Total Paid : {feeTotalsForClass.totalPaid}
+          </span>
+        </div>
+        <div>
+          <Link
+            to={"/billing/students-statements"}
+            className="bg-blue-100  text-blue-600 font-medium rounded-lg px-2 py-1.75 border"
+          >
+            <Button>
+              View Fee Statements <Eye />
+            </Button>
+          </Link>
+        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

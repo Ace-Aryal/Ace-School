@@ -16,12 +16,14 @@ export const updateUser = async (
     originalEmail,
     originalDOB,
     originalJoiningDate,
+    authorInfo,
   }
 ) => {
   // expecting captalized user role
   let formattedDOB;
   let formattedJoiningDate;
   let navigationLocation;
+  let description;
   if (data.DOB !== originalDOB) {
     formattedDOB = data.DOB ? data.DOB.bsDate : "";
   }
@@ -60,6 +62,7 @@ export const updateUser = async (
       scholarship: Number(data.scholarship.trim()),
       DOB: formattedDOB,
     };
+    description = `Registered ${name} grade: ${data.grade} roll: ${data.rollNo}`;
   }
   if (userRole.toLowerCase() === "teacher") {
     email = data.email;
@@ -73,6 +76,7 @@ export const updateUser = async (
       classes: JSON.stringify(data.classes), // Assuming classes is an array of objects {value, label}
       subjectsTaught: JSON.stringify(data.subjectsTaught),
     };
+    description = `Registered ${name} Id: ${data.teacherId}`;
   }
   if (userRole.toLowerCase() === "staff") {
     email = data.email;
@@ -84,6 +88,7 @@ export const updateUser = async (
       joiningDate: formattedJoiningDate,
       DOB: formattedDOB,
     };
+    description = `Registered ${name} Id: ${data.staffId}`;
   }
 
   try {
@@ -326,7 +331,7 @@ export const updateUser = async (
       ],
 
       transactionsRecord: {},
-    };
+    }; // TO FIX LATER (OLD DATA SANGA UPDATE GARNU PARXA NEW BANAUNI HAINA)
 
     const {
       response: createFeeDocumentResponse,
@@ -348,6 +353,13 @@ export const updateUser = async (
     }
     showSuccessToast("Document Updated sucessfully");
     reset();
+    const { error } = await catchError(() =>
+      databaseService.createActivityLog(
+        `updated ${userRole}`,
+        description,
+        authorInfo
+      )
+    );
 
     navigate(navigationLocation);
   } catch (error) {

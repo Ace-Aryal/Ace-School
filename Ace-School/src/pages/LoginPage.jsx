@@ -31,9 +31,6 @@ function LoginPage() {
       const userSession = await authService.login({ ...data });
       const currentuser = await authService.getCurrentUser();
 
-      if (!(userSession || currentuser)) {
-        throw new Error("Failed to log in");
-      }
       // others than admin dont have labels so we need to find role for them with their document
       let currentUserDocument;
       let roles = currentuser.labels;
@@ -68,8 +65,8 @@ function LoginPage() {
   };
 
   return (
-    <section className=" w-full grow grid place-items-center">
-      <div class="flex flex-col w-full items-center h-fit justify-center px-6 py-8 mx-auto lg:py-0 ">
+    <section className=" w-full h-full  grid place-items-center">
+      <div class="flex flex-col w-full  items-center h-fit justify-center px-6 py-8 mx-auto lg:py-0 ">
         <Link
           href="#"
           class="flex items-center mb-6 text-2xl font-semibold text-gray-900"

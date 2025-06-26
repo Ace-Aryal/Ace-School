@@ -27,14 +27,13 @@ const AddStudentsPage = () => {
   });
   const { getStudentDocument, createStudentDocument } = databaseService;
   const [errorDeletingDuplicate, setErrorDeletingDuplicate] = useState(false);
-  const { roles } = useSelector((state) => state?.auth?.user);
-
+  const { username, roles, emal } = useSelector((state) => state.auth.user);
   const studentsFormFields = getStudentFormFiled();
 
   if (
     roles.some(
       (role) =>
-        role.toLowerCase() !== "teacher" && role.toLowerCase() !== "admin"
+        role.toLowerCase() !== "account" && role.toLowerCase() !== "admin"
     )
   ) {
     return <ErrorPage />;
@@ -55,6 +54,7 @@ const AddStudentsPage = () => {
               userRole: "Student",
               setErrorDeletingDuplicate: setErrorDeletingDuplicate,
               errorDeletingDuplicate: errorDeletingDuplicate,
+              authorInfo: `${username}, Role:${roles[0]}`,
             })
         )}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"

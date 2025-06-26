@@ -48,6 +48,8 @@ import ViewIndividualAttendancePage from "./pages/ViewIndividualAttendanceRecord
 import ModifyFeeTemplate from "./pages/ModifyFeeTemplate";
 import StudentSelfBillingViewPage from "./pages/StudentSelfBillingViewPage";
 import BillingActions from "./pages/BillingActions";
+import Activity from "./pages/activity";
+import ActivityLogPage from "./pages/activity";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
@@ -174,6 +176,7 @@ function App() {
           <Route path="inbox" element={<InboxPage />} />
           <Route path="inbox/:id" element={<InboxViewPage />} />
           <Route path="calender" element={<Calenderpage />} />
+          <Route path="activity-logs" element={<ActivityLogPage />} />
           <Route path="change-password" element={<ChangePasswordPage />} />
           <Route path="view-students" element={<ViewStudents />} />
           <Route

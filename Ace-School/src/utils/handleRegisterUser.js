@@ -12,6 +12,7 @@ export const registerUser = async (
     userRole,
     setErrorDeletingDuplicate,
     errorDeletingDuplicate,
+    authorInfo,
   }
 ) => {
   // expecting captalized user role
@@ -20,6 +21,7 @@ export const registerUser = async (
   let email;
   let name;
   let documentData;
+  let description = "Registered new user ";
   let feeId;
   if (userRole === "Student") {
     email = `${data.studentName}${data.grade}${data.rollNo}@sbss.edu`
@@ -46,6 +48,7 @@ export const registerUser = async (
       attendance: "noattendance",
       attendanceRecord: JSON.stringify({}),
     };
+    description = `Registered ${name} grade: ${data.grade} roll: ${data.rollNo}`;
   }
   if (userRole === "Teacher") {
     email = data.email;
@@ -63,6 +66,7 @@ export const registerUser = async (
       subjectsTaught: JSON.stringify(data.subjectsTaught),
       attendanceRecord: JSON.stringify({}),
     };
+    description = `Registered ${name} Id: ${data.teacherId}`;
   }
   if (userRole === "Staff") {
     email = data.email;
@@ -80,6 +84,7 @@ export const registerUser = async (
 
       attendanceRecord: JSON.stringify({}),
     };
+    description = `Registered ${name} Id: ${data.staffId}`;
   }
 
   try {
@@ -139,12 +144,12 @@ export const registerUser = async (
     }
 
     if (errorDeletingDuplicate) {
-      showErrorToast("Error creating user document");
+      showErrorToast("Error creating user document please retry");
       return;
     }
 
     const [userCollectionResponse, userMetaDataCollectionResponse] =
-      await Promise.all([
+      await Promise.allSettled([
         createUserDocmentFn(documentData),
         databaseService.createUserDocment({
           name,
@@ -155,12 +160,33 @@ export const registerUser = async (
 
     if (
       userRole.toLowerCase() !== "student" &&
-      userCollectionResponse.$id &&
-      userMetaDataCollectionResponse.$id
+      userCollectionResponse.status === "fulfilled" &&
+      userMetaDataCollectionResponse.status === "fulfilled"
     ) {
       showSuccessToast(`User registered sucessfully`);
       reset();
       return;
+    }
+
+    if (
+      userCollectionResponse.status === "fulfilled" &&
+      userMetaDataCollectionResponse.status === "rejected"
+    ) {
+      await databaseService.deleteCollection(
+        userCollectionResponse.value.$collectionId,
+        $id
+      );
+      return showErrorToast("Error registering user , please retry");
+    }
+    if (
+      userCollectionResponse.status === "rejected" &&
+      userMetaDataCollectionResponse.status === "fulfilled"
+    ) {
+      await databaseService.deleteCollection(
+        userMetaDataCollectionResponse.value.$collectionId,
+        $id
+      );
+      return showErrorToast("Error registering user , please retry");
     }
 
     const { response: getFeeDocumentResponse, error: getFeeDocumentError } =
@@ -373,23 +399,26 @@ export const registerUser = async (
         feeDataWithRecordFields
       )
     );
-    console.log(
-      "cerate fee doc resp",
-      createFeeDocumentResponse,
-      createFeeDocumentError
-    );
+
     if (!createFeeDocumentResponse) {
       return showErrorToast(
         `Error creating fee document, please try deleting and creating user`
       );
     }
-    if (userCollectionResponse.$id && userMetaDataCollectionResponse.$id) {
-      showSuccessToast(`User registered sucessfully`);
-      reset();
-      return true;
-    }
+    showSuccessToast(`User registered sucessfully`);
+    reset();
+
+    const { response, error } = await catchError(() =>
+      databaseService.createActivityLog(
+        `registered new ${userRole}`,
+        description,
+        authorInfo
+      )
+    );
+
+    return true;
   } catch (error) {
     console.error(error);
-    showErrorToast(`Error registering user`);
+    showErrorToast(`Error registering user ${error.message || ""}`);
   }
 };

@@ -17,7 +17,7 @@ const UpdateStaffPage = () => {
   const navigate = useNavigate();
   const { originalData } = location.state;
   const staffsFormField = getStaffFormField();
-  const { roles } = useSelector((state) => state?.auth?.user);
+  const { username, roles, emal } = useSelector((state) => state.auth.user);
   const originalEmail = originalData.email;
   const collectionID = originalData.$collectionId;
   const documentID = originalData.$id;
@@ -55,6 +55,7 @@ const UpdateStaffPage = () => {
             documentID,
             navigate,
             userRole: "staff",
+            authorInfo: `${username}, Role:${roles[0]}`,
           });
         })}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"

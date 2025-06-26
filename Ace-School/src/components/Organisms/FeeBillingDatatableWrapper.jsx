@@ -22,10 +22,18 @@ function FeeBillingDatatableWrapper() {
     return <p>Error</p>;
   }
   if (isLoading) {
-    return <div className="w-full h-full">Loading....</div>;
+    return (
+      <div className="w-full h-full grid place-items-center">
+        <p>Loading....</p>
+      </div>
+    );
   }
 
   let studentFeeStatusArray = [];
+  const feeTotalsForClass = {
+    totalDue: 0,
+    totalPaid: 0,
+  };
   if (studentsAttedanceRecods.documents.length > 0) {
     const monthlyRecords = studentsAttedanceRecods.documents.map((document) => {
       const splittedArray = document.$id.split("_");
@@ -68,9 +76,11 @@ function FeeBillingDatatableWrapper() {
         studentDoc: student.studentDocument,
       };
       for (let index = 0; index < student.monthlyRecord.length; index++) {
-        const recordMonth = student.monthlyRecord[index];
+        const recordMonth = student.monthlyRecord[index]; // recored month => month in student records
         studentFeeStatusObject.totalPaid += recordMonth.paid;
         studentFeeStatusObject.totalDue += recordMonth.due;
+        feeTotalsForClass.totalDue += recordMonth.paid;
+        feeTotalsForClass.totalDue += recordMonth.due;
         if (recordMonth.month.toLowerCase() === monthValue.toLowerCase()) {
           studentFeeStatusObject.monthPaid = recordMonth.paid;
           studentFeeStatusObject.monthDue = recordMonth.due;
@@ -87,6 +97,7 @@ function FeeBillingDatatableWrapper() {
         grade={grade}
         setGrade={setGrade}
         data={studentFeeStatusArray}
+        feeTotalsForClass={feeTotalsForClass}
       />
     </div>
   );

@@ -15,6 +15,7 @@ import {
   User,
   IdCard,
   ArrowBigRightDash,
+  Activity,
 } from "lucide-react";
 
 import { useSidebar } from "@/components/ui/sidebar";
@@ -115,6 +116,13 @@ const items = [
     icon: Library,
     readers: ["all"],
     writers: ["account", "admin", "principal"],
+  },
+  {
+    title: "Activity logs",
+    url: "/activity-logs",
+    icon: Activity,
+    readers: ["admin", "account"],
+    writers: ["all"],
   },
   {
     title: "Settings",

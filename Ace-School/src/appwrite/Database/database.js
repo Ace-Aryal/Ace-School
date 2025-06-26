@@ -5,6 +5,7 @@ import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import NepaliDate from "nepali-datetime";
 import { catchError } from "@/utils/catchError";
 import authService from "../auth/auth";
+import { todayDate } from "@/utils/datetime";
 const {
   appwriteDatabaseID,
   userMetaDataCollectionID,
@@ -634,6 +635,37 @@ class DatabaseService {
         queries
       );
       return respone;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  listDoc = async (collectionId, equalQuery) => {
+    let queries = [];
+    if (equalQuery) {
+      queries = [Query.equal("date", equalQuery)];
+    }
+    console.log("queries", queries);
+
+    const response = await this.database.listDocuments(
+      appwriteDatabaseID,
+      collectionId,
+      queries
+    );
+    return response;
+  };
+  createActivityLog = async (activity, description, authorInfo) => {
+    try {
+      await this.database.createDocument(
+        appwriteDatabaseID,
+        config.activityLogId,
+        ID.unique(),
+        {
+          date: todayDate,
+          activity,
+          description,
+          authorInfo,
+        }
+      );
     } catch (error) {
       console.error(error);
     }

@@ -37,5 +37,10 @@ const config = {
   ),
   feeTemplateId: String(import.meta.env.VITE_FEE_TEMPLATE_COLLECTION_ID),
   feeRecordColletionId: String(import.meta.env.VITE_FEE_RECORDS_COLLECTION_ID),
+  dailyFeeTransactionsId: String(
+    import.meta.env.VITE_DAILY_FEE_TRANSACTIONS_ID
+  ),
+  activityLogId: String(import.meta.env.VITE_ACTIVITY_COLLECTION_ID),
+  dailyFeeStatid: String(import.meta.env.VITE_DAILY_FEE_STAT_COLLECTION_ID),
 };
 export default config;

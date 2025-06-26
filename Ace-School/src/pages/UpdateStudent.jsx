@@ -32,7 +32,7 @@ const UpdateStudentPage = () => {
     },
   });
 
-  const { roles } = useSelector((state) => state?.auth?.user);
+  const { roles, username, email } = useSelector((state) => state?.auth?.user);
 
   const studentsFormFields = getStudentFormFiled();
 
@@ -61,6 +61,7 @@ const UpdateStudentPage = () => {
             originalJoiningDate,
             documentID,
             userRole: "student",
+            authorInfo: `${username}, Role:${roles[0]}, Email:${email}`,
           })
         )}
         className="grid my-5 gap-x-10 gap-y-1.5 mt-10 grid-cols-1 sm:grid-cols-2 w-full md:max-w-[70vw]"
