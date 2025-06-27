@@ -2,13 +2,13 @@ import React from "react";
 import { Card } from "../Atoms/card";
 
 function StudentSelfStatements({ transactionsArray }) {
-  console.log(transactionsArray);
+  console.log(transactionsArray, "transcation arr");
   return (
     <div>
       <section id="botoom">
         <Card className="p-4">
           <div className="overflow-auto max-h-[400px] max-w-full border rounded-md">
-            <table className="min-w-[800px] text-sm w-full text-left border-collapse">
+            <table className="min-w-[400px] text-sm w-full text-left border-collapse">
               <thead className="bg-muted sticky top-0 z-10">
                 <tr>
                   <th className="p-2 border-b">Date</th>

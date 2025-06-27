@@ -237,6 +237,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller } from "react-hook-form";
 import { feeBillingSchema } from "@/utils/schemas";
 import TinyCalculator from "@/components/Organisms/TinyCalculator";
+import BillingDialog from "@/components/Organisms/BillingDialog";
+import StudentSelfStatements from "@/components/Molecules/StudentSelfStatements";
 export function StudentBillingUI({ documentId }) {
   const queryClient = useQueryClient();
   const {
@@ -300,6 +302,8 @@ export function StudentBillingUI({ documentId }) {
     dueFees: dueThisMonth,
     payableFeesWholeYear,
   } = getMonthlyAndTotalFeeData(studentFeeData);
+  const prevStatementRecordParsed = JSON.parse(statementsRecord[0]);
+  console.log(prevStatementRecordParsed, "parsed");
   const handleFeeBilling = async (formData) => {
     const {
       amount: originalAmount,
@@ -324,6 +328,7 @@ export function StudentBillingUI({ documentId }) {
       updatedPenaltyAmount = 0;
       updateMonthlyRecord();
     }
+
     function updateMonthlyRecord() {
       updatedUserMonthlyRecord = prevMonthlyRecords.map((record) => {
         if (amount === 0 || record.due === 0) {
@@ -482,9 +487,19 @@ export function StudentBillingUI({ documentId }) {
           <div>
             <strong>Penalty Amount:</strong> Rs. {penalties}
           </div>
-          <Button className="mt-4 w-full  bg-blue-100 font-semibold text-blue-600 hover:bg-blue-200">
-            View Statements
-          </Button>
+
+          <BillingDialog
+            dialogTitle="Your fee statements"
+            triggerText="View fee statements"
+          >
+            <StudentSelfStatements
+              transactionsArray={
+                prevStatementRecordParsed.statements
+                  ? prevStatementRecordParsed.statements
+                  : []
+              }
+            />
+          </BillingDialog>
         </CardContent>
       </Card>
 

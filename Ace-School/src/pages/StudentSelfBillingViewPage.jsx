@@ -190,8 +190,8 @@ export default function StudentSelfBillingViewPage() {
           </div>
         </section>
         <section id="details-section" className="w-full sm:w-2/5 p-2 ">
-          <div className="w-full">
-            <NavLink to={-1}>
+          <div className="w-full ">
+            <NavLink to={-1} className="hidden sm:block">
               <Button className="w-fit cursor-pointer  text-blue-600 ">
                 <ArrowLeft /> Back
               </Button>
