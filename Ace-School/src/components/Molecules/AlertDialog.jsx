@@ -31,7 +31,7 @@ const AlertDialogComponent = ({
           setOpen(true);
         }}
         className={twMerge(
-          `bg-red-100 hover:bg-red-200 text-red-600 rounded-lg px-4 py-2 w-full `,
+          `bg-red-100 hover:bg-red-200 font-semibold text-sm text-red-600 rounded-lg px-4 py-2 w-full `,
           continueButtonColor
         )}
       >

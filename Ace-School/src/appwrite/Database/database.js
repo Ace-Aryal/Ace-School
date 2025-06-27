@@ -639,10 +639,11 @@ class DatabaseService {
       console.error(error);
     }
   };
+  // this is only used to fetch activity logs
   listDoc = async (collectionId, equalQuery) => {
-    let queries = [];
+    let queries = [Query.orderDesc("$createdAt")];
     if (equalQuery) {
-      queries = [Query.equal("date", equalQuery)];
+      queries = [...queries, Query.equal("date", equalQuery)];
     }
     console.log("queries", queries);
 
@@ -655,7 +656,7 @@ class DatabaseService {
   };
   createActivityLog = async (activity, description, authorInfo) => {
     try {
-      await this.database.createDocument(
+      const response = await this.database.createDocument(
         appwriteDatabaseID,
         config.activityLogId,
         ID.unique(),
@@ -666,6 +667,7 @@ class DatabaseService {
           authorInfo,
         }
       );
+      return response;
     } catch (error) {
       console.error(error);
     }
@@ -738,6 +740,20 @@ class DatabaseService {
       console.error(error);
       return false;
     }
+  };
+  listLastThirtyDaysFeesStat = async () => {
+    const date = new Date();
+    date.setDate(date.getDate() - 30);
+    const isoDate = date.toISOString();
+    const response = await this.database.listDocuments(
+      appwriteDatabaseID,
+      config.dailyFeeStatid,
+      [
+        Query.orderAsc("$createdAt"),
+        Query.greaterThanEqual("$createdAt", isoDate),
+      ]
+    );
+    return response;
   };
   createFeeTransaction = async (document) => {
     try {

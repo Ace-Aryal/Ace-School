@@ -167,15 +167,6 @@ const DashboardPage = () => {
             />
           ))}
         </div>
-        <div className="calender w-full flex justify-center mt-10 ">
-          <div className="w-full md:w-[60vw]">
-            <iframe
-              className=" w-full md:w-[60vw] aspect-square"
-              src="https://ace-aryal.github.io/Learning_Web/03_Javascript/Calender/Calender.html"
-              loading="lazy"
-            ></iframe>
-          </div>
-        </div>
       </section>
     </main>
   );

@@ -17,7 +17,10 @@ function BillingActions() {
   };
   const [penalties, setPenalties] = useState({
     amount: penaltyData.totalPenalty,
-    penaltiesArray: JSON.parse(penaltyData.penaltyArray[0]) || [],
+    penaltiesArray:
+      penaltyData.penaltyArray.length > 0
+        ? JSON.parse(penaltyData.penaltyArray[0])
+        : [],
   });
 
   console.log("penaltyArr", penaltyData.penaltyArray);
@@ -28,14 +31,16 @@ function BillingActions() {
         <section className="transactions-section sm:w-2/3  w-full grow ">
           <StudentBillingUI documentId={documentId} />
         </section>
-        <section className="w-full sm:w-1/3 grow">
-          <div className="flex p-4 items-center justify-between border border-gray-300 rounded-xl mb-4">
-            <p>
-              <strong>Penalty:</strong> Rs. {penalties.amount}
-            </p>
+        <section className="w-full h-full sm:w-1/3 grow">
+          <AddPenaltyCard
+            setPenalties={setPenalties}
+            prevPenaltyData={penaltyData}
+            documentId={documentId}
+          />
+          <div className="flex p-4 mt-3 items-center justify-between border border-gray-300 rounded-xl mb-4">
             <Button
               onClick={() => setOpen(true)}
-              className="bg-blue-100 text-blue-600 hover:bg-blue-200 font-semibold "
+              className="bg-blue-100 text-blue-600 hover:bg-blue-200 font-semibold w-full"
             >
               View Penalties
             </Button>
@@ -46,11 +51,11 @@ function BillingActions() {
               studentDoc={data.studentDoc}
             />
           </div>
-          <AddPenaltyCard
-            setPenalties={setPenalties}
-            prevPenaltyData={penaltyData}
-            documentId={documentId}
-          />
+          <div className="hidden sm:block mb-3 w-full">
+            <TinyCalculator />
+          </div>
+
+          <div>{/* <input value={set} type="text" disabled /> */}</div>
         </section>
       </div>
     </AuthenticatedContainer>
@@ -231,8 +236,9 @@ import PenaltyTableModal from "./PenaltiesViewPage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller } from "react-hook-form";
 import { feeBillingSchema } from "@/utils/schemas";
+import TinyCalculator from "@/components/Organisms/TinyCalculator";
 export function StudentBillingUI({ documentId }) {
-  const [billingMethod, setBillingMethod] = useState("cash");
+  const queryClient = useQueryClient();
   const {
     data: studentFeeData,
     isError: feeError,
@@ -258,6 +264,7 @@ export function StudentBillingUI({ documentId }) {
     register,
     handleSubmit,
     control,
+    reset,
 
     formState: { errors },
   } = useForm({
@@ -348,10 +355,11 @@ export function StudentBillingUI({ documentId }) {
       amount: originalAmount,
       remarks,
     };
+    console.log("statement rec", statementsRecord);
     const updatedStatementsRecord = {
       yearCredit,
-      statements: statementsRecord.statements
-        ? [...statementsRecord, statement]
+      statements: statementsRecord[0]
+        ? [...statementsRecord[0].statements, statement]
         : [statement],
     };
     const studentFeeTransaction = {
@@ -365,20 +373,15 @@ export function StudentBillingUI({ documentId }) {
       payer,
     };
 
-    const activityLog = {
-      activity: "Fee Billing",
-      description: `Fee Billing of Rs.${originalAmount} for ${name}, grade ${grade}, roll ${rollNo}`,
-      authorInfo: `Name : ${username} , Role : ${roles[0]}`,
-    };
-
-    const { respone: updatingStudentFeeRes } = catchError(() =>
+    const { response: updatingStudentFeeRes } = await catchError(() =>
       databaseService.updateStudentFeeRecord(documentId, {
         penalties: updatedPenaltyAmount,
-        monthlyRecords: JSON.stringify(updatedUserMonthlyRecord),
+        monthlyRecords: [JSON.stringify(updatedUserMonthlyRecord)],
       })
     );
+    console.log(updatingStudentFeeRes, "fee 1 res");
     if (!updatingStudentFeeRes) {
-      return showErrorToast("Failed to update student fees");
+      return showErrorToast("Failed to update student fees 1");
     }
     const { response: creatingStudentTransactionRes } = await catchError(() =>
       databaseService.createFeeTransaction(studentFeeTransaction)
@@ -386,31 +389,38 @@ export function StudentBillingUI({ documentId }) {
     if (!creatingStudentTransactionRes) {
       await databaseService.updateStudentFeeRecord(documentId, {
         penalties: penaltyAmount,
-        monthlyRecords: JSON.parse(prevMonthlyRecords),
+        monthlyRecords: [JSON.stringify(prevMonthlyRecords)],
+        transactionsRecord: [JSON.stringify(updatedStatementsRecord)],
       });
-      return showErrorToast("Failed to update student fees");
+      return showErrorToast("Failed to update student fees 2");
     }
-    const { response: handleFeeStatRespone } = catchError(() =>
+    const { response: handleFeeStatRespone } = await catchError(() =>
       databaseService.createOrUpdateSchoolTransactionsStatRecord(originalAmount)
     );
     if (!handleFeeStatRespone) {
       await databaseService.updateStudentFeeRecord(documentId, {
         penalties: penaltyAmount,
-        monthlyRecords: JSON.parse(prevMonthlyRecords),
+        monthlyRecords: [JSON.stringify(prevMonthlyRecords)],
       });
       await databaseService.deleteCollection(
         config.dailyFeeTransactionsId,
         creatingStudentTransactionRes.$id
       );
-      return showErrorToast("Failed to update student fees");
+      return showErrorToast("Failed to update student fees 3");
     }
     const { response: createLogRespone } = await catchError(() =>
-      databaseService.createActivityLog(activityLog)
+      databaseService.createActivityLog(
+        "Fee Billing",
+        `Fee Billing of Rs.${originalAmount} for ${name}, grade ${grade}, roll ${rollNo}`,
+        `Name : ${username} , Role : ${roles[0]}`
+      )
     );
+
+    console.log("create log response", createLogRespone);
     if (!createLogRespone) {
       await databaseService.updateStudentFeeRecord(documentId, {
         penalties: penaltyAmount,
-        monthlyRecords: JSON.parse(prevMonthlyRecords),
+        monthlyRecords: [JSON.stringify(prevMonthlyRecords)],
       });
       await databaseService.deleteCollection(
         config.dailyFeeTransactionsId,
@@ -420,8 +430,11 @@ export function StudentBillingUI({ documentId }) {
         originalAmount,
         true
       );
-      return showErrorToast("Failed to update student fees");
+      return showErrorToast("Failed to update student fees 4");
     }
+    queryClient.invalidateQueries("studentFeeStat");
+    reset();
+    return showSuccessToast("Billing sucessful!");
   };
   return (
     <div className="w-full px-2 mx-auto  grid grid-cols-1 sm:grid-cols-2 gap-6">
