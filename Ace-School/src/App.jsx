@@ -48,7 +48,7 @@ import ViewIndividualAttendancePage from "./pages/ViewIndividualAttendanceRecord
 import ModifyFeeTemplate from "./pages/ModifyFeeTemplate";
 import StudentSelfBillingViewPage from "./pages/StudentSelfBillingViewPage";
 import BillingActions from "./pages/BillingActions";
-import ActivityLogPage from "./pages/activity";
+import ActivityLogPage from "./pages/Activity";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.user.isLoggedIn);
