@@ -670,6 +670,46 @@ class DatabaseService {
       console.error(error);
     }
   };
+  updateStudentFeeRecord = async (documentId, updatedDocument) => {
+    const res = await this.database.updateDocument(
+      appwriteDatabaseID,
+      config.feeRecordColletionId,
+      documentId,
+      updatedDocument
+    );
+    return res;
+  };
+  createOrUpdateSchoolTransactionsStatRecord = async (document) => {
+    const documentId = todayDate;
+    const { response } = await catchError(() =>
+      this.getDocument(config.dailyFeeStatid, documentId)
+    );
+    if (!response || response === 404) {
+      const createStatRespone = await this.database.createDocument(
+        appwriteDatabaseID,
+        config.dailyFeeStatid,
+        documentId,
+        document
+      );
+      return createStatRespone;
+    }
+    const updateStatResponse = await this.database.updateDocument(
+      appwriteDatabaseID,
+      config.dailyFeeStatid,
+      documentId,
+      document
+    );
+    return updateStatResponse;
+  };
+  createFeeTransaction = async (document) => {
+    const response = await this.database.createDocument(
+      appwriteDatabaseID,
+      config.dailyFeeTransactionsId,
+      ID.unique(),
+      document
+    );
+    return response;
+  };
 }
 const databaseService = new DatabaseService();
 export default databaseService;
