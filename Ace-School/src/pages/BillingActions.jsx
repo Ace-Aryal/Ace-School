@@ -228,7 +228,9 @@ import GeneralErrorPage from "./GeneralErrorPage";
 import LoadingPage from "./LoadingPage";
 import { getMonthlyAndTotalFeeData } from "@/utils/studentFeeStat";
 import PenaltyTableModal from "./PenaltiesViewPage";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller } from "react-hook-form";
+import { feeBillingSchema } from "@/utils/schemas";
 export function StudentBillingUI({ documentId }) {
   const [billingMethod, setBillingMethod] = useState("cash");
   const {
@@ -250,6 +252,17 @@ export function StudentBillingUI({ documentId }) {
       }
     },
   });
+  const { username, roles } = useSelector((state) => state.auth.user);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(feeBillingSchema),
+  });
 
   if (feeError) {
     return <GeneralErrorPage message="Internal server error" />;
@@ -264,8 +277,15 @@ export function StudentBillingUI({ documentId }) {
   if (!studentFeeData.$id) {
     return <GeneralErrorPage message="Document not found" />;
   }
-  console.log(studentFeeData);
-  const { name, grade, rollNo, scholarship, disc, penalties } = studentFeeData;
+  const {
+    name,
+    grade,
+    rollNo,
+    scholarship,
+    disc,
+    penalties,
+    transactionsRecord: statementsRecord,
+  } = studentFeeData;
   const {
     dueTotal,
     paidTotal,
@@ -273,6 +293,97 @@ export function StudentBillingUI({ documentId }) {
     dueFees: dueThisMonth,
     payableFeesWholeYear,
   } = getMonthlyAndTotalFeeData(studentFeeData);
+  const handleFeeBilling = async (formData) => {
+    const {
+      amount: originalAmount,
+      payer,
+      methodOfPayment,
+      remarks,
+    } = formData;
+    console.log(formData, "form data");
+    let amount = originalAmount;
+    const prevMonthlyRecords = JSON.parse(studentFeeData.monthlyRecords[0]);
+    const penaltyAmount = parseFloat(studentFeeData.penalties);
+    let updatedPenaltyAmount = penaltyAmount;
+    let updatedUserMonthlyRecord = prevMonthlyRecords;
+    let yearCredit = 0;
+    if (amount < penaltyAmount) {
+      updatedPenaltyAmount = penaltyAmount - amount;
+      amount = 0;
+    }
+
+    if (amount > penaltyAmount) {
+      amount = amount - penaltyAmount;
+      updatedPenaltyAmount = 0;
+      updateMonthlyRecord();
+    }
+    function updateMonthlyRecord() {
+      updatedUserMonthlyRecord = prevMonthlyRecords.map((record) => {
+        if (amount === 0 || record.due === 0) {
+          return record;
+        }
+        if (amount < record.due) {
+          const due = record.due - amount;
+          amount = 0;
+          return {
+            ...record,
+            due,
+            paid: record.totalPayable - due,
+          };
+        }
+        amount = amount - record.totalPayable;
+        console.log(record);
+        return {
+          ...record,
+          due: 0,
+          paid: record.totalPayable,
+        };
+      });
+      yearCredit = amount;
+    }
+    const statement = {
+      date: todayDate,
+      payer,
+      methodOfPayment,
+      amount: originalAmount,
+      remarks,
+    };
+    const updatedStatementsRecord = {
+      yearCredit,
+      statements: statementsRecord.statements
+        ? [...statementsRecord, statement]
+        : [statement],
+    };
+    const studentFeeTransactionRecord = {
+      date: todayDate,
+      accountant: username,
+      studentName: name,
+      grade,
+      roll: rollNo,
+      amount: originalAmount,
+      method: methodOfPayment,
+      payer,
+    };
+
+    const activityLog = {
+      activity: "Fee Billing",
+      description: `Fee Billing of Rs.${originalAmount} for ${name}, grade ${grade}, roll ${rollNo}`,
+      authorInfo: `Name : ${username} , Role : ${roles[0]}`,
+    };
+    console.log(
+      updatedPenaltyAmount,
+      updatedUserMonthlyRecord,
+      updatedStatementsRecord,
+      studentFeeTransactionRecord,
+      activityLog
+    );
+    // const { respone } = catchError(() =>
+    //   databaseService.updateStudentFeeRecord(documentId, {
+    //     penalties: updatedPenaltyAmount,
+    //     monthlyRecords: JSON.stringify(updatedUserMonthlyRecord),
+    //   })
+    // );
+  };
   return (
     <div className="w-full px-2 mx-auto  grid grid-cols-1 sm:grid-cols-2 gap-6">
       {/* Left Section: Student Info */}
@@ -330,47 +441,76 @@ export function StudentBillingUI({ documentId }) {
           <div className="space-y-1">
             <Label>Amount Paid</Label>
             <Input
+              {...register("amount", {
+                required: "This field is required",
+              })}
               type="number"
               className="focus:ring-gray-300"
               placeholder="Enter amount"
             />
+            {errors.amount && (
+              <p className="text-red-600 text-sm">{errors.amount.message}</p>
+            )}
           </div>
 
           <div className="space-y-1">
             <Label>Payment Method</Label>
-            <Select value={billingMethod} onValueChange={setBillingMethod}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select method" />
-              </SelectTrigger>
-              <SelectContent className="bg-white">
-                <SelectItem value="cash">Cash</SelectItem>
-                <SelectItem value="digital">Digital</SelectItem>
-              </SelectContent>
-            </Select>
+
+            <Controller
+              name="methodOfPayment"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Select payment method" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="cash">Cash</SelectItem>
+                    <SelectItem value="digital">Digital</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.methodOfPayment && (
+              <p className="text-red-600 text-sm">
+                {errors.methodOfPayment.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-1">
             <Label>Paid By</Label>
 
             <Input
+              {...register("payer")}
               placeholder="Enter payer's name "
               className="focus:ring-gray-300"
             />
+            {errors.payer && (
+              <p className="text-red-600 text-sm">{errors.payer.message}</p>
+            )}
           </div>
 
           <div className="space-y-1">
             <Label>Remarks</Label>
             <Input
-              placeholder="Optional remarks"
+              {...register("remarks")}
+              placeholder="Optional remarks (max 32 chars)"
               className="focus:ring-gray-300"
             />
+            {errors.remarks && (
+              <p className="text-red-600 text-sm"> {errors.remarks.message}</p>
+            )}
           </div>
           <div className="mt-auto w-full">
             <AlertDialogComponent
+              onContinueFn={handleSubmit(handleFeeBilling)}
               cancelButtonColor="bg-red-100 text-red-600 hover:bg-red-200"
               continueButtonColor="bg-blue-100 text-blue-600 hover:bg-blue-200"
               title="Sure want to bill this payment ?"
-              description="This will bill the fee of the student, make sure all entries are correct. This action may take a few seconds."
+              description="This will bill the fee of the student, make sure all entries are correct. This action is irreversible and 
+              may take a few seconds."
               buttonText="Submit payment"
             ></AlertDialogComponent>
           </div>

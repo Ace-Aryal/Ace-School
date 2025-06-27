@@ -671,44 +671,63 @@ class DatabaseService {
     }
   };
   updateStudentFeeRecord = async (documentId, updatedDocument) => {
-    const res = await this.database.updateDocument(
-      appwriteDatabaseID,
-      config.feeRecordColletionId,
-      documentId,
-      updatedDocument
-    );
-    return res;
+    try {
+      const res = await this.database.updateDocument(
+        appwriteDatabaseID,
+        config.feeRecordColletionId,
+        documentId,
+        updatedDocument
+      );
+      return res;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
   createOrUpdateSchoolTransactionsStatRecord = async (document) => {
     const documentId = todayDate;
     const { response } = await catchError(() =>
       this.getDocument(config.dailyFeeStatid, documentId)
     );
-    if (!response || response === 404) {
-      const createStatRespone = await this.database.createDocument(
+    try {
+      if (!response) {
+        return false;
+      }
+      if (response === 404) {
+        const createStatRespone = await this.database.createDocument(
+          appwriteDatabaseID,
+          config.dailyFeeStatid,
+          documentId,
+          document
+        );
+        return createStatRespone;
+      }
+
+      const updateStatResponse = await this.database.updateDocument(
         appwriteDatabaseID,
         config.dailyFeeStatid,
         documentId,
         document
       );
-      return createStatRespone;
+      return updateStatResponse;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
-    const updateStatResponse = await this.database.updateDocument(
-      appwriteDatabaseID,
-      config.dailyFeeStatid,
-      documentId,
-      document
-    );
-    return updateStatResponse;
   };
   createFeeTransaction = async (document) => {
-    const response = await this.database.createDocument(
-      appwriteDatabaseID,
-      config.dailyFeeTransactionsId,
-      ID.unique(),
-      document
-    );
-    return response;
+    try {
+      const response = await this.database.createDocument(
+        appwriteDatabaseID,
+        config.dailyFeeTransactionsId,
+        ID.unique(),
+        document
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 }
 const databaseService = new DatabaseService();

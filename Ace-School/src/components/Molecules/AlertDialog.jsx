@@ -17,7 +17,6 @@ const AlertDialogComponent = ({
   buttonText,
   title,
   description,
-  classNames,
   cancelButtonColor,
   continueButtonColor,
   onContinueFn,
