@@ -5,16 +5,22 @@ import { useLocation } from "react-router";
 function BillingActions() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  if (!location.state) {
+  if (!location.state || !location.state.data) {
     return <p>Please Naviate Via Buttons</p>;
   }
 
   const { data } = location.state;
-  console.log(data);
+
   const penaltyData = {
     totalPenalty: data.studentDoc.penalties,
     penaltyArray: data.studentDoc.penaltiesRecord,
   };
+  const [penalties, setPenalties] = useState({
+    amount: penaltyData.totalPenalty,
+    penaltiesArray: JSON.parse(penaltyData.penaltyArray[0]) || [],
+  });
+
+  console.log("penaltyArr", penaltyData.penaltyArray);
   const documentId = data.studentDoc.$id;
   return (
     <AuthenticatedContainer classnames="justify-center">
@@ -25,7 +31,7 @@ function BillingActions() {
         <section className="w-full sm:w-1/3 grow">
           <div className="flex p-4 items-center justify-between border border-gray-300 rounded-xl mb-4">
             <p>
-              <strong>Penalty:</strong> Rs. 100
+              <strong>Penalty:</strong> Rs. {penalties.amount}
             </p>
             <Button
               onClick={() => setOpen(true)}
@@ -36,10 +42,12 @@ function BillingActions() {
             <PenaltyTableModal
               open={open}
               onOpenChange={setOpen}
-              penalties={penaltyData.penaltyArray}
+              penalties={penalties.penaltiesArray}
+              studentDoc={data.studentDoc}
             />
           </div>
           <AddPenaltyCard
+            setPenalties={setPenalties}
             prevPenaltyData={penaltyData}
             documentId={documentId}
           />
@@ -66,7 +74,7 @@ import { showErrorToast, showSuccessToast } from "@/components/Templates/toast";
 import Spinner from "@/components/Atoms/Spinner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function AddPenaltyCard({ documentId }) {
+export function AddPenaltyCard({ documentId, setPenalties }) {
   const accountant = useSelector((state) => state.auth.user.username);
   const queryClient = useQueryClient();
   const {
@@ -133,7 +141,12 @@ export function AddPenaltyCard({ documentId }) {
     if (!response) {
       return showErrorToast("Error registering penalty");
     }
+
     showSuccessToast("Added penalty succesfully !");
+    setPenalties({
+      amount: penaltyAmount,
+      penaltiesArray: JSON.parse(penaltyRecord),
+    });
     reset();
     queryClient.invalidateQueries(["classFeeStat", "studentFeeStat"]);
   };

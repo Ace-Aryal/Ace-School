@@ -15,41 +15,42 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DialogClose } from "@radix-ui/react-dialog";
 
 export default function PenaltyTableModal({
   open,
   onOpenChange,
   penalties = [],
+  studentDoc,
 }) {
+  console.log("stu doc", studentDoc);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-white  ">
+      <DialogContent className="bg-white max-w-screen  sm:max-w-lg md:max-w-3xl lg:max-w-4xl">
         <DialogHeader>
           {" "}
           <DialogTitle>Penalty Records</DialogTitle>
         </DialogHeader>
 
-        <div className="max-w-4xl mx-auto  w py-6 space-y-6">
+        <div className=" mx-auto max-w-[calc(100vw-4rem)] sm:max-w-lg md:max-w-3xl lg:max-w-4xl w py-6 space-y-6">
           {/* Student Info */}
-          <Card>
+          <Card className="">
             <CardContent className="p-4 space-y-1">
               <div>
-                <strong>Name:</strong> Dipesh Aryal
+                <strong>Name:</strong> {studentDoc.name || "N/A"}
               </div>
               <div>
-                <strong>Roll:</strong> 12
+                <strong>Roll:</strong> {studentDoc.rollNo || "N/A"}
               </div>
               <div>
-                <strong>Class:</strong> 7
+                <strong>Class:</strong> {studentDoc.grade || "N/A"}
               </div>
             </CardContent>
           </Card>
 
           {/* Penalty Table */}
-          <Card>
-            <CardContent className="overflow-x-auto p-0 overflow-y-scroll">
-              <Table>
+          <Card className="overflow-scroll  md:max-w-3xl lg:max-w-4xl">
+            <CardContent className=" ">
+              <Table className="overflow-x-scroll ">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Date</TableHead>
