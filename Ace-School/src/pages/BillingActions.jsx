@@ -354,7 +354,7 @@ export function StudentBillingUI({ documentId }) {
         ? [...statementsRecord, statement]
         : [statement],
     };
-    const studentFeeTransactionRecord = {
+    const studentFeeTransaction = {
       date: todayDate,
       accountant: username,
       studentName: name,
@@ -370,19 +370,58 @@ export function StudentBillingUI({ documentId }) {
       description: `Fee Billing of Rs.${originalAmount} for ${name}, grade ${grade}, roll ${rollNo}`,
       authorInfo: `Name : ${username} , Role : ${roles[0]}`,
     };
-    console.log(
-      updatedPenaltyAmount,
-      updatedUserMonthlyRecord,
-      updatedStatementsRecord,
-      studentFeeTransactionRecord,
-      activityLog
+
+    const { respone: updatingStudentFeeRes } = catchError(() =>
+      databaseService.updateStudentFeeRecord(documentId, {
+        penalties: updatedPenaltyAmount,
+        monthlyRecords: JSON.stringify(updatedUserMonthlyRecord),
+      })
     );
-    // const { respone } = catchError(() =>
-    //   databaseService.updateStudentFeeRecord(documentId, {
-    //     penalties: updatedPenaltyAmount,
-    //     monthlyRecords: JSON.stringify(updatedUserMonthlyRecord),
-    //   })
-    // );
+    if (!updatingStudentFeeRes) {
+      return showErrorToast("Failed to update student fees");
+    }
+    const { response: creatingStudentTransactionRes } = await catchError(() =>
+      databaseService.createFeeTransaction(studentFeeTransaction)
+    );
+    if (!creatingStudentTransactionRes) {
+      await databaseService.updateStudentFeeRecord(documentId, {
+        penalties: penaltyAmount,
+        monthlyRecords: JSON.parse(prevMonthlyRecords),
+      });
+      return showErrorToast("Failed to update student fees");
+    }
+    const { response: handleFeeStatRespone } = catchError(() =>
+      databaseService.createOrUpdateSchoolTransactionsStatRecord(originalAmount)
+    );
+    if (!handleFeeStatRespone) {
+      await databaseService.updateStudentFeeRecord(documentId, {
+        penalties: penaltyAmount,
+        monthlyRecords: JSON.parse(prevMonthlyRecords),
+      });
+      await databaseService.deleteCollection(
+        config.dailyFeeTransactionsId,
+        creatingStudentTransactionRes.$id
+      );
+      return showErrorToast("Failed to update student fees");
+    }
+    const { response: createLogRespone } = await catchError(() =>
+      databaseService.createActivityLog(activityLog)
+    );
+    if (!createLogRespone) {
+      await databaseService.updateStudentFeeRecord(documentId, {
+        penalties: penaltyAmount,
+        monthlyRecords: JSON.parse(prevMonthlyRecords),
+      });
+      await databaseService.deleteCollection(
+        config.dailyFeeTransactionsId,
+        creatingStudentTransactionRes.$id
+      );
+      await databaseService.createOrUpdateSchoolTransactionsStatRecord(
+        originalAmount,
+        true
+      );
+      return showErrorToast("Failed to update student fees");
+    }
   };
   return (
     <div className="w-full px-2 mx-auto  grid grid-cols-1 sm:grid-cols-2 gap-6">

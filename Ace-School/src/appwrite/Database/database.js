@@ -684,30 +684,54 @@ class DatabaseService {
       return false;
     }
   };
-  createOrUpdateSchoolTransactionsStatRecord = async (document) => {
+  createOrUpdateSchoolTransactionsStatRecord = async (
+    amountPaid,
+    minus = false
+  ) => {
     const documentId = todayDate;
     const { response } = await catchError(() =>
       this.getDocument(config.dailyFeeStatid, documentId)
     );
+    let total = 0;
+    if (minus) {
+      total = response.total - amountPaid;
+      await this.database.updateDocument(
+        appwriteDatabaseID,
+        config.dailyFeeStatid,
+        documentId,
+        {
+          total,
+          date: todayDate,
+        }
+      );
+      return true;
+    }
     try {
       if (!response) {
         return false;
       }
       if (response === 404) {
+        total = amountPaid;
         const createStatRespone = await this.database.createDocument(
           appwriteDatabaseID,
           config.dailyFeeStatid,
           documentId,
-          document
+          {
+            date: todayDate,
+            total,
+          }
         );
         return createStatRespone;
       }
-
+      total = response.total + amountPaid;
       const updateStatResponse = await this.database.updateDocument(
         appwriteDatabaseID,
         config.dailyFeeStatid,
         documentId,
-        document
+        {
+          total,
+          date: todayDate,
+        }
       );
       return updateStatResponse;
     } catch (error) {
