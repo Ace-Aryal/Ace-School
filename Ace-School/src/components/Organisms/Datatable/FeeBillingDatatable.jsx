@@ -40,6 +40,15 @@ import {
 import { classLabels } from "@/utils/class";
 import { Link, NavLink, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import BillingDialog from "../BillingDialog";
+import SchoolFeeStatemtsComp from "@/components/Molecules/SchoolFeeStatemtsComp";
 
 const columns = [
   // {
@@ -339,14 +348,12 @@ export default function FeeBillingDatatable({
           </span>
         </div>
         <div>
-          <Link
-            to={"/billing/students-statements"}
-            className="bg-blue-100  text-blue-600 font-medium rounded-lg px-2 py-1.75 border"
+          <BillingDialog
+            dialogTitle="Fee Statements"
+            triggerText="View Transactions"
           >
-            <Button>
-              View Fee Statements <Eye />
-            </Button>
-          </Link>
+            <SchoolFeeStatemtsComp />
+          </BillingDialog>
         </div>
         <div className="space-x-2">
           <Button

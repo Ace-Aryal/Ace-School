@@ -769,6 +769,14 @@ class DatabaseService {
       return false;
     }
   };
+  listSchoolFeeStatements = async (date) => {
+    const response = await this.database.listDocuments(
+      appwriteDatabaseID,
+      config.dailyFeeTransactionsId,
+      [Query.equal("date", date)]
+    );
+    return response;
+  };
 }
 const databaseService = new DatabaseService();
 export default databaseService;

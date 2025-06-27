@@ -11,15 +11,12 @@ import "@sbmdkl/nepali-datepicker-reactjs/dist/index.css";
 import GeneralErrorPage from "./GeneralErrorPage";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import dayjs from "dayjs";
 
 function ViewAttendancePage() {
   const location = useLocation();
-  const queryClinet = new QueryClient();
   const userRole = location.state?.userRole.toLowerCase() || null;
   const now = new NepaliDate().toString().trim().slice(0, 10);
   const [selectedDate, setSelectedDate] = useState(now);
-  const [retry, setRetry] = useState(0);
   let { reportData, isReportLoading, isReportError } = useAttendenceReportQuery(
     userRole,
     selectedDate,

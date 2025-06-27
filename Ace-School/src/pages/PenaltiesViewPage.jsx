@@ -31,7 +31,7 @@ export default function PenaltyTableModal({
           <DialogTitle>Penalty Records</DialogTitle>
         </DialogHeader>
 
-        <div className=" mx-auto max-w-[calc(100vw-4rem)] sm:max-w-lg md:max-w-3xl lg:max-w-4xl w py-6 space-y-6">
+        <div className=" mx-auto max-w-[calc(100vw-4rem)] sm:max-w-lg md:max-w-3xl lg:max-w-4xl  py-6 space-y-6">
           {/* Student Info */}
           <Card className="">
             <CardContent className="p-4 space-y-1">

@@ -356,6 +356,7 @@ export function StudentBillingUI({ documentId }) {
       remarks,
     };
     console.log("statement rec", statementsRecord);
+    const prevStatementRecord = statementsRecord[0];
     const updatedStatementsRecord = {
       yearCredit,
       statements: statementsRecord[0]
@@ -377,6 +378,7 @@ export function StudentBillingUI({ documentId }) {
       databaseService.updateStudentFeeRecord(documentId, {
         penalties: updatedPenaltyAmount,
         monthlyRecords: [JSON.stringify(updatedUserMonthlyRecord)],
+        transactionsRecord: [JSON.stringify(updatedStatementsRecord)],
       })
     );
     console.log(updatingStudentFeeRes, "fee 1 res");
@@ -390,7 +392,7 @@ export function StudentBillingUI({ documentId }) {
       await databaseService.updateStudentFeeRecord(documentId, {
         penalties: penaltyAmount,
         monthlyRecords: [JSON.stringify(prevMonthlyRecords)],
-        transactionsRecord: [JSON.stringify(updatedStatementsRecord)],
+        transactionsRecord: prevStatementRecord,
       });
       return showErrorToast("Failed to update student fees 2");
     }
@@ -401,6 +403,7 @@ export function StudentBillingUI({ documentId }) {
       await databaseService.updateStudentFeeRecord(documentId, {
         penalties: penaltyAmount,
         monthlyRecords: [JSON.stringify(prevMonthlyRecords)],
+        transactionsRecord: prevStatementRecord,
       });
       await databaseService.deleteCollection(
         config.dailyFeeTransactionsId,
@@ -421,6 +424,7 @@ export function StudentBillingUI({ documentId }) {
       await databaseService.updateStudentFeeRecord(documentId, {
         penalties: penaltyAmount,
         monthlyRecords: [JSON.stringify(prevMonthlyRecords)],
+        transactionsRecord: prevStatementRecord,
       });
       await databaseService.deleteCollection(
         config.dailyFeeTransactionsId,

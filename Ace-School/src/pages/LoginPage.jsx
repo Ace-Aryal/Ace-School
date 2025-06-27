@@ -34,6 +34,7 @@ function LoginPage() {
       // others than admin dont have labels so we need to find role for them with their document
       let currentUserDocument;
       let roles = currentuser.labels;
+      console.log(currentuser, "curr user");
       if (currentuser.labels.length === 0) {
         currentUserDocument = await databaseService.getUserDocument(
           currentuser.email

@@ -10,9 +10,12 @@ import { FeeCatagoryBarChart } from "@/components/Templates/FeeCatBarChartHorizo
 import StudentCharts from "@/components/Molecules/StudentCharts";
 import { Button } from "@/components/Atoms/button";
 import { ArrowLeft } from "lucide-react";
+import PenaltyTableModal from "./PenaltiesViewPage";
+import BillingDialog from "@/components/Organisms/BillingDialog";
+import StudentSelfStatements from "@/components/Molecules/StudentSelfStatements";
 export default function StudentSelfBillingViewPage() {
   const location = useLocation();
-
+  const [open, setOpen] = useState(false);
   if (!location.state) {
     return (
       <div className="w-full h-full grow grid place-items-center">
@@ -47,6 +50,13 @@ export default function StudentSelfBillingViewPage() {
     return <LoadingPage />;
   }
   const monthlyRecords = JSON.parse(FeeDocumet.monthlyRecords);
+
+  const statementsRecord =
+    FeeDocumet.transactionsRecord.length > 0
+      ? JSON.parse(FeeDocumet.transactionsRecord[0])
+      : [];
+  const statements = statementsRecord.statements;
+  console.log(statements, "sts");
   const {
     admissionFees,
     disc,
@@ -146,15 +156,16 @@ export default function StudentSelfBillingViewPage() {
   return (
     <AuthenticatedContainer classnames="px-0 sm:px-4 ">
       <div className="w-full flex flex-col sm:flex-row gap-4">
-        <section id="details-section" className="w-full sm:w-2/5 p-2 ">
+        <section id="charts-section" className="sm:w-3/5 py-2 ">
           <div>
-            <div className="flex w-full mb-2 gap-2">
+            <FeeCatagoryBarChart
+              chartData={chartData}
+              chartConfig={chartConfig}
+            />
+          </div>
+          <div>
+            <div className="flex w-full mt-3 mb-2 gap-2">
               {" "}
-              <NavLink to={-1}>
-                <Button className="w-fit cursor-pointer  text-blue-600 ">
-                  <ArrowLeft /> Back
-                </Button>
-              </NavLink>
               <h2 className="text-2xl font-semibold">Fees Overview</h2>
             </div>
             <div className="grid grid-cols-3 gap-2">
@@ -177,18 +188,44 @@ export default function StudentSelfBillingViewPage() {
               ))}
             </div>
           </div>
+        </section>
+        <section id="details-section" className="w-full sm:w-2/5 p-2 ">
           <div className="w-full">
+            <NavLink to={-1}>
+              <Button className="w-fit cursor-pointer  text-blue-600 ">
+                <ArrowLeft /> Back
+              </Button>
+            </NavLink>
             <StudentCharts noLabels={true} feeDocumentId={feeDocumentId} />
           </div>
-        </section>
-        <section id="charts-section" className="sm:w-3/5 py-2 ">
-          <div>
-            <FeeCatagoryBarChart
-              chartData={chartData}
-              chartConfig={chartConfig}
-            />
+          <div id="statement area flex flex-col">
+            <div className="flex justify-between items-center p-4 mt-3 border border-gray-300 rounded-lg">
+              <p>penalty: Rs. {FeeDocumet.penalties.toLocaleString("en-NP")}</p>
+              <div>
+                <Button
+                  onClick={() => setOpen(true)}
+                  className="bg-blue-100 text-blue-600 hover:bg-blue-200 font-semibold w-full"
+                >
+                  View Penalties
+                </Button>
+
+                <PenaltyTableModal
+                  open={open}
+                  onOpenChange={setOpen}
+                  penalties={JSON.parse(FeeDocumet.penaltiesRecord[0])}
+                  studentDoc={FeeDocumet}
+                />
+              </div>
+            </div>
+            <div className=" items-center p-4 mt-3 border border-gray-300 rounded-lg w-full">
+              <BillingDialog
+                dialogTitle="Your fee statements"
+                triggerText="View fee statements"
+              >
+                <StudentSelfStatements transactionsArray={statements} />
+              </BillingDialog>
+            </div>
           </div>
-          <div id="statement area">Your Statements Here</div>
         </section>
       </div>
     </AuthenticatedContainer>
