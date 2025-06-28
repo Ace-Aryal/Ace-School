@@ -8,11 +8,11 @@ const Message = ({ imageURL, role, message, className }) => {
       <img
         src={imageURL}
         alt="principal-photo"
-        className={`  w-full aspect-square object-cover rounded-lg sm:w-[40%] md:w-[30%]`}
+        className={` w-full aspect-square object-cover rounded-xl sm:w-[40%] md:w-[30%]`}
       />
       <div
         id="message-principal"
-        className="flex flex-col justify-center items-center sm:gap-2 py-12"
+        className="flex flex-col justify-center items-center sm:gap-2 py-12 pt-3 "
       >
         <h3 className="text-3xl text-red-500 font-semibold text-center ">
           Message From {role}{" "}

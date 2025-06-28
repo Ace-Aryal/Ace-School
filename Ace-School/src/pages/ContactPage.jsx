@@ -28,7 +28,7 @@ function ContactPage() {
     showErrorToast("Error sending message");
   };
   return (
-    <main className=" pt-18 sm:pt-24 flex justify-center mb-20 w-full slideIn">
+    <main className=" pt-18 sm:pt-24 flex justify-center items-center grow mb-20 w-full slideIn">
       <div className="container grid grid-cols-1 gap-5 sm:gap-1 w-full sm:w-[80vw] md:w-[70vw] sm:grid-cols-2">
         <div className="flex justify-center gap-2 row-span-1 text-yellow-400 text-3xl">
           <h1 className="text-2xl text-blue-500 font-bold">CONTACT US</h1>
@@ -47,7 +47,7 @@ function ContactPage() {
               required: "Name is required",
             })}
             placeholder="Your Full Name "
-            className="border-0 focus:outline-none bg-blue-50 fo focus:ring-2 focus:ring-blue-500   focus:border-blue-500 w-[70%] sm:w-[60%] rounded-lg py-3 pl-2 pr-10 text-left  "
+            className="border-1 border-gray-300 focus:outline-none bg-blue-50 fo focus:ring-2 focus:ring-blue-500   focus:border-blue-500 w-[70%] sm:w-[60%] rounded-lg py-3 pl-2 pr-10 text-left  "
           />
           {errors.fullName && (
             <p className="text-red-500 text-sm">{errors.fullName.message}</p>
@@ -64,7 +64,7 @@ function ContactPage() {
               },
             })}
             placeholder="Phone"
-            className="focus:outline-none bg-blue-50   focus:ring-2 focus:ring-blue-500  focus:border-blue-500  w-[70%] sm:w-[60%]  rounded-lg py-3 pl-2 pr-10 text-left focus:invalid:text-red-500 "
+            className="focus:outline-none border-1 border-gray-300 bg-blue-50   focus:ring-2 focus:ring-blue-500  focus:border-blue-500  w-[70%] sm:w-[60%]  rounded-lg py-3 pl-2 pr-10 text-left focus:invalid:text-red-500 "
           />
           {errors.phone && (
             <p className="text-red-500 text-sm">{errors.phone.message}</p>
@@ -78,7 +78,7 @@ function ContactPage() {
               required: "Message is required",
             })}
             placeholder="Your Message..."
-            class=" focus:outline-none  bg-blue-50  focus:ring-2 focus:ring-blue-500   w-[70%] sm:w-[60%] rounded-lg py-3 pl-2 pr-10 text-left"
+            class=" focus:outline-none  bg-blue-50 border-1 border-gray-300  focus:ring-2 focus:ring-blue-500   w-[70%] sm:w-[60%] rounded-lg py-3 pl-2 pr-10 text-left"
             rows="2"
           ></textarea>
           {errors.message && (

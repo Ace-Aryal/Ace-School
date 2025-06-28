@@ -17,8 +17,8 @@ const persistor = persistStore(store);
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ErrorBoundary>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ErrorBoundary>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <QueryClientProvider client={queryClient}>
@@ -26,8 +26,8 @@ createRoot(document.getElementById("root")).render(
             </QueryClientProvider>
           </PersistGate>
         </Provider>
-      </BrowserRouter>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </BrowserRouter>
     <Toaster position="top-right" />
   </StrictMode>
 );

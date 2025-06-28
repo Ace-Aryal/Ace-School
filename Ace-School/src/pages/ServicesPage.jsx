@@ -8,7 +8,7 @@ import SlideInWrapper from "@/components/Templates/SlideInWrapper";
 
 function ServicesPage() {
   return (
-    <main className=" sm:pt-12 pt-6  mb-20 w-screen">
+    <main className=" sm:pt-12 pt-6  mb-20 w-full">
       <h1 className="text-5xl  text-center text-indigo-600 font-bold">
         Our Services.
       </h1>

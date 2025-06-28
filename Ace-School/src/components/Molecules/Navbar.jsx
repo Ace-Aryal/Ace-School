@@ -54,7 +54,11 @@ function Navbar() {
           : "bg-indigo-900 "
       } shadow-sm fixed top-0 z-10 h-14`}
     >
-      <nav className="lg:px-16 px-6 flex flex-wrap items-center justify-between lg:py-0 py-2">
+      <nav
+        className={`${
+          !isAuthenticated ? "bg-indigo-900" : ""
+        } lg:px-16 px-6 flex flex-wrap items-center justify-between lg:py-0 py-2`}
+      >
         <div className="flex items-center flex-1">
           <Link to="/">
             <Logo
@@ -92,7 +96,7 @@ function Navbar() {
             mobileOpen ? "block" : "hidden"
           } lg:flex lg:items-center lg:w-auto w-full`}
         >
-          <ul className="lg:flex items-center justify-between gap-1 text-base text-gray-50 pt-4 lg:pt-0">
+          <ul className="lg:flex items-center  justify-between gap-1 text-base text-gray-50 pt-4 lg:pt-0">
             {navElememts.map((element) => {
               if (element.requireAuthentication && !isAuthenticated)
                 return null;

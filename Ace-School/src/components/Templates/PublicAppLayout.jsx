@@ -8,7 +8,7 @@ const PublicAppLayout = () => {
   const location = useLocation();
   const currentLocation = location.pathname;
   return (
-    <div className="flex flex-col  bg-[#f5f5f9] ">
+    <div className="flex flex-col w-full bg-[#f5f5f9] ">
       <Navbar />
       <main className=" mt-14 w-full flex flex-col min-h-[calc(100vh-3.5rem)]">
         <Outlet />

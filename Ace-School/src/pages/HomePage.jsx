@@ -70,12 +70,12 @@ function HomePage() {
               <CarouselItem className="p-0 m-0" key={image}>
                 <div className="p-0 ">
                   <Card className="p-0 border-0">
-                    <CardContent className="flex max-h-[91vh]  border-0 items-center justify-center p-0 m-0 border-0">
+                    <CardContent className="flex max-h-[91vh]   items-center justify-center p-0 m-0 border-0">
                       <img
                         style={{ filter: "blur(0.2px)" }}
                         src={image}
                         alt="school image "
-                        className="w-screen  aspect-4/6 sm:aspect-video  p-0 m-0  object-cover"
+                        className="w-full  aspect-4/6 sm:aspect-video  p-0 m-0  object-cover"
                       />
                     </CardContent>
                   </Card>
