@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Sidebar } from "../ui/sidebar";
 import StatElement from "../Molecules/StatElement";
 import {
@@ -20,51 +20,155 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 import databaseService from "@/appwrite/Database/database";
-import { setMessages } from "@/features/inboxSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { setNotices } from "@/features/noticeSlice";
+import { useSelector } from "react-redux";
 import NonPriviligesDashboard from "./NonPriviligesDashboard";
+import config from "@/appwrite";
+import { todayDate } from "@/utils/datetime";
+import { useQueries } from "@tanstack/react-query";
 const DashboardPage = () => {
-  const dispatch = useDispatch();
   const { roles, username } = useSelector((state) => state.auth.user);
-  const inboxCount = useSelector((state) => state.inbox.noOfInboxes);
-  const noticeCount = useSelector((state) => state.notice.noOfNotices);
-  const fetchDashboardData = async () => {
-    const fetchMessages = databaseService.fetchMessages({
-      pageParam: null,
-      dashboardFetch: true,
-    });
-    const fetchNotices = databaseService.fetchNotices({
-      pageParam: null,
-      dashboardFetch: true,
-    });
-    // if (!result) return;
-    // dispatch(setMessages(result));
-    // // expecting array of objects
-    try {
-      const [notices, messages] = await Promise.all([
-        fetchNotices,
-        fetchMessages,
-      ]);
 
-      dispatch(setMessages(messages));
-      dispatch(setNotices(notices));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["feesCollected"],
+        queryFn: async () => {
+          try {
+            const response = databaseService.getDocument(
+              config.dailyFeeStatid,
+              todayDate
+            );
+            return response;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        },
+      },
+      {
+        queryKey: ["teachers"],
+        queryFn: async () => {
+          try {
+            const response = databaseService.listDashboardDocuments(
+              config.appwritreTeachersCollectionID
+            );
+            return response;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        },
+      },
+      {
+        queryKey: ["staffs"],
+        queryFn: async () => {
+          try {
+            const response = databaseService.listDashboardDocuments(
+              config.appwritreStaffsCollectionID
+            );
+            return response;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        },
+      },
+      {
+        queryKey: ["students"],
+        queryFn: async () => {
+          try {
+            const response = databaseService.listDashboardDocuments(
+              config.appwritreStudentCollectionID
+            );
+            return response;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        },
+      },
+      {
+        queryKey: ["notices"],
+        queryFn: async () => {
+          try {
+            const response = databaseService.listDashboardDocuments(
+              config.noticeCollectionID
+            );
+            return response;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        },
+      },
+      {
+        queryKey: ["inboxes"],
+        queryFn: async () => {
+          try {
+            const response = databaseService.listDashboardDocuments(
+              config.emailCollectionID
+            );
+            return response;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        },
+      },
+      {
+        queryKey: ["attendance"],
+        queryFn: async () => {
+          try {
+            const response = databaseService.getDocument(
+              config.studentAttendenceCollectionId,
+              todayDate
+            );
+            return response;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        },
+      },
+    ],
+  });
   if (!roles?.includes("admin") && !roles?.includes("account")) {
     return <NonPriviligesDashboard />;
   }
+  const [
+    feesRes,
+    teachersRes,
+    staffsRes,
+    studentsRes,
+    noticeRes,
+    inboxRes,
+    attRes,
+  ] = results;
+  console.log(feesRes, "feesRes");
+
+  const attendanceRecord = useMemo(
+    () =>
+      attRes.data && attRes.data.Report ? JSON.parse(attRes.data.Report) : {},
+    [attRes.data]
+  );
+
+  const [attendaneNumber, setAttndancenumber] = useState(0);
+
+  useEffect(() => {
+    for (const grade in attendanceRecord) {
+      const element = attendanceRecord[grade];
+      element.forEach((student) => {
+        if (student.att.toLowerCase() === "present") {
+          console.log(student);
+          setAttndancenumber((prev) => prev + 1);
+        }
+      });
+    }
+  }, [attendanceRecord]);
 
   const statItems = [
     {
-      statNumber: 20000,
+      statNumber: feesRes.data?.total ?? 0,
       statHeading: "Fees Collected",
       readers: ["account", "admin"],
       link: "/billing",
@@ -72,7 +176,7 @@ const DashboardPage = () => {
       color: "yellow",
     },
     {
-      statNumber: 20,
+      statNumber: teachersRes.data?.total ?? 0,
       statHeading: "Teachers",
       classNames: "border rounded-xl text-zinc-700",
       readers: ["account", "admin"],
@@ -81,7 +185,7 @@ const DashboardPage = () => {
       color: "blue",
     },
     {
-      statNumber: 300,
+      statNumber: studentsRes.data?.total ?? 0,
       statHeading: "Students",
       classNames: "border rounded-xl text-zinc-700",
       link: "/view-students",
@@ -90,7 +194,7 @@ const DashboardPage = () => {
       color: "green",
     },
     {
-      statNumber: inboxCount > 9 ? "9+" : inboxCount,
+      statNumber: inboxRes.data?.total ?? 0,
       statHeading: "Inbox",
       classNames: "border rounded-xl text-zinc-700",
       link: "/inbox",
@@ -99,7 +203,7 @@ const DashboardPage = () => {
       color: "red",
     },
     {
-      statNumber: noticeCount > 9 ? "9+" : noticeCount,
+      statNumber: noticeRes.data?.total ?? 0,
       statHeading: "Notices",
       link: "/notice",
       classNames: "border rounded-xl text-zinc-700",
@@ -108,7 +212,7 @@ const DashboardPage = () => {
       color: "orange",
     },
     {
-      statNumber: 200,
+      statNumber: attendaneNumber,
       statHeading: "Atendence Today",
       classNames: "border rounded-xl text-zinc-700",
       link: "/attendance",
@@ -117,7 +221,7 @@ const DashboardPage = () => {
       color: "red",
     },
     {
-      statNumber: 10,
+      statNumber: 11,
       statHeading: "Subjects",
       link: "/subjects",
       classNames: "border rounded-xl text-zinc-700",
@@ -126,7 +230,7 @@ const DashboardPage = () => {
       color: "indigo",
     },
     {
-      statNumber: 13,
+      statNumber: 11,
       statHeading: "Classes",
       link: "/classes",
       classNames: "border rounded-xl text-zinc-700",
@@ -135,7 +239,7 @@ const DashboardPage = () => {
       color: "pink",
     },
     {
-      statNumber: 20,
+      statNumber: staffsRes.data?.total ?? 0,
       statHeading: "Staffs",
       classNames: "border rounded-xl text-zinc-700",
       link: "/staffs",

@@ -777,6 +777,19 @@ class DatabaseService {
     );
     return response;
   };
+  listDashboardDocuments = async (collectionId) => {
+    try {
+      const response = await this.database.listDocuments(
+        appwriteDatabaseID,
+        collectionId,
+        [Query.limit(1)]
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
 }
 const databaseService = new DatabaseService();
 export default databaseService;

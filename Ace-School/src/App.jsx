@@ -95,17 +95,17 @@ function App() {
 
   useEffect(() => {
     const handleKeys = (e) => {
-      e.preventDefault();
-      if (e.key === "F3") {
-        e.preventDefault(); // optional
-        // Your custom logic for back
-        navigate(-1);
-      }
-      if (e.key === "F4") {
-        e.preventDefault(); // optional
-        // Your custom logic for forward
-        navigate(1);
-      }
+      // e.preventDefault();
+      // if (e.key === "F3") {
+      //   e.preventDefault(); // optional
+      //   // Your custom logic for back
+      //   navigate(-1);
+      // }
+      // if (e.key === "F4") {
+      //   e.preventDefault(); // optional
+      //   // Your custom logic for forward
+      //   navigate(1);
+      // }
     };
 
     document.addEventListener("keydown", handleKeys);

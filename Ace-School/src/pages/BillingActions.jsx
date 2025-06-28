@@ -302,7 +302,8 @@ export function StudentBillingUI({ documentId }) {
     dueFees: dueThisMonth,
     payableFeesWholeYear,
   } = getMonthlyAndTotalFeeData(studentFeeData);
-  const prevStatementRecordParsed = JSON.parse(statementsRecord[0]);
+  const prevStatementRecordParsed =
+    statementsRecord.length > 0 ? JSON.parse(statementsRecord[0]) : {};
   console.log(prevStatementRecordParsed, "parsed");
   const handleFeeBilling = async (formData) => {
     const {

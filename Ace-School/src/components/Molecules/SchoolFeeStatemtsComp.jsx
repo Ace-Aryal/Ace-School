@@ -28,9 +28,7 @@ function SchoolFeeStatemtsComp() {
   if (isError) {
     return <GeneralErrorPage />;
   }
-  if (data.total === 0) {
-    return <GeneralErrorPage message="No statements found for the given day" />;
-  }
+
   const transactionsArray = data.documents;
   return (
     <div>
@@ -50,42 +48,52 @@ function SchoolFeeStatemtsComp() {
         </div>
       </section>
 
-      <section id="botoom">
-        <Card className="p-4">
-          <div className="overflow-auto max-h-[400px] max-w-full border rounded-md">
-            <table className="min-w-[800px] text-sm w-full text-left border-collapse">
-              <thead className="bg-muted sticky top-0 z-10">
-                <tr>
-                  <th className="p-2 border-b">Date</th>
-                  <th className="p-2 border-b">Roll No</th>
-                  <th className="p-2 border-b">Grade</th>
-                  <th className="p-2 border-b">Name</th>
-                  <th className="p-2 border-b">Amount</th>
-                  <th className="p-2 border-b">Method</th>
-                  <th className="p-2 border-b">Accountant</th>
-                  <th className="p-2 border-b">Payer</th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactionsArray.map((entry, idx) => (
-                  <tr key={idx} className="hover:bg-muted/50">
-                    <td className="p-2 border-b">{entry.date.slice(0, 10)}</td>
-                    <td className="p-2 border-b">{entry.roll}</td>
-                    <td className="p-2 border-b">{entry.grade}</td>
-                    <td className="p-2 border-b">{entry.studentName}</td>
-                    <td className="p-2 border-b">
-                      Rs. {entry.amount.toLocaleString("en-NP")}
-                    </td>
-                    <td className="p-2 border-b">{entry.method}</td>
-                    <td className="p-2 border-b">{entry.accountant}</td>
-                    <td className="p-2 border-b">{entry.payer}</td>
+      {isLoading ? (
+        <LoadingPage />
+      ) : isError ? (
+        <GeneralErrorPage />
+      ) : data.total === 0 ? (
+        <GeneralErrorPage message="No statements found for the given day" />
+      ) : (
+        <section id="botoom">
+          <Card className="p-4">
+            <div className="overflow-auto max-h-[400px] max-w-full border rounded-md">
+              <table className="min-w-[800px] text-sm w-full text-left border-collapse">
+                <thead className="bg-muted sticky top-0 z-10">
+                  <tr>
+                    <th className="p-2 border-b">Date</th>
+                    <th className="p-2 border-b">Roll No</th>
+                    <th className="p-2 border-b">Grade</th>
+                    <th className="p-2 border-b">Name</th>
+                    <th className="p-2 border-b">Amount</th>
+                    <th className="p-2 border-b">Method</th>
+                    <th className="p-2 border-b">Accountant</th>
+                    <th className="p-2 border-b">Payer</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      </section>
+                </thead>
+                <tbody>
+                  {transactionsArray.map((entry, idx) => (
+                    <tr key={idx} className="hover:bg-muted/50">
+                      <td className="p-2 border-b">
+                        {entry.date.slice(0, 10)}
+                      </td>
+                      <td className="p-2 border-b">{entry.roll}</td>
+                      <td className="p-2 border-b">{entry.grade}</td>
+                      <td className="p-2 border-b">{entry.studentName}</td>
+                      <td className="p-2 border-b">
+                        Rs. {entry.amount.toLocaleString("en-NP")}
+                      </td>
+                      <td className="p-2 border-b">{entry.method}</td>
+                      <td className="p-2 border-b">{entry.accountant}</td>
+                      <td className="p-2 border-b">{entry.payer}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </section>
+      )}
     </div>
   );
 }
