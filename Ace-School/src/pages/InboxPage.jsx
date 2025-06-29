@@ -69,12 +69,10 @@ const InboxPage = () => {
         <div className="overflow-x-scroll w-full">
           <table className="min-w-full table-auto border border-gray-300   text-center text-zinc-700  ">
             <thead className=" text-zinc-800  ">
-              <tr className="bg-gray-200 border-b  border-gray-300">
-                <th className="px-4 py-2 border-r border-gray-300">
-                  Published
-                </th>
-                <th className="px-4 py-3 border-r border-gray-300">Author</th>
-                <th className="px-4 py-3 border-r border-gray-300">Subject</th>
+              <tr className=" border-b  border-gray-300">
+                <th className="px-4 py-2 border-r border-gray-300">Date</th>
+                <th className="px-4 py-3 border-r border-gray-300">Sender</th>
+                <th className="px-4 py-3 border-r border-gray-300">Message</th>
                 <th className="px-4 py-3 "> Actions</th>
               </tr>
             </thead>

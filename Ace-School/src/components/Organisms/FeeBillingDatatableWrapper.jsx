@@ -78,15 +78,21 @@ function FeeBillingDatatableWrapper() {
       };
       for (let index = 0; index < student.monthlyRecord.length; index++) {
         const recordMonth = student.monthlyRecord[index]; // recored month => month in student records
-        studentFeeStatusObject.totalPaid += recordMonth.paid;
         studentFeeStatusObject.totalDue += recordMonth.due;
-        feeTotalsForClass.totalDue += recordMonth.paid;
         feeTotalsForClass.totalDue += recordMonth.due;
         if (recordMonth.month.toLowerCase() === monthValue.toLowerCase()) {
           studentFeeStatusObject.monthPaid = recordMonth.paid;
           studentFeeStatusObject.monthDue = recordMonth.due;
           break;
         }
+      }
+      for (let index = 0; index < student.monthlyRecord.length; index++) {
+        const recordMonth = student.monthlyRecord[index]; // recored month => month in student records
+        if (recordMonth.paid === 0) {
+          break;
+        }
+        feeTotalsForClass.totalPaid += recordMonth.paid;
+        studentFeeStatusObject.totalPaid += recordMonth.paid;
       }
       return studentFeeStatusObject;
     });

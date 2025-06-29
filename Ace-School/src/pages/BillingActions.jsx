@@ -239,6 +239,7 @@ import { feeBillingSchema } from "@/utils/schemas";
 import TinyCalculator from "@/components/Organisms/TinyCalculator";
 import BillingDialog from "@/components/Organisms/BillingDialog";
 import StudentSelfStatements from "@/components/Molecules/StudentSelfStatements";
+import { parse } from "zod/v4/core";
 export function StudentBillingUI({ documentId }) {
   const queryClient = useQueryClient();
   const {
@@ -301,6 +302,7 @@ export function StudentBillingUI({ documentId }) {
     paidFees: paidThisMonth,
     dueFees: dueThisMonth,
     payableFeesWholeYear,
+    dueForYear,
   } = getMonthlyAndTotalFeeData(studentFeeData);
   const prevStatementRecordParsed =
     statementsRecord.length > 0 ? JSON.parse(statementsRecord[0]) : {};
@@ -472,6 +474,9 @@ export function StudentBillingUI({ documentId }) {
           <div>
             <strong>Total Payable Fee (Year):</strong> Rs.{" "}
             {payableFeesWholeYear}
+          </div>
+          <div>
+            <strong>Due Fee (Year):</strong> Rs. {dueForYear}
           </div>
           <div>
             <strong>Scholarship (%):</strong> {scholarship}%

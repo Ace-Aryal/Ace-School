@@ -40,9 +40,7 @@ const InboxElement = ({ message }) => {
     <tbody className="statEntry border-t border-gray-300">
       <tr
         className={
-          message.seen
-            ? "bg-gray-100 border-t border-gray-300"
-            : "border-t border-gray-300"
+          message.seen ? "border-t border-gray-300" : "border-t border-gray-100"
         }
       >
         <td
@@ -68,7 +66,7 @@ const InboxElement = ({ message }) => {
             handleItemClick(message.seen, message.$id);
           }}
         >
-          {message.message}
+          {message.message.slice(0, 10)}...
         </td>
         {roles.includes("admin") ? (
           <td>

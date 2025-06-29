@@ -1,3 +1,4 @@
+import NepaliDate from "nepali-datetime";
 import { monthValue } from "./month";
 
 export const getMonthlyAndTotalFeeData = (FeeDocumet) => {
@@ -17,14 +18,20 @@ export const getMonthlyAndTotalFeeData = (FeeDocumet) => {
   statObject.paidTotal = 0;
   for (let index = 0; index < monthlyRecords.length; index++) {
     const month = monthlyRecords[index];
+
     statObject.dueTotal += month.due;
-    statObject.paidTotal += month.paid;
     if (month.month.toLowerCase() === monthValue.toLowerCase()) {
       statObject.dueFees += month.due;
       statObject.paidFees += month.paid;
-
       break;
     }
+  }
+  for (let index = 0; index < monthlyRecords.length; index++) {
+    const month = monthlyRecords[index];
+    if (month.paid === 0) {
+      break;
+    }
+    statObject.paidTotal += month.paid;
   }
   monthlyRecords.forEach((month) => {
     statObject.dueFeesWholeYear += month.due;
@@ -42,6 +49,9 @@ export const getMonthlyAndTotalFeeData = (FeeDocumet) => {
     dueFees: formatter.format(statObject.dueFees),
     dueFeesWholeYear: formatter.format(statObject.dueFeesWholeYear),
     payableFeesWholeYear: formatter.format(statObject.payableFeesWholeYear),
+    dueForYear: formatter.format(
+      statObject.payableFeesWholeYear - statObject.paidTotal
+    ),
   };
 
   return formattedStatObject;
