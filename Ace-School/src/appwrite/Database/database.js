@@ -323,7 +323,6 @@ class DatabaseService {
     if (grade) {
       queries = [
         Query.limit(70),
-        ,
         Query.equal("grade", grade),
         Query.orderAsc("rollNo"),
       ];

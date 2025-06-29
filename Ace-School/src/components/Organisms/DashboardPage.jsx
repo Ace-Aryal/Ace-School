@@ -46,7 +46,7 @@ const DashboardPage = () => {
         },
       },
       {
-        queryKey: ["teachers"],
+        queryKey: ["teachersNumnber"],
         queryFn: async () => {
           try {
             const response = databaseService.listDashboardDocuments(
@@ -60,7 +60,7 @@ const DashboardPage = () => {
         },
       },
       {
-        queryKey: ["staffs"],
+        queryKey: ["staffsNumber"],
         queryFn: async () => {
           try {
             const response = databaseService.listDashboardDocuments(
@@ -74,7 +74,7 @@ const DashboardPage = () => {
         },
       },
       {
-        queryKey: ["students"],
+        queryKey: ["studentsNumber"],
         queryFn: async () => {
           try {
             const response = databaseService.listDashboardDocuments(

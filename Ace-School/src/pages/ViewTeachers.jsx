@@ -23,6 +23,7 @@ const ViewTeachers = () => {
   if (isError) {
     return <ErrorPage />;
   }
+  console.log(data, "data");
 
   return (
     <ViewUsers
