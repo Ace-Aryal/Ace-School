@@ -110,13 +110,13 @@ const items = [
     readers: ["all"],
     writers: ["account", "admin", "principal"], // in every written place specify who wrote it in UI
   },
-  {
-    title: "Library",
-    url: "/library",
-    icon: Library,
-    readers: ["all"],
-    writers: ["account", "admin", "principal"],
-  },
+  // {
+  //   title: "Library",
+  //   url: "/library",
+  //   icon: Library,
+  //   readers: ["all"],
+  //   writers: ["account", "admin", "principal"],
+  // },
   {
     title: "Activity logs",
     url: "/activity-logs",
