@@ -23,34 +23,35 @@ function HomePage() {
     "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fb49650006e8f0c87e/view?project=67f8cd5000374c4a813c&mode=admin",
     "https://cloud.appwrite.io/v1/storage/buckets/67f916fc0027eb47b7f6/files/67fcb22500190e15cf40/view?project=67f8cd5000374c4a813c&mode=admin",
   ];
-  const aluminiIArray = [
+  const alumniArray = [
     {
       name: "Dipesh Aryal",
       batch: "SEE 2079 Graduate (3.8 GPA)",
-      image:
-        "https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75",
+      image: "/alumini/dipesh.jpeg",
       mesage:
-        "​As proud alumni of SBSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
+        "The dedicated faculty and rigorous academic environment at Shree Birendra Secondary School were the cornerstone of my achievement. My 3.8 GPA in SEE 2079 reflects the school's commitment to quality education and helping students in Nuwakot strive for academic excellence. This is where my future began.",
     },
     {
-      name: "Dipesh Aryal",
-      batch: "SEE 2079 Graduate",
-
-      image:
-        "https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75",
+      name: "Karishma Dawadi",
+      batch: "SEE 2081 Graduate",
+      image: "/alumini/krishu.jpeg",
       mesage:
-        "​As proud alumni of [School Name], we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
+        "Graduating from SBSS was a milestone. The supportive, community-focused environment in Chainpur Charghare gave me the confidence and essential life skills I needed. The teachers weren't just instructors; they were mentors who genuinely cared about our holistic development beyond the textbooks.",
     },
     {
-      name: "Dipesh Aryal",
-      batch: "SEE 2079 Graduate",
-
-      image:
-        "https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75",
+      name: "Sushant Aryal",
+      batch: "SEE 2078 Graduate",
+      image: "/alumini/sushant.jpeg",
       mesage:
-        "​As proud alumni of BSS, we celebrate the achievements of our alma mater and the enduring bonds we've formed. Our experiences here have shaped us into lifelong learners and community leaders. We remain committed to supporting and uplifting the next generation of students, ensuring that the legacy of excellence continues",
+        "Shree Birendra Secondary School shaped my character and instilled values that I carry to this day. The bonds formed here with my classmates and teachers are irreplaceable. I'm proud to be an alumnus and believe SBSS provides the strongest foundation for the youth of Nuwakot.",
     },
   ];
+  const principalMessage =
+    "As Principal, I am committed to nurturing a vibrant and stimulating learning environment where every student's potential is recognized and amplified. We prioritize academic rigor coupled with character development, ensuring our students are prepared not just for future challenges, but to thrive as responsible, ethical leaders in the Nuwakot community and beyond.";
+
+  const chairmanMessage =
+    "As Chairman of the School Management Committee, I oversee the strategic vision and infrastructure of SBSS. We are dedicated to strengthening our community bonds and securing the resources necessary to maintain high standards of governance, ensuring Shree Birendra Secondary School remains the pioneering institution of quality education in Chainpur Charghare.";
+
   return (
     <main className="flex  m-0 flex-col  justify-center items-center w-full mb-20   ">
       <div className="w-full flex flex-col items-center  justify-center relative">
@@ -117,7 +118,7 @@ function HomePage() {
             </h2>
             <p className="text-justify">
               {" "}
-              located in Bidur-6, Nuwakot, Nepal, is a prominent educational
+              Located in Bidur-6, Nuwakot, Nepal, is a prominent educational
               institution offering quality education from Early Childhood
               Development (ECD) to Grade 10. Established in 1981 AD (2038 BS),
               the school is affiliated with the National Examination Board
@@ -147,7 +148,7 @@ function HomePage() {
           className="max-w-[90vw] b"
         >
           <CarouselContent className="">
-            {aluminiIArray.map((alumini) => (
+            {alumniArray.map((alumini) => (
               <CarouselItem key={alumini.mesage} className="">
                 <div className=" flex justify-center ">
                   <Card className="my-4 bg-blue-100 border-0 shadow-lg">
@@ -185,9 +186,9 @@ function HomePage() {
           <Message
             order="order-0"
             className="bg-red-100 text-red-600 p-3 rounded-lg shadow-lg"
-            imageURL="https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75"
-            role="Principal"
-            message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
+            imageURL="/principal.jpeg"
+            message={principalMessage}
+            role={"Principal"}
           />
         </SlideRightWrapper>
         <SlideLeftWrapper>
@@ -195,9 +196,9 @@ function HomePage() {
           <Message
             className="sm:flex-row-reverse text-orange-600 bg-orange-100 p-3 px-5 rounded-lg shadow-lg "
             order="order-1"
-            imageURL="https://aryaldipesh.com.np/_next/image?url=https%3A%2F%2Ffra.cloud.appwrite.io%2Fv1%2Fstorage%2Fbuckets%2Fquestions-attachment%2Ffiles%2F684ab145000ff2199814%2Fview%3Fproject%3D68465b0b0011b7d2e8b0%26mode%3Dadmin&w=384&q=75"
+            imageURL="/chairman.jpeg"
             role="Chairman"
-            message="Welcome to our school’s digital platform. We are committed to fostering academic excellence, personal growth, and innovation. Together, let’s build a brighter future, empowering every student to thrive, lead, and contribute meaningfully to their community and beyond."
+            message={chairmanMessage}
           />
         </SlideLeftWrapper>
       </section>

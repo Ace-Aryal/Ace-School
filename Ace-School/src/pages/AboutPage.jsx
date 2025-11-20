@@ -16,10 +16,11 @@ function AboutPage() {
                 Who Are We <span className="text-yellow-400">?</span>
               </h2>
               <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Asperiores, quaerat! Repudiandae tempore perferendis dolor
-                maiores nulla labore, doloremque eos inventore veritatis vitae
-                temporibus tenetur, odit ea vero. Velit, commodi rem!
+                We are a dedicated secondary school committed to nurturing young
+                learners from Class Nursery to Class 10. Our focus is on
+                providing quality education, strong values, and a supportive
+                environment where every student can discover their strengths and
+                grow with confidence.
               </p>
             </div>{" "}
             <img
@@ -37,10 +38,11 @@ function AboutPage() {
                 <span className="text-yellow-400 text-4xl">"</span> Our Story{" "}
               </h2>
               <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
-                magni, modi ullam, laborum quaerat fugiat consectetur ad labore
-                molestias, ea totam veritatis natus sequi tempora corporis
-                repellendus nostrum amet accusamus!
+                Our school was founded with a simple vision: to create a place
+                where children feel inspired to learn, explore, and dream. Over
+                the years, we have grown into a close-knit community of
+                students, teachers, and parents working together to shape a
+                brighter future for every learner who walks through our doors.
               </p>
             </div>
 
@@ -64,10 +66,11 @@ function AboutPage() {
                 </span>
               </div>
               <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Asperiores, quaerat! Repudiandae tempore perferendis dolor
-                maiores nulla labore, doloremque eos inventore veritatis vitae
-                temporibus tenetur, odit ea vero. Velit, commodi rem!
+                Our mission is to empower students with knowledge, discipline,
+                and moral values that help them succeed in both academics and
+                life. We aim to develop responsible individuals who think
+                creatively, communicate effectively, and contribute positively
+                to society.
               </p>
             </div>
             <img

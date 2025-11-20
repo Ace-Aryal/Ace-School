@@ -25,10 +25,11 @@ function ServicesPage() {
                   </h2>
                 </div>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Asperiores, quaerat! Repudiandae tempore perferendis dolor
-                  maiores nulla labore, doloremque eos inventore veritatis vitae
-                  temporibus tenetur, odit ea vero. Velit, commodi rem!
+                  We provide well-structured primary and secondary education
+                  designed to build strong academic foundations and essential
+                  life skills. Our experienced teachers ensure that every
+                  student receives individual attention, proper guidance, and a
+                  supportive learning environment.
                 </p>
                 <Button
                   variant="filled"
@@ -53,10 +54,10 @@ function ServicesPage() {
                   Transportation{" "}
                 </h2>
                 <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
-                  magni, modi ullam, laborum quaerat fugiat consectetur ad
-                  labore molestias, ea totam veritatis natus sequi tempora
-                  corporis repellendus nostrum amet accusamus!
+                  Our school offers safe and reliable transportation services
+                  across major routes. Each vehicle is supervised by trained
+                  staff, ensuring that students travel comfortably and securely
+                  to and from school every day.
                 </p>
               </div>
               <img
@@ -76,10 +77,11 @@ function ServicesPage() {
                   </span>
                 </div>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Asperiores, quaerat! Repudiandae tempore perferendis dolor
-                  maiores nulla labore, doloremque eos inventore veritatis vitae
-                  temporibus tenetur, odit ea vero. Velit, commodi rem!
+                  We provide clean and nutritious meals prepared with care to
+                  support students' overall health and energy throughout the
+                  school day. Our fooding services follow hygiene standards and
+                  offer balanced meal options suitable for growing children and
+                  is completely funded for free upto grade 6.
                 </p>
               </div>{" "}
               <img
@@ -100,10 +102,11 @@ function ServicesPage() {
                   </span>
                 </div>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Asperiores, quaerat! Repudiandae tempore perferendis dolor
-                  maiores nulla labore, doloremque eos inventore veritatis vitae
-                  temporibus tenetur, odit ea vero. Velit, commodi rem!
+                  Our well-equipped science and computer labs give students
+                  hands-on learning experiences. Through practical experiments
+                  and guided exploration, students develop curiosity,
+                  problem-solving abilities, and confidence in applying what
+                  they learn in class.
                 </p>
               </div>
 
@@ -125,10 +128,11 @@ function ServicesPage() {
                   </span> Library{" "}
                 </h2>
                 <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
-                  magni, modi ullam, laborum quaerat fugiat consectetur ad
-                  labore molestias, ea totam veritatis natus sequi tempora
-                  corporis repellendus nostrum amet accusamus!
+                  Our library offers a wide collection of books, reference
+                  materials, and learning resources that support both academic
+                  learning and personal growth. Students are encouraged to read,
+                  research, and develop strong study habits in a peaceful
+                  environment.
                 </p>
               </div>
               <img
@@ -147,10 +151,11 @@ function ServicesPage() {
                   <span className="text-yellow-400 text-4xl">|</span> ECA's{" "}
                 </h2>
                 <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. A
-                  magni, modi ullam, laborum quaerat fugiat consectetur ad
-                  labore molestias, ea totam veritatis natus sequi tempora
-                  corporis repellendus nostrum amet accusamus!
+                  We provide a variety of extracurricular activities that help
+                  students discover their talents beyond the classroom. Sports,
+                  arts, music, drama, and skill-based clubs encourage
+                  creativity, teamwork, leadership, and overall personality
+                  development.
                 </p>
               </div>
               <img
